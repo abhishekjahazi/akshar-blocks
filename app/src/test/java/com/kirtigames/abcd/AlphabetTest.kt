@@ -73,7 +73,7 @@ class AlphabetTest {
 
     @Test
     fun everyTrackHasEnoughPicturesToPlay() {
-        for (track in Track.entries) {
+        for (track in Track.entries.filter { GameMode.MATCH in it.modes }) {
             assertTrue(track.name, track.pictureLetters.size >= 3)
         }
     }
@@ -83,7 +83,7 @@ class AlphabetTest {
         val random = Random(42)
         for (track in Track.entries) {
             for (target in track.letters) {
-                val choices = Pick.choices(target, track.letters, 4, random)
+                val choices = Pick.choices(target, track.choicePool(target), 4, random)
                 assertEquals(4, choices.size)
                 assertEquals(4, choices.toSet().size)
                 assertTrue(target in choices)

@@ -8,6 +8,7 @@ import kotlin.math.min
 enum class GameMode(val emoji: String, val color: Int, val textColor: Int) {
     LEARN("📖", Palette.OCEAN, Palette.WHITE),
     TRACE("✏️", Palette.ORANGE, Palette.WHITE),
+    BUILD("➕", Palette.TEAL, Palette.WHITE),
     FIND("🔍", Palette.GRASS, Palette.WHITE),
     BALLOONS("🎈", Palette.SUN, Palette.INK),
     MATCH("🍎", Palette.GRAPE, Palette.WHITE),
@@ -25,7 +26,7 @@ class TrackMenuView(
 
     override val title = track.label
 
-    private val modes = GameMode.entries
+    private val modes = track.modes
     private val cards = modes.map { RectF() }
     private val sample = track.letters.take(4)
     private val titleBlocks = List(sample.size) { RectF() }

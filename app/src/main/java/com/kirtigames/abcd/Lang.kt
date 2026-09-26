@@ -68,6 +68,7 @@ object English : Lang {
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "Learn"
         GameMode.TRACE -> "Trace"
+        GameMode.BUILD -> "Build"
         GameMode.FIND -> "Find it"
         GameMode.BALLOONS -> "Balloons"
         GameMode.MATCH -> "Pictures"
@@ -106,8 +107,23 @@ object Hindi : Lang {
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "सीखो"
         GameMode.TRACE -> "लिखो"
+        GameMode.BUILD -> "जोड़ो"
         GameMode.FIND -> "ढूंढो"
         GameMode.BALLOONS -> "गुब्बारे"
         GameMode.MATCH -> "चित्र"
     }
+}
+
+/** Words for the बारहखड़ी games, which exist only in Hindi. */
+object BarakhadiWords {
+    fun title(consonant: String) = "$consonant की बारहखड़ी"
+    const val BUILD_TITLE = "मात्रा जोड़ो"
+
+    /** "क, आ, का": the consonant, the vowel, then the syllable they make. */
+    fun sound(consonant: String, matra: Matra, syllable: String) = "$consonant, ${matra.vowel}, $syllable"
+    fun intro(consonant: String) = "$consonant की बारहखड़ी। छूकर सुनो!"
+    fun buildAsk(syllable: String) = "$syllable बनाओ! कौन सी मात्रा लगेगी?"
+    fun buildRight(consonant: String, matra: Matra, syllable: String, random: Random) =
+        "${Hindi.praise(random)} $consonant में ${matra.vowel} की मात्रा, $syllable!"
+    fun buildWrong(made: String, target: String) = "यह $made है। $target बनाओ!"
 }

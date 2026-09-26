@@ -35,7 +35,7 @@ class FindView(
     private fun newRound() {
         val next = Pick.anyExcept(track.letters, target, random)
         target = next
-        options = Pick.choices(next, track.letters, OPTION_COUNT, random)
+        options = Pick.choices(next, track.choicePool(next), OPTION_COUNT, random)
         shakeTime.fill(1f)
         solvedIndex = -1
         roundTime = 0f

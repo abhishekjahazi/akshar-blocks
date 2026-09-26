@@ -3,7 +3,13 @@ package com.kirtigames.abcd
 import kotlin.random.Random
 
 /** One letter: its symbol, and (when it has one) a word that starts with it and a picture of that word. */
-data class Letter(val symbol: String, val word: String? = null, val emoji: String? = null) {
+data class Letter(
+    val symbol: String,
+    val word: String? = null,
+    val emoji: String? = null,
+    /** Letters that belong together, like the syllables of one consonant in the बारहखड़ी. */
+    val group: String? = null,
+) {
 
     val hasPicture get() = word != null && emoji != null
 
@@ -28,22 +34,34 @@ private fun isCombiningMark(c: Char): Boolean {
         type == Character.ENCLOSING_MARK.toInt()
 }
 
+internal val ALPHABET_GAMES = listOf(GameMode.LEARN, GameMode.TRACE, GameMode.FIND, GameMode.BALLOONS, GameMode.MATCH)
+
 /** A set of letters to learn, with its own voice and on-screen language. */
 enum class Track(
     val label: String,
     val subtitle: String,
     val color: Int,
     val lang: Lang,
-    /** The content file in assets/tracks/. */
-    val file: String,
+    /** The content file in assets/tracks/, or null when the letters are built from another track. */
+    val file: String?,
     /** English shows "Aa" (capital and small); Hindi has no letter case. */
     val showsCase: Boolean,
+    /** The games offered for this track, in menu order. */
+    val modes: List<GameMode> = ALPHABET_GAMES,
 ) {
     ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true),
     SWAR("हिंदी स्वर", "Hindi vowels", Palette.TOMATO, Hindi, "swar.tsv", showsCase = false),
-    VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false);
+    VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false),
+    BARAKHADI(
+        "बारहखड़ी", "Hindi syllables", Palette.GRAPE, Hindi, file = null, showsCase = false,
+        modes = listOf(GameMode.LEARN, GameMode.BUILD, GameMode.FIND, GameMode.TRACE),
+    );
 
     val letters: List<Letter> get() = Content.letters(this)
+
+    /** Letters to offer as wrong answers next to [target]: the same group when it has one. */
+    fun choicePool(target: Letter): List<Letter> =
+        if (target.group != null) letters.filter { it.group == target.group } else letters
 
     /** Letters that have a word and picture, for the picture game. */
     val pictureLetters: List<Letter> get() = letters.filter { it.hasPicture }

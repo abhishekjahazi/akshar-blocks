@@ -21,6 +21,7 @@ object Content {
     /** Loads every track from the app's assets. Called once when the app starts. */
     fun load(assets: AssetManager) {
         for (track in Track.entries) {
+            if (track.file == null) continue
             letters[track] = assets.open("tracks/${track.file}").bufferedReader().use { parse(it.readText()) }
             // Stroke files are optional: letters without one are traced over their shape.
             strokes[track] = if (assets.list("tracing").orEmpty().contains(track.file)) {
@@ -29,15 +30,24 @@ object Content {
                 emptyMap()
             }
         }
+        buildDerived()
     }
 
     /** Loads every track from an assets folder on disk (used by tests). */
     fun loadFrom(folder: File) {
         for (track in Track.entries) {
+            if (track.file == null) continue
             letters[track] = parse(File(folder, "tracks/${track.file}").readText())
             val strokeFile = File(folder, "tracing/${track.file}")
             strokes[track] = if (strokeFile.exists()) Tracing.parse(strokeFile.readText()) else emptyMap()
         }
+        buildDerived()
+    }
+
+    /** Tracks made from other tracks: the बारहखड़ी comes from the consonants. */
+    private fun buildDerived() {
+        letters[Track.BARAKHADI] = Barakhadi.syllables(letters(Track.VYANJAN))
+        strokes[Track.BARAKHADI] = emptyMap()
     }
 
     /**

@@ -105,7 +105,8 @@ class ParentActivity : AppCompatActivity() {
                 body.addView(text("Not played yet", 15f, muted = true, top = 2))
                 continue
             }
-            body.addView(text("${report.known} of ${report.total} letters known", 15f, top = 2))
+            val unit = if (track == Track.BARAKHADI) "syllables" else "letters"
+            body.addView(text("${report.known} of ${report.total} $unit known", 15f, top = 2))
             body.addView(LinearProgressIndicator(this).apply {
                 max = report.total
                 progress = report.known
