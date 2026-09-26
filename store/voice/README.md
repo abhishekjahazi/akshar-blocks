@@ -21,6 +21,19 @@ dozens of sentences. A sentence switches to your voice only when *every* part of
 recorded, so finishing the everyday phrases plus one section (for example "English") makes
 that whole section sound human.
 
+## The easy way: Voice Studio
+
+A separate app, **ABCD (studio)**, shows one line at a time. Tap **Record**, say the line, tap
+**Stop** – it plays the take back; record again to replace it. Files are named automatically.
+
+- Install it from Android Studio: pick the **studio** build variant and press Run, or
+  `gradlew installStudio`. It installs next to the normal app and is never published.
+- Its games (open **ABCD (studio)**) already use your takes, so you can hear them in context.
+- **Next not recorded** jumps to the next line still missing.
+- When done, copy the takes into the project with a USB cable:
+  `adb pull /sdcard/Android/data/com.kirtigames.abcd.studio/files/voice/. app/src/main/assets/voice/`
+  or tap **Export to Downloads** and copy `Downloads/ABCD voice/en` and `/hi` from the phone.
+
 ## How to record
 
 1. Find a quiet room (soft furnishings help; avoid echoey kitchens and bathrooms).

@@ -80,7 +80,7 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
         releasePlayer()
         if (index >= clips.size || token != playToken) return
         try {
-            val fd = assets.openFd(clips[index])
+            val path = clips[index]
             player = MediaPlayer().apply {
                 setAudioAttributes(
                     AudioAttributes.Builder()
@@ -88,8 +88,11 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
                         .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                         .build(),
                 )
-                setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
-                fd.close()
+                if (Voice.isFile(path)) {
+                    setDataSource(path)
+                } else {
+                    assets.openFd(path).use { fd -> setDataSource(fd.fileDescriptor, fd.startOffset, fd.length) }
+                }
                 setOnCompletionListener { playClips(clips, index + 1, token) }
                 prepare()
                 if (slow) playbackParams = playbackParams.setSpeed(SLOW_CLIP_SPEED)

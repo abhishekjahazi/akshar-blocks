@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- True only in the Voice Studio build: games also play takes recorded on this phone. -->
+    <bool name="studio_build">false</bool>
+</resources>
