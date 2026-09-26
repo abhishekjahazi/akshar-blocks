@@ -1,6 +1,8 @@
 package com.aksharblocks.app
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.InputFilter
@@ -14,7 +16,9 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,12 +28,19 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.switchmaterial.SwitchMaterial
+import java.io.File
 
 /** Grown-ups only (reached through [ParentGate]): children, their progress, and settings. */
 class ParentActivity : AppCompatActivity() {
 
     private lateinit var profiles: ProfileStore
     private lateinit var content: LinearLayout
+    private lateinit var scroll: ScrollView
+
+    /** While a report card is open, Back returns to the parent area instead of leaving it. */
+    private val closeReport = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() = render()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +59,7 @@ class ParentActivity : AppCompatActivity() {
                 Gravity.CENTER_HORIZONTAL,
             ))
         }
-        val scroll = ScrollView(this).apply {
+        scroll = ScrollView(this).apply {
             setBackgroundColor(Palette.ICE)
             addView(column)
         }
@@ -57,12 +68,14 @@ class ParentActivity : AppCompatActivity() {
             view.updatePadding(left = bars.left, top = bars.top, right = bars.right, bottom = bars.bottom)
             insets
         }
+        onBackPressedDispatcher.addCallback(this, closeReport)
         setContentView(scroll)
         render()
     }
 
     /** Rebuilds the whole screen; it's short, so this keeps every section in sync. */
     private fun render() {
+        closeReport.isEnabled = false
         content.removeAllViews()
 
         content.addView(LinearLayout(this).apply {
@@ -162,6 +175,7 @@ class ParentActivity : AppCompatActivity() {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = spaced(top = 12)
         }
+        actions.addView(textButton("Report card") { showReport(profile) })
         actions.addView(textButton("Edit") { editChild(profile) })
         actions.addView(textButton("Reset progress") {
             confirm("Reset ${profile.name}'s progress?", "Stars and letter results will be cleared.") {
@@ -187,6 +201,45 @@ class ParentActivity : AppCompatActivity() {
             addView(body)
             layoutParams = spaced(top = 10)
         }
+    }
+
+    /** A child's report card, full page, with Back and Share. */
+    private fun showReport(profile: Profile) {
+        closeReport.isEnabled = true
+        content.removeAllViews()
+        val report = ReportCard.build(this, profile)
+        content.addView(LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            addView(MaterialButton(this@ParentActivity, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+                text = "← Back"
+                setOnClickListener { render() }
+            })
+            addView(MaterialButton(this@ParentActivity).apply {
+                text = "📤  Share"
+                setOnClickListener { share(report, profile) }
+            }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { marginStart = dp(12) })
+        })
+        content.addView(report)
+        scroll.post { scroll.scrollTo(0, 0) }
+    }
+
+    /** Shares the report card as a picture through the apps the parent picks (WhatsApp, email…). */
+    private fun share(report: View, profile: Profile) {
+        if (report.width == 0 || report.height == 0) return
+        val bitmap = Bitmap.createBitmap(report.width, report.height, Bitmap.Config.ARGB_8888)
+        report.draw(android.graphics.Canvas(bitmap))
+        val folder = File(cacheDir, "reports").apply { mkdirs() }
+        val file = File(folder, "report-card.png")
+        file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        bitmap.recycle()
+        val uri = FileProvider.getUriForFile(this, "$packageName.files", file)
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = "image/png"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_TEXT, "${profile.name}'s report card from Akshar Blocks")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(send, "Share report card"))
     }
 
     /** Add a child (profile == null) or change a child's name and picture. */

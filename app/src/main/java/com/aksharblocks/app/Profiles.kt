@@ -139,6 +139,24 @@ class Player(context: Context, val profile: Profile) {
 
     fun reset() = prefs.edit().clear().apply()
 
+    /** Adds play time to today's total for this child (kept for the report card's week chart). */
+    fun addPlaySeconds(seconds: Long) {
+        if (seconds <= 0) return
+        val today = todayNumber()
+        val key = "$PLAY|$today"
+        val editor = prefs.edit().putLong(key, prefs.getLong(key, 0) + seconds)
+        // Keep about a month; older days are dropped.
+        prefs.all.keys.filter { it.startsWith("$PLAY|") && (it.substringAfter('|').toLongOrNull() ?: 0) < today - KEEP_DAYS }
+            .forEach { editor.remove(it) }
+        editor.apply()
+    }
+
+    /** Minutes played on each of the last [days] days, oldest first (the last one is today). */
+    fun minutesByDay(days: Int = 7): List<Int> {
+        val today = todayNumber()
+        return (days - 1 downTo 0).map { back -> (prefs.getLong("$PLAY|${today - back}", 0) / 60).toInt() }
+    }
+
     private fun bump(key: String) = prefs.edit().putInt(key, prefs.getInt(key, 0) + 1).apply()
 
     companion object {
@@ -148,6 +166,8 @@ class Player(context: Context, val profile: Profile) {
         private const val OK = "ok"
         private const val MISS = "miss"
         private const val MIX = "mix"
+        private const val PLAY = "play"
+        private const val KEEP_DAYS = 31
 
         private fun fileFor(id: Int) = "progress_$id"
 
@@ -168,9 +188,32 @@ data class TrackReport(
     val played: Boolean,
 )
 
+/** How well a child knows one letter, for the report card's letter map. */
+enum class Mastery { NOT_YET, LEARNING, PRACTICE, KNOWN }
+
 object Report {
     /** A letter counts as known after this many right answers. */
     const val KNOWN_AFTER = 3
+
+    fun mastery(symbol: String, stats: LetterStats): Mastery {
+        val ok = stats.ok[symbol] ?: 0
+        val miss = stats.miss[symbol] ?: 0
+        return when {
+            ok >= KNOWN_AFTER && miss <= ok -> Mastery.KNOWN
+            miss >= 2 && miss > ok / 2 -> Mastery.PRACTICE
+            ok + miss > 0 -> Mastery.LEARNING
+            else -> Mastery.NOT_YET
+        }
+    }
+
+    /** A friendly level for a share of letters known (0 to 1). */
+    fun level(knownShare: Float): String = when {
+        knownShare >= 1f -> "🏆 Star learner"
+        knownShare >= 0.7f -> "🌳 Almost there"
+        knownShare >= 0.3f -> "🌿 Learning well"
+        knownShare > 0f -> "🌱 Getting started"
+        else -> "⚪ Just beginning"
+    }
 
     fun build(
         symbols: List<String>,

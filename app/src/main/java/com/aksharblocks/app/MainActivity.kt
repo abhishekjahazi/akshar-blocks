@@ -83,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         if (lastTick > 0) {
             val ms = now - lastTick + carryMs
             playTime.add(ms / 1000)
+            player.addPlaySeconds(ms / 1000)
             carryMs = ms % 1000
         }
         lastTick = now

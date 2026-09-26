@@ -41,6 +41,16 @@
             android:exported="false"
             android:label="Parent area"
             android:noHistory="true" />
+        <!-- Lets a parent share a report card picture with the app they pick. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
