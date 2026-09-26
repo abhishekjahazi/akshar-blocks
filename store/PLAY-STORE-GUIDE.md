@@ -1,4 +1,4 @@
-# ABCD by Kirti – Google Play upload guide
+# Akshar Blocks – Google Play upload guide
 
 Everything you need to publish, in the order Play Console asks for it.
 
@@ -18,7 +18,7 @@ To rebuild the images after changing them: edit the HTML in `src/` and ask Claud
 
 **App name** (30 characters max)
 ```
-ABCD by Kirti – Learn Alphabet
+Akshar Blocks: ABC Hindi 123
 ```
 
 **Short description** (80 characters max)
@@ -28,7 +28,7 @@ ABC, अ आ इ ई, बारहखड़ी and 1–100 with talking games, t
 
 **Full description**
 ```
-ABCD by Kirti helps young children learn English letters, Hindi letters and numbers by playing, with a friendly voice that speaks English and Hindi.
+Akshar Blocks helps young children learn English letters, Hindi letters and numbers by playing, with a friendly voice that speaks English and Hindi.
 
 SIX THINGS TO LEARN
 • English A to Z – "A is for Apple"

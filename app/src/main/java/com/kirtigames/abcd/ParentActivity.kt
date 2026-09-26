@@ -104,7 +104,7 @@ class ParentActivity : AppCompatActivity() {
 
         section("About")
         content.addView(text(
-            "ABCD by Kirti ${versionName()}\nNo ads. No accounts. No internet. " +
+            "Akshar Blocks ${versionName()}\nNo ads. No accounts. No internet. " +
                 "Stars and progress are saved only on this phone and are deleted if the app is uninstalled.\n\n" +
                 "Pictures: Noto Emoji by Google, used under the Apache License 2.0.",
             15f, muted = true, top = 4,

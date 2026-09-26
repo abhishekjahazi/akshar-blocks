@@ -1,4 +1,4 @@
-# The voice of ABCD by Kirti
+# The voice of Akshar Blocks
 
 The app has a **built-in voice**: every line in the scripts below was spoken by Google's
 text-to-speech on a phone and saved as a small .m4a file in app/src/main/assets/voice/, so
