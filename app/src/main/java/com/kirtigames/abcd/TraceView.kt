@@ -40,6 +40,9 @@ class TraceView(
     /** A touch that started on the letter while celebrating; ignored so it can't flip letters. */
     private var ignoringTouch = false
 
+    /** The finger drawing the current stroke; other fingers are ignored. */
+    private var crayonPointer = -1
+
     /** Changes whenever a new letter is shown, so a pending "next letter" can tell it's stale. */
     private var letterToken = 0
 
@@ -263,21 +266,32 @@ class TraceView(
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 demoStart = null
+                crayonPointer = event.getPointerId(0)
                 val p = toBox(event.x, event.y)
                 drawn += mutableListOf(p)
                 grid.paint(p, p, Tracing.CRAYON_RADIUS)
             }
             MotionEvent.ACTION_MOVE -> {
-                val line = drawn.lastOrNull() ?: return true
-                for (h in 0 until event.historySize) addPoint(line, toBox(event.getHistoricalX(h), event.getHistoricalY(h)))
-                addPoint(line, toBox(event.x, event.y))
+                // Follow only the finger that started the stroke; a second finger or a resting
+                // palm must not draw (or jump the line across the letter).
+                val i = event.findPointerIndex(crayonPointer)
+                val line = drawn.lastOrNull()
+                if (i < 0 || line == null) return true
+                for (h in 0 until event.historySize) addPoint(line, toBox(event.getHistoricalX(i, h), event.getHistoricalY(i, h)))
+                addPoint(line, toBox(event.getX(i), event.getY(i)))
             }
-            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                drawing = false
-                check()
+            MotionEvent.ACTION_POINTER_UP -> {
+                if (event.getPointerId(event.actionIndex) == crayonPointer) endStroke()
             }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> endStroke()
         }
         return true
+    }
+
+    private fun endStroke() {
+        if (!drawing) return
+        drawing = false
+        check()
     }
 
     private fun addPoint(line: MutableList<P>, p: P) {
@@ -301,7 +315,10 @@ class TraceView(
         } else if (grid.outsideShare > SCRIBBLE && grid.paintedCount > grid.targetCount) {
             Sounds.play(Sound.WRONG)
             speaker.say(lang.traceAgain(), lang.locale)
-            after(0.6f) { clearDrawing() }
+            // Only if the child hasn't already started drawing again.
+            val token = letterToken
+            val strokeCount = drawn.size
+            after(0.6f) { if (token == letterToken && drawn.size == strokeCount) clearDrawing() }
         }
     }
 

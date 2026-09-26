@@ -36,14 +36,14 @@ class ParentActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         profiles = ProfileStore(this)
 
-        content = LinearLayout(this).apply {
+        content = MaxWidthColumn(this, dp(640)).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(16), dp(8), dp(16), dp(32))
         }
         // A readable column on tablets: at most 640 dp wide, centered.
         val column = android.widget.FrameLayout(this).apply {
             addView(content, android.widget.FrameLayout.LayoutParams(
-                minOf(resources.displayMetrics.widthPixels, dp(640)),
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 Gravity.CENTER_HORIZONTAL,
             ))
@@ -322,4 +322,13 @@ class Settings(context: Context) {
     var soundEffects: Boolean
         get() = prefs.getBoolean("sound_effects", true)
         set(value) = prefs.edit().putBoolean("sound_effects", value).apply()
+}
+
+/** A vertical column that is never wider than [maxWidth] px, so text stays readable on tablets. */
+private class MaxWidthColumn(context: Context, private val maxWidth: Int) : LinearLayout(context) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val available = MeasureSpec.getSize(widthMeasureSpec)
+        val spec = if (available > maxWidth) MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY) else widthMeasureSpec
+        super.onMeasure(spec, heightMeasureSpec)
+    }
 }

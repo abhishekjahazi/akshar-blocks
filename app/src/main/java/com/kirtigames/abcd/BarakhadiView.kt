@@ -76,10 +76,12 @@ class BarakhadiView(
         val landscape = width > height
         val big = dp(84f)
 
-        // Row 1: ◀ consonant ▶
+        // Row 1: ◀ consonant ▶ (centred; in landscape on the left, sharing the row with row 2
+        // so the syllable blocks get the short screen height).
         val top = contentTop
-        consonantBlock.set(width / 2f - big / 2f, top, width / 2f + big / 2f, top + big)
         val arrow = dp(64f)
+        val pickerX = if (landscape) contentLeft + arrow + dp(28f) + big / 2f else width / 2f
+        consonantBlock.set(pickerX - big / 2f, top, pickerX + big / 2f, top + big)
         val arrowY = top + (big - arrow) / 2f
         prevButton.set(consonantBlock.left - dp(28f) - arrow, arrowY, consonantBlock.left - dp(28f), arrowY + arrow)
         nextButton.set(consonantBlock.right + dp(28f), arrowY, consonantBlock.right + dp(28f) + arrow, arrowY + arrow)
@@ -88,7 +90,8 @@ class BarakhadiView(
         drawLetterBlock(canvas, consonantBlock, Palette.INK, consonant, Palette.WHITE, textScale = 0.6f)
 
         // Row 2: how the chosen syllable is made, and the play-all button.
-        val equationY = consonantBlock.bottom + dp(52f)
+        val equationY = if (landscape) consonantBlock.centerY() else consonantBlock.bottom + dp(52f)
+        val equationLeft = if (landscape) nextButton.right + dp(20f) else contentLeft
         val play = dp(56f)
         playButton.set(contentRight - play, equationY - play / 2f, contentRight, equationY + play / 2f)
         val playSink = drawBlock(canvas, playButton, Palette.WHITE, depth = dp(5f))
@@ -99,14 +102,14 @@ class BarakhadiView(
         } else {
             "छूकर सुनो 👇"
         }
-        drawText(canvas, equation, (contentLeft + playButton.left) / 2f, equationY, dp(34f), Palette.INK, playButton.left - contentLeft - dp(12f))
+        drawText(canvas, equation, (equationLeft + playButton.left) / 2f, equationY, dp(34f), Palette.INK, playButton.left - equationLeft - dp(12f))
 
         // The twelve syllables.
-        val gridTop = equationY + dp(44f)
+        val gridTop = if (landscape) consonantBlock.bottom + dp(24f) else equationY + dp(44f)
         val cols = if (landscape) 6 else 3
         val rows = (row.size + cols - 1) / cols
         val cellW = (contentRight - contentLeft) / cols
-        val cellH = (contentBottom - gridTop) / rows
+        val cellH = ((contentBottom - gridTop) / rows).coerceAtLeast(dp(56f))
         val half = min(cellW, cellH) * 0.42f
         row.forEachIndexed { i, syllable ->
             val cx = contentLeft + cellW * (i % cols + 0.5f)

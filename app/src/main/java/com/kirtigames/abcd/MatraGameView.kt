@@ -69,9 +69,15 @@ class MatraGameView(
     override fun drawGame(canvas: Canvas) {
         // Equation row: [क] + [?] = [की]
         val areaW = contentRight - contentLeft
-        val side = min(dp(104f), (areaW - dp(96f)) / 3f)
+        val areaH = contentBottom - contentTop
+        // In landscape the height is short: size the equation to it and put 🔊 beside it,
+        // so the answer tiles below keep a good size.
+        val landscape = width > height
+        val side = min(dp(104f), (areaW - dp(96f)) / 3f).let { if (landscape) min(it, areaH * 0.34f) else it }
         val signGap = dp(48f)
-        val rowWidth = side * 3 + signGap * 2
+        val speakerSize = if (landscape) min(dp(56f), side * 0.7f) else dp(56f)
+        val speakerGap = dp(20f)
+        val rowWidth = side * 3 + signGap * 2 + if (landscape) speakerGap + speakerSize else 0f
         val top = contentTop + dp(8f)
         var x = width / 2f - rowWidth / 2f
         consonantBlock.set(x, top, x + side, top + side)
@@ -94,17 +100,21 @@ class MatraGameView(
         val shownResult = if (wrong != null) consonant + wrong.sign else targetSyllable
         drawLetterBlock(canvas, resultBlock, if (wrong != null) Palette.TOMATO else Palette.GRAPE, shownResult, Palette.WHITE, textScale = 0.5f)
 
-        val speakerSize = dp(56f)
-        speakerButton.set(width / 2f - speakerSize / 2f, resultBlock.bottom + dp(24f), width / 2f + speakerSize / 2f, resultBlock.bottom + dp(24f) + speakerSize)
+        if (landscape) {
+            val left = resultBlock.right + speakerGap
+            speakerButton.set(left, resultBlock.centerY() - speakerSize / 2f, left + speakerSize, resultBlock.centerY() + speakerSize / 2f)
+        } else {
+            speakerButton.set(width / 2f - speakerSize / 2f, resultBlock.bottom + dp(24f), width / 2f + speakerSize / 2f, resultBlock.bottom + dp(24f) + speakerSize)
+        }
         val sink = drawBlock(canvas, speakerButton, Palette.WHITE, depth = dp(5f))
         drawEmoji(canvas, "🔊", speakerButton.centerX(), speakerButton.centerY() + sink, speakerSize * 0.5f)
 
         // Matra choices: 2×2 in portrait, one row in landscape.
-        val gridTop = speakerButton.bottom + dp(24f)
-        val cols = if (width > height) OPTION_COUNT else 2
+        val gridTop = if (landscape) resultBlock.bottom + dp(20f) else speakerButton.bottom + dp(24f)
+        val cols = if (landscape) OPTION_COUNT else 2
         val rows = OPTION_COUNT / cols
         val cellW = areaW / cols
-        val cellH = (contentBottom - gridTop) / rows
+        val cellH = ((contentBottom - gridTop) / rows).coerceAtLeast(dp(56f))
         val half = min(cellW, cellH) * 0.4f
         options.forEachIndexed { i, matra ->
             val cx = contentLeft + cellW * (i % cols + 0.5f)

@@ -79,23 +79,23 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
     private fun playClips(clips: List<String>, index: Int, token: Int) {
         releasePlayer()
         if (index >= clips.size || token != playToken) return
+        // Kept in a local until it's playing, so a clip that fails to load is still released.
+        val next = MediaPlayer()
         try {
-            val fd = assets.openFd(clips[index])
-            player = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_GAME)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                        .build(),
-                )
-                setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
-                fd.close()
-                setOnCompletionListener { playClips(clips, index + 1, token) }
-                prepare()
-                if (slow) playbackParams = playbackParams.setSpeed(SLOW_CLIP_SPEED)
-                start()
-            }
+            next.setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_GAME)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build(),
+            )
+            assets.openFd(clips[index]).use { fd -> next.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length) }
+            next.setOnCompletionListener { playClips(clips, index + 1, token) }
+            next.prepare()
+            if (slow) next.playbackParams = next.playbackParams.setSpeed(SLOW_CLIP_SPEED)
+            next.start()
+            player = next
         } catch (e: Exception) {
+            next.release()
             // A broken recording must not silence the game: skip to the next part.
             Log.w(TAG, "Could not play ${clips[index]}", e)
             playClips(clips, index + 1, token)

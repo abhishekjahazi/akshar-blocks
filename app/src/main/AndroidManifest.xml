@@ -9,9 +9,11 @@
         </intent>
     </queries>
 
+    <!-- Children's names and progress stay on this phone: no cloud backup and no copying
+         to a new phone (see the backup rules), as the parent area and privacy policy say. -->
     <application
         android:name=".AbcdApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -19,9 +21,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ABCDGame">
+        <!-- Handles these changes itself so a game is never restarted mid-play
+             (the theme is always light, so dark mode changes nothing on screen). -->
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|fontScale|density|locale|layoutDirection"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- noHistory: leaving the parent area closes it, so reopening the app never lands a
+             child inside it without the grown-ups question. -->
         <activity
             android:name=".ParentActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|fontScale|density|locale|layoutDirection"
             android:exported="false"
-            android:label="Parent area" />
+            android:label="Parent area"
+            android:noHistory="true" />
     </application>
 
 </manifest>
