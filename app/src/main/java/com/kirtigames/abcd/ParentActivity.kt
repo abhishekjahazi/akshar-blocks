@@ -96,7 +96,12 @@ class ParentActivity : AppCompatActivity() {
             setPadding(dp(16), dp(14), dp(16), dp(12))
         }
         body.addView(text("${profile.avatar}  ${profile.name}", 22f, bold = true))
-        body.addView(text("⭐ ${player.stars} stars", 16f, muted = true, top = 2))
+        val streak = player.streak
+        val summary = buildString {
+            append("⭐ ${player.stars} stars  ·  ${Stickers.unlocked(player.stars)} of ${Stickers.all.size} stickers")
+            if (streak >= 2) append("  ·  🔥 $streak days in a row")
+        }
+        body.addView(text(summary, 16f, muted = true, top = 2))
 
         for (track in Track.entries) {
             val report = player.report(track)
@@ -121,6 +126,7 @@ class ParentActivity : AppCompatActivity() {
             })
             if (report.practice.isNotEmpty()) {
                 body.addView(text("Needs practice:  ${report.practice.joinToString("  ")}", 15f, top = 6))
+                body.addView(text("Find it and Pictures bring these up more often.", 13f, muted = true, top = 0))
             }
             if (report.mixUps.isNotEmpty()) {
                 body.addView(text("Often mixes up:  ${report.mixUps.joinToString(",  ") { "${it.first} and ${it.second}" }}", 15f, top = 2))

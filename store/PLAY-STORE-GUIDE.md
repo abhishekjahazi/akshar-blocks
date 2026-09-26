@@ -23,31 +23,44 @@ ABCD by Kirti – Learn Alphabet
 
 **Short description** (80 characters max)
 ```
-Learn ABC and Hindi अ आ इ ई, क ख ग with talking letters, pictures and games!
+ABC, अ आ इ ई, बारहखड़ी and 1–100 with talking games, tracing and stickers!
 ```
 
 **Full description**
 ```
-ABCD by Kirti helps young children learn the English alphabet and Hindi letters (स्वर and व्यंजन) by playing.
+ABCD by Kirti helps young children learn English letters, Hindi letters and numbers by playing, with a friendly voice that speaks English and Hindi.
 
-THREE ALPHABETS
-• English A to Z
-• Hindi vowels – अ आ इ ई उ ऊ … अं अः
-• Hindi consonants – क ख ग घ … क्ष त्र ज्ञ
+SIX THINGS TO LEARN
+• English A to Z – "A is for Apple"
+• Hindi vowels (स्वर) – अ आ इ ई … अं अः
+• Hindi consonants (व्यंजन) – क ख ग … क्ष त्र ज्ञ
+• बारहखड़ी – क का कि की कु कू … for every consonant
+• Numbers 1 to 100
+• हिंदी गिनती – १ से १०० तक
 
-Every letter is a big, colorful toy block that children can tap. A friendly voice says each letter and word out loud in English or Hindi ("अ से अनानास"), so kids learn what letters look like and how they sound.
+GAMES
+• Learn – big letters, pictures and the voice
+• Trace – write letters with a finger; English letters show the right stroke order
+• Find it – "Find the letter B!" or "क ढूंढो!"
+• Balloons – pop the letters in order
+• Pictures – which letter does the word start with?
+• Build – क + ? = की: choose the right matra
+• Count – how many apples? The app counts along with your child
 
-FOUR GAMES IN ONE
-• Learn A–Z – Flip through the alphabet. See "A is for Apple" with a big picture, and hear it spoken.
-• Find it – Listen to "Find the letter B!" or "क ढूंढो!" and tap the right block.
-• Balloons – Letter balloons float up. Pop them in alphabet order.
-• Pictures – See a picture and choose the letter its word starts with.
+LEARNS WITH YOUR CHILD
+• Letters your child finds hard come up more often
+• Letters that get mixed up (like b and d, or ि and ी) are practised together
+• A sticker for every 5 stars, and a daily streak
+
+FOR PARENTS
+• Up to 4 children, each with their own progress
+• See what each child knows and which letters need practice
+• Slower voice option for the youngest
 
 MADE FOR LITTLE HANDS
-• Big buttons that are easy to tap
-• Gentle help when an answer is wrong – no fail screens
-• Stars and confetti for every right answer – stars are saved
+• Big buttons, gentle help when an answer is wrong, no fail screens
 • Works offline – no internet needed
+• Works on Android 7 and newer
 
 SAFE FOR KIDS
 • No ads
@@ -57,7 +70,7 @@ SAFE FOR KIDS
 
 Great for toddlers, preschool and kindergarten children aged 2 to 6.
 
-The Hindi voice uses the phone's built-in Hindi text-to-speech. If a phone doesn't have it, the app shows a button to install it.
+The voice uses the phone's built-in text-to-speech. If a phone doesn't have the Hindi voice, the app shows a button to install it.
 ```
 
 **Category:** Education (or Games → Educational)

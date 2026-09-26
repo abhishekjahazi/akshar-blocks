@@ -16,6 +16,11 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
     /** The child name tag was tapped. */
     var onChild: (() -> Unit)? = null
 
+    /** The star counter was tapped: open the sticker album. */
+    var onAlbum: (() -> Unit)? = null
+
+    override val starsTappable = true
+
     override val showHomeButton = false
 
     private val tracks = Track.entries
@@ -96,6 +101,10 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         }
         if (childTag.contains(x, y)) {
             onChild?.invoke()
+            return
+        }
+        if (starsRect.contains(x, y)) {
+            onAlbum?.invoke()
             return
         }
         val block = titleBlocks.indexOfFirst { it.contains(x, y) }

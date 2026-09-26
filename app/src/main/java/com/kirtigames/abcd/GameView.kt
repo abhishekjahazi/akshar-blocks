@@ -59,6 +59,7 @@ object Palette {
 }
 
 private val TITLE_TILT = floatArrayOf(-6f, 4f, -3f, 5f)
+private const val REVEAL_SECONDS = 4.5f
 
 /**
  * Base class for every screen. Runs the animation loop and draws the
@@ -82,6 +83,9 @@ abstract class GameView(
     protected open val title: String = ""
     protected open val showHomeButton = true
     protected open val showStars = true
+
+    /** Home makes the star counter a button that opens the sticker album. */
+    protected open val starsTappable = false
     protected open val skyColor = Palette.SKY
 
     /** Seconds since this screen appeared. */
@@ -123,7 +127,15 @@ abstract class GameView(
 
     private val blockRect = RectF()
     private val homeRect = RectF()
-    private val starsRect = RectF()
+    protected val starsRect = RectF()
+    private val revealCard = RectF()
+
+    /** A sticker just earned, shown big over the game until tapped or timed out. */
+    private var reveal: Sticker? = null
+    private var revealAt = 0f
+
+    /** True while the "New sticker!" card is on screen; games should ignore touches then. */
+    protected val showingReveal get() = reveal != null
     private val titleRect = RectF()
 
     private class Particle(
@@ -162,7 +174,18 @@ abstract class GameView(
     }
 
     /** Gives the child a star; the total is kept between visits. */
-    protected fun addStar() = player.addStar()
+    protected fun addStar() {
+        val unlockedBefore = Stickers.unlocked(player.stars)
+        player.addStar()
+        val unlockedNow = Stickers.unlocked(player.stars)
+        if (unlockedNow > unlockedBefore) {
+            val sticker = Stickers.all[unlockedNow - 1]
+            reveal = sticker
+            revealAt = time
+            // Let the game's own praise finish first.
+            after(1.6f) { if (reveal == sticker) speaker.say("New sticker! A ${sticker.name}!") }
+        }
+    }
 
     /** Bursts confetti out from ([x], [y]). */
     protected fun celebrate(x: Float, y: Float, count: Int = 36) {
@@ -382,6 +405,7 @@ abstract class GameView(
         drawGame(canvas)
         drawParticles(canvas)
         drawTopBar(canvas)
+        drawReveal(canvas)
 
         postInvalidateOnAnimation()
     }
@@ -392,6 +416,11 @@ abstract class GameView(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (reveal != null) {
+            // Any tap closes the sticker card; nothing underneath reacts.
+            if (event.actionMasked == MotionEvent.ACTION_UP && time - revealAt > 0.6f) reveal = null
+            return true
+        }
         touchX = event.x
         touchY = event.y
         when (event.actionMasked) {
@@ -474,6 +503,29 @@ abstract class GameView(
         fillPaint.alpha = 255
     }
 
+    /** The "New sticker!" card: the game dims, the sticker pops up big. Closes itself after a while. */
+    private fun drawReveal(canvas: Canvas) {
+        val sticker = reveal ?: return
+        val age = time - revealAt
+        if (age > REVEAL_SECONDS) {
+            reveal = null
+            return
+        }
+        fillPaint.color = 0x99000000.toInt()
+        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), fillPaint)
+
+        val side = min(width, height) * 0.72f
+        revealCard.set(width / 2f - side / 2f, height / 2f - side * 0.6f, width / 2f + side / 2f, height / 2f + side * 0.6f)
+        val scale = popIn(age / 0.5f)
+        canvas.save()
+        canvas.scale(scale, scale, revealCard.centerX(), revealCard.centerY())
+        drawBlock(canvas, revealCard, Palette.WHITE, radius = dp(36f), depth = dp(10f), pressable = false)
+        drawText(canvas, "New sticker!", revealCard.centerX(), revealCard.top + revealCard.height() * 0.16f, side * 0.1f, Palette.INK, side * 0.9f)
+        drawEmoji(canvas, sticker.emoji, revealCard.centerX(), revealCard.centerY() + side * 0.02f, side * 0.5f)
+        drawText(canvas, sticker.name, revealCard.centerX(), revealCard.bottom - revealCard.height() * 0.14f, side * 0.09f, Palette.GRAPE, side * 0.9f)
+        canvas.restore()
+    }
+
     private fun drawTopBar(canvas: Canvas) {
         val barY = topBarCenter
         val size = dp(52f)
@@ -492,8 +544,8 @@ abstract class GameView(
             val pillWidth = textPaint.measureText(label) + dp(28f)
             val right = width - safeRight - dp(16f)
             starsRect.set(right - pillWidth, barY - size / 2f, right, barY + size / 2f)
-            drawBlock(canvas, starsRect, Palette.WHITE, depth = dp(5f), pressable = false)
-            drawText(canvas, label, starsRect.centerX(), barY, dp(24f), Palette.INK)
+            val sink = drawBlock(canvas, starsRect, Palette.WHITE, depth = dp(5f), pressable = starsTappable)
+            drawText(canvas, label, starsRect.centerX(), barY + sink, dp(24f), Palette.INK)
         }
     }
 }

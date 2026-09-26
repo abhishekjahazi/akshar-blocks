@@ -89,7 +89,19 @@ class Player(context: Context, val profile: Profile) {
 
     val stars: Int get() = prefs.getInt(KEY_STARS, 0)
 
-    fun addStar() = setStars(stars + 1)
+    /** Adds a star and counts today toward the daily streak. */
+    fun addStar() {
+        val today = today()
+        prefs.edit()
+            .putInt(KEY_STARS, stars + 1)
+            .putInt(KEY_STREAK, Streak.next(prefs.getLong(KEY_LAST_DAY, Long.MIN_VALUE / 2), prefs.getInt(KEY_STREAK, 0), today))
+            .putLong(KEY_LAST_DAY, today)
+            .apply()
+    }
+
+    /** Days played in a row (0 when the last play was before yesterday). */
+    val streak: Int
+        get() = Streak.current(prefs.getLong(KEY_LAST_DAY, Long.MIN_VALUE / 2), prefs.getInt(KEY_STREAK, 0), today())
 
     fun setStars(count: Int) = prefs.edit().putInt(KEY_STARS, count).apply()
 
@@ -102,7 +114,8 @@ class Player(context: Context, val profile: Profile) {
         bump("$MIX|${track.name}|${target.symbol}|${tapped.symbol}")
     }
 
-    fun report(track: Track): TrackReport {
+    /** Right answers, misses and mix-ups for every letter of [track]. */
+    fun stats(track: Track): LetterStats {
         val ok = HashMap<String, Int>()
         val miss = HashMap<String, Int>()
         val mix = HashMap<Pair<String, String>, Int>()
@@ -116,7 +129,12 @@ class Player(context: Context, val profile: Profile) {
                 MIX -> if (parts.size == 4) mix[parts[2] to parts[3]] = count
             }
         }
-        return Report.build(track.letters.map { it.symbol }, ok, miss, mix)
+        return LetterStats(ok, miss, mix)
+    }
+
+    fun report(track: Track): TrackReport {
+        val stats = stats(track)
+        return Report.build(track.letters.map { it.symbol }, stats.ok, stats.miss, stats.mix)
     }
 
     fun reset() = prefs.edit().clear().apply()
@@ -125,11 +143,19 @@ class Player(context: Context, val profile: Profile) {
 
     companion object {
         private const val KEY_STARS = "stars"
+        private const val KEY_STREAK = "streak"
+        private const val KEY_LAST_DAY = "last_day"
         private const val OK = "ok"
         private const val MISS = "miss"
         private const val MIX = "mix"
 
         private fun fileFor(id: Int) = "progress_$id"
+
+        /** Today as a day number in the phone's own time zone. */
+        private fun today(): Long {
+            val now = System.currentTimeMillis()
+            return (now + java.util.TimeZone.getDefault().getOffset(now)) / (24L * 60 * 60 * 1000)
+        }
 
         fun erase(context: Context, id: Int) {
             context.deleteSharedPreferences(fileFor(id))

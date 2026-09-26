@@ -33,9 +33,11 @@ class FindView(
     }
 
     private fun newRound() {
-        val next = Pick.anyExcept(track.letters, target, random)
+        // Smart practice: letters this child gets wrong come up more often, with their usual mix-ups.
+        val stats = player.stats(track)
+        val next = Coach.pickTarget(track.letters, stats, random, except = target)
         target = next
-        options = Pick.choices(next, track.choicePool(next), OPTION_COUNT, random)
+        options = Coach.choices(next, track.choicePool(next), stats, OPTION_COUNT, random)
         shakeTime.fill(1f)
         solvedIndex = -1
         roundTime = 0f

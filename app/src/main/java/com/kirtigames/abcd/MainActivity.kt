@@ -18,7 +18,7 @@ import java.util.Locale
  */
 class MainActivity : AppCompatActivity() {
 
-    private enum class Screen { HOME, CHILDREN, TRACK, GAME }
+    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME }
 
     private lateinit var speaker: Speaker
     private lateinit var profiles: ProfileStore
@@ -74,7 +74,14 @@ class MainActivity : AppCompatActivity() {
             onPick = ::showTrack
             onParent = { ParentGate.show(this@MainActivity) { startActivity(Intent(this@MainActivity, ParentActivity::class.java)) } }
             onChild = ::showChildren
+            onAlbum = ::showAlbum
         })
+    }
+
+    private fun showAlbum() {
+        screen = Screen.ALBUM
+        goBack.isEnabled = true
+        setContentView(AlbumView(this, speaker, player).apply { onHome = ::showHome })
     }
 
     /** "Who is playing?" when there are several children; with one, just say hello. */

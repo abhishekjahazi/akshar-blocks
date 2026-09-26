@@ -247,6 +247,7 @@ class TraceView(
     // --- Touch ------------------------------------------------------------------
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (showingReveal) return super.onTouchEvent(event)
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
             val onLetter = card.contains(event.x, event.y)
             ignoringTouch = solved && onLetter

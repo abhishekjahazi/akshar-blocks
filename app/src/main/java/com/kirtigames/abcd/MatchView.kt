@@ -31,12 +31,12 @@ class MatchView(
     }
 
     private fun newRound() {
-        card = Pick.anyExcept(pictures, card, random)
+        card = Coach.pickTarget(pictures, player.stats(track), random, except = card)
         startRound()
     }
 
     private fun startRound() {
-        options = Pick.choices(card, track.letters, OPTION_COUNT, random)
+        options = Coach.choices(card, track.letters, player.stats(track), OPTION_COUNT, random)
         shakeTime.fill(1f)
         solvedIndex = -1
         roundTime = 0f
