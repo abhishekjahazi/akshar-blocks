@@ -35,6 +35,7 @@ private fun isCombiningMark(c: Char): Boolean {
 }
 
 internal val ALPHABET_GAMES = listOf(GameMode.LEARN, GameMode.TRACE, GameMode.FIND, GameMode.BALLOONS, GameMode.MATCH)
+internal val NUMBER_GAMES = listOf(GameMode.LEARN, GameMode.COUNT, GameMode.FIND, GameMode.TRACE)
 
 /** A set of letters to learn, with its own voice and on-screen language. */
 enum class Track(
@@ -55,13 +56,23 @@ enum class Track(
     BARAKHADI(
         "बारहखड़ी", "Hindi syllables", Palette.GRAPE, Hindi, file = null, showsCase = false,
         modes = listOf(GameMode.LEARN, GameMode.BUILD, GameMode.FIND, GameMode.TRACE),
-    );
+    ),
+    NUMBERS("Numbers", "1 to 100", Palette.ORANGE, EnglishNumbers, "numbers.tsv", showsCase = false, modes = NUMBER_GAMES),
+    GINTI("हिंदी गिनती", "Hindi numbers", Palette.PINK, HindiNumbers, "ginti.tsv", showsCase = false, modes = NUMBER_GAMES);
 
     val letters: List<Letter> get() = Content.letters(this)
 
-    /** Letters to offer as wrong answers next to [target]: the same group when it has one. */
-    fun choicePool(target: Letter): List<Letter> =
-        if (target.group != null) letters.filter { it.group == target.group } else letters
+    val isNumbers get() = this == NUMBERS || this == GINTI
+
+    /**
+     * Letters to offer as wrong answers next to [target]: the same group when it has one,
+     * and nearby numbers for number tracks (27 with 24, 29, 31, not with 3 or 90).
+     */
+    fun choicePool(target: Letter): List<Letter> = when {
+        target.group != null -> letters.filter { it.group == target.group }
+        isNumbers -> letters.indexOf(target).let { i -> letters.subList(maxOf(0, i - 6), minOf(letters.size, i + 7)) }
+        else -> letters
+    }
 
     /** Letters that have a word and picture, for the picture game. */
     val pictureLetters: List<Letter> get() = letters.filter { it.hasPicture }

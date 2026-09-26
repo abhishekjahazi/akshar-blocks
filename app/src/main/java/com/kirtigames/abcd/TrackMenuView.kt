@@ -9,6 +9,7 @@ enum class GameMode(val emoji: String, val color: Int, val textColor: Int) {
     LEARN("📖", Palette.OCEAN, Palette.WHITE),
     TRACE("✏️", Palette.ORANGE, Palette.WHITE),
     BUILD("➕", Palette.TEAL, Palette.WHITE),
+    COUNT("🔢", Palette.GRAPE, Palette.WHITE),
     FIND("🔍", Palette.GRASS, Palette.WHITE),
     BALLOONS("🎈", Palette.SUN, Palette.INK),
     MATCH("🍎", Palette.GRAPE, Palette.WHITE),
@@ -84,7 +85,7 @@ class TrackMenuView(
         }
     }
 
-    private fun voiceName() = if (track.lang == Hindi) "Hindi" else "English"
+    private fun voiceName() = if (track.lang.locale == Hindi.locale) "Hindi" else "English"
 
     override fun onTap(x: Float, y: Float) {
         if (voiceMissing && voiceBanner.contains(x, y)) {

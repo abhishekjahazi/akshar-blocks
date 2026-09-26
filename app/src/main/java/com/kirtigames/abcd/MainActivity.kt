@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                 if (track == Track.BARAKHADI) BarakhadiView(this, speaker, player, track)
                 else LearnView(this, speaker, player, track)
             GameMode.BUILD -> MatraGameView(this, speaker, player, track)
+            GameMode.COUNT -> CountView(this, speaker, player, track)
             GameMode.TRACE -> TraceView(this, speaker, player, track)
             GameMode.FIND -> FindView(this, speaker, player, track)
             GameMode.BALLOONS -> BalloonView(this, speaker, player, track)

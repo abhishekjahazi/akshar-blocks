@@ -30,24 +30,21 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
 
         val landscape = width > height
         val titleTop = contentTop - dp(16f)
-        val titleBottom = titleTop + height * (if (landscape) 0.26f else 0.17f)
+        val titleBottom = titleTop + height * (if (landscape) 0.22f else 0.14f)
         drawTitleBlocks(canvas, TITLE, TITLE_COLORS, titleTop, titleBottom, titleBlocks)
 
-        // Portrait: three wide blocks stacked. Landscape: three side by side.
-        val gap = dp(18f)
-        val areaTop = titleBottom + dp(12f)
-        val count = tracks.size
+        // A grid of sections: two columns in portrait, three in landscape.
+        val gap = dp(14f)
+        val areaTop = titleBottom + dp(8f)
+        val cols = if (landscape) 3 else 2
+        val rows = (tracks.size + cols - 1) / cols
+        val cellW = (contentRight - contentLeft) / cols
+        val cellH = (contentBottom - areaTop) / rows
         tracks.forEachIndexed { i, track ->
             val card = cards[i]
-            if (landscape) {
-                val cellW = (contentRight - contentLeft) / count
-                val left = contentLeft + cellW * i
-                card.set(left + gap / 2f, areaTop, left + cellW - gap / 2f, contentBottom - dp(10f))
-            } else {
-                val cellH = (contentBottom - areaTop) / count
-                val top = areaTop + cellH * i
-                card.set(contentLeft, top + gap / 2f, contentRight, top + cellH - gap / 2f - dp(10f))
-            }
+            val left = contentLeft + cellW * (i % cols)
+            val top = areaTop + cellH * (i / cols)
+            card.set(left + gap / 2f, top + gap / 2f, left + cellW - gap / 2f, top + cellH - gap / 2f - dp(8f))
 
             val appear = popIn((time - 0.4f - i * 0.1f) / 0.4f)
             if (appear <= 0.01f) return@forEachIndexed
@@ -56,20 +53,20 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
             val sink = drawBlock(canvas, card, track.color, radius = dp(30f), depth = dp(10f))
             val h = card.height()
             val w = card.width()
-            drawText(canvas, track.label, card.centerX(), card.top + h * 0.24f + sink, min(h * 0.2f, dp(40f)), Palette.WHITE, w * 0.9f)
-            drawText(canvas, track.subtitle, card.centerX(), card.top + h * 0.43f + sink, min(h * 0.1f, dp(20f)), 0xDDFFFFFF.toInt(), w * 0.9f)
+            drawText(canvas, track.label, card.centerX(), card.top + h * 0.24f + sink, min(h * 0.17f, dp(30f)), Palette.WHITE, w * 0.88f)
+            drawText(canvas, track.subtitle, card.centerX(), card.top + h * 0.43f + sink, min(h * 0.09f, dp(16f)), 0xDDFFFFFF.toInt(), w * 0.88f)
 
             // A row of the track's first letters on little white blocks.
             val sample = track.letters.take(SAMPLE_SIZE)
-            val side = min(h * 0.3f, (w - dp(24f)) / SAMPLE_SIZE - dp(10f))
-            val rowWidth = side * SAMPLE_SIZE + dp(10f) * (SAMPLE_SIZE - 1)
+            val side = min(h * 0.28f, (w - dp(20f)) / SAMPLE_SIZE - dp(6f))
+            val rowWidth = side * SAMPLE_SIZE + dp(6f) * (SAMPLE_SIZE - 1)
             var x = card.centerX() - rowWidth / 2f
             val y = card.top + h * 0.72f + sink
             sample.forEachIndexed { j, letter ->
                 miniBlock.set(x, y - side / 2f, x + side, y + side / 2f)
                 drawBlock(canvas, miniBlock, Palette.WHITE, depth = dp(4f), pressable = false)
                 drawText(canvas, letter.symbol, miniBlock.centerX(), miniBlock.centerY(), side * 0.62f, track.colorFor(j), side * 0.86f)
-                x += side + dp(10f)
+                x += side + dp(6f)
             }
             canvas.restore()
         }

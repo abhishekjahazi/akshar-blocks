@@ -25,6 +25,9 @@ interface Lang {
     fun traceAsk(letter: Letter): String
     fun traceDone(letter: Letter, random: Random): String
     fun traceAgain(): String
+    fun countAsk(thing: CountThing): String
+    fun countRight(number: Letter, thing: CountThing, random: Random): String
+    fun countWrong(thing: CountThing): String
 
     // On screen
     fun learnTitle(number: Int, total: Int): String
@@ -33,10 +36,11 @@ interface Lang {
     val doneTitle: String
     val matchTitle: String
     fun traceTitle(number: Int, total: Int): String
+    val countTitle: String
     fun modeLabel(mode: GameMode): String
 }
 
-object English : Lang {
+open class EnglishLang : Lang {
     override val locale: Locale = Locale.US
 
     // A lone "A" is often read as the word "a" ("uh"), so it is spelled the way it sounds.
@@ -58,6 +62,10 @@ object English : Lang {
     override fun traceAsk(letter: Letter) = "Trace the letter ${name(letter)}!"
     override fun traceDone(letter: Letter, random: Random) = "${praise(random)} You wrote ${name(letter)}!"
     override fun traceAgain() = "Try again. Draw over the letter."
+    override fun countAsk(thing: CountThing) = "How many ${thing.many}?"
+    override fun countRight(number: Letter, thing: CountThing, random: Random) =
+        "${praise(random)} ${number.word} ${if (number.symbol == "1") thing.one else thing.many}!"
+    override fun countWrong(thing: CountThing) = "Let's count again. How many ${thing.many}?"
 
     override fun learnTitle(number: Int, total: Int) = "Letter $number of $total"
     override val findTitle = "Find the letter"
@@ -65,17 +73,32 @@ object English : Lang {
     override val doneTitle = "Hooray!"
     override val matchTitle = "Which letter?"
     override fun traceTitle(number: Int, total: Int) = "Trace $number of $total"
+    override val countTitle = "How many?"
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "Learn"
         GameMode.TRACE -> "Trace"
         GameMode.BUILD -> "Build"
+        GameMode.COUNT -> "Count"
         GameMode.FIND -> "Find it"
         GameMode.BALLOONS -> "Balloons"
         GameMode.MATCH -> "Pictures"
     }
 }
 
-object Hindi : Lang {
+object English : EnglishLang()
+
+/** English wording for the number track: "Find the number 7", not "the letter". */
+object EnglishNumbers : EnglishLang() {
+    override fun name(letter: Letter) = letter.symbol
+    override fun learn(letter: Letter) = "${letter.word}."
+    override fun find(target: Letter) = "Find the number ${target.symbol}!"
+    override fun traceAsk(letter: Letter) = "Trace the number ${letter.symbol}!"
+    override fun traceAgain() = "Try again. Draw over the number."
+    override fun learnTitle(number: Int, total: Int) = "Number $number of $total"
+    override val findTitle = "Find the number"
+}
+
+open class HindiLang : Lang {
     override val locale: Locale = Locale.forLanguageTag("hi-IN")
 
     override fun name(letter: Letter) = letter.symbol
@@ -85,8 +108,8 @@ object Hindi : Lang {
 
     override fun learn(letter: Letter) =
         if (letter.word != null) "${letter.symbol}. ${letter.symbol} से ${letter.word}." else "${letter.symbol}."
-    override fun find(target: Letter) = "${target.symbol} ढूंढो!"
-    override fun notThis(tapped: Letter, target: Letter) = "यह ${tapped.symbol} है। ${target.symbol} ढूंढो!"
+    override fun find(target: Letter) = "${name(target)} ढूंढो!"
+    override fun notThis(tapped: Letter, target: Letter) = "यह ${name(tapped)} है। ${name(target)} ढूंढो!"
     override fun balloonsStart(first: Letter) = "गुब्बारे फोड़ो! ${first.symbol} से शुरू करो।"
     override fun balloonsDone() = "शाबाश! तुमने सारे अक्षर फोड़ दिए!"
     override fun balloonsAgain(first: Letter) = "फिर से खेलो! ${first.symbol} ढूंढो।"
@@ -94,9 +117,13 @@ object Hindi : Lang {
     override fun matchRight(letter: Letter, random: Random) =
         "${praise(random)} ${letter.word}, ${letter.symbol} से शुरू होता है!"
     override fun matchWrong(letter: Letter) = "फिर से कोशिश करो! ${letter.word}."
-    override fun traceAsk(letter: Letter) = "${letter.symbol} बनाओ!"
-    override fun traceDone(letter: Letter, random: Random) = "${praise(random)} तुमने ${letter.symbol} लिखा!"
+    override fun traceAsk(letter: Letter) = "${name(letter)} बनाओ!"
+    override fun traceDone(letter: Letter, random: Random) = "${praise(random)} तुमने ${name(letter)} लिखा!"
     override fun traceAgain() = "फिर से कोशिश करो। अक्षर के ऊपर बनाओ।"
+    override fun countAsk(thing: CountThing) = "${thing.hindi} गिनो! ${thing.hindiHowMany} हैं?"
+    override fun countRight(number: Letter, thing: CountThing, random: Random) =
+        "${praise(random)} ${number.word} ${thing.hindi}!"
+    override fun countWrong(thing: CountThing) = "फिर से गिनो! ${thing.hindiHowMany} ${thing.hindi} हैं?"
 
     override fun learnTitle(number: Int, total: Int) = "अक्षर $number / $total"
     override val findTitle = "अक्षर ढूंढो"
@@ -104,14 +131,27 @@ object Hindi : Lang {
     override val doneTitle = "शाबाश!"
     override val matchTitle = "कौन सा अक्षर?"
     override fun traceTitle(number: Int, total: Int) = "लिखो $number / $total"
+    override val countTitle = "कितने हैं?"
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "सीखो"
         GameMode.TRACE -> "लिखो"
         GameMode.BUILD -> "जोड़ो"
+        GameMode.COUNT -> "गिनो"
         GameMode.FIND -> "ढूंढो"
         GameMode.BALLOONS -> "गुब्बारे"
         GameMode.MATCH -> "चित्र"
     }
+}
+
+object Hindi : HindiLang()
+
+/** Hindi wording for गिनती. Numbers are spoken as words (सात), which the voice reads reliably. */
+object HindiNumbers : HindiLang() {
+    override fun name(letter: Letter) = letter.word ?: letter.symbol
+    override fun learn(letter: Letter) = "${name(letter)}."
+    override fun traceAgain() = "फिर से कोशिश करो। संख्या के ऊपर बनाओ।"
+    override fun learnTitle(number: Int, total: Int) = "संख्या $number / $total"
+    override val findTitle = "संख्या ढूंढो"
 }
 
 /** Words for the बारहखड़ी games, which exist only in Hindi. */

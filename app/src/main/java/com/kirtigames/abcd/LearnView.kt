@@ -25,6 +25,7 @@ class LearnView(
     private val prevButton = RectF()
     private val nextButton = RectF()
     private val letterBlock = RectF()
+    private val objectsArea = RectF()
 
     override val title get() = track.lang.learnTitle(index + 1, letters.size)
     override val showStars = false
@@ -92,7 +93,16 @@ class LearnView(
             canvas, track.display(letter), letterBlock.centerX(), letterBlock.centerY(),
             side * 0.66f, Palette.WHITE, letterBlock.width() * 0.86f,
         )
-        if (word != null) {
+        if (word != null && track.isNumbers) {
+            // Small numbers are shown as that many stars, so the child sees how many it means.
+            val value = index + 1
+            if (value <= Counting.MAX) {
+                objectsArea.set(card.left + dp(16f), card.top + h * 0.47f, card.right - dp(16f), card.top + h * 0.78f)
+                drawCountedObjects(canvas, objectsArea, value, "⭐")
+            }
+            val wordY = if (value <= Counting.MAX) card.top + h * 0.88f else card.top + h * 0.7f
+            drawText(canvas, word, card.centerX(), wordY, min(h * 0.1f, w * 0.15f), Palette.INK, w * 0.86f)
+        } else if (word != null) {
             // Older phones can't draw every emoji; show the word without a picture then.
             val emoji = letter.emoji?.takeIf { canDraw(it) }
             if (emoji != null) {

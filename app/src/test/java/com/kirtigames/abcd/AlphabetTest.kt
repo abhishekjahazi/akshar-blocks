@@ -43,7 +43,7 @@ class AlphabetTest {
 
     @Test
     fun everyWordStartsWithItsLetter() {
-        for (track in Track.entries) {
+        for (track in Track.entries.filter { !it.isNumbers }) {
             for (letter in track.letters) {
                 val word = letter.word ?: continue
                 assertTrue("${letter.symbol} / $word", word.startsWith(letter.symbol, ignoreCase = true))
@@ -63,7 +63,7 @@ class AlphabetTest {
     @Test
     fun headNeverSplitsAConjunct() {
         // Ending on a virama (्) would draw half a conjunct in one color and half in another.
-        for (track in Track.entries) {
+        for (track in Track.entries.filter { !it.isNumbers }) {
             for (letter in track.letters) {
                 val word = letter.word ?: continue
                 assertFalse("${letter.symbol} / $word", word.substring(0, letter.headLength).endsWith("्"))

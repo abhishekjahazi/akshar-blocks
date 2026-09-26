@@ -318,6 +318,35 @@ abstract class GameView(
         }
     }
 
+    /**
+     * [count] copies of [emoji] in rows of five (a "ten frame", as counting is taught), centered
+     * in [area]. The first [counted] get a number badge from [badge], the latest one bigger.
+     */
+    protected fun drawCountedObjects(
+        canvas: Canvas, area: RectF, count: Int, emoji: String,
+        counted: Int = 0, badge: (Int) -> String = { "${it + 1}" },
+    ) {
+        if (count <= 0) return
+        val cols = min(count, 5)
+        val rows = (count + 4) / 5
+        val cell = min(area.width() / 5f, area.height() / 2f)
+        val left = area.centerX() - cols * cell / 2f
+        val top = area.centerY() - rows * cell / 2f
+        for (i in 0 until count) {
+            val cx = left + cell * (i % 5 + 0.5f)
+            val cy = top + cell * (i / 5 + 0.5f)
+            val latest = i == counted - 1
+            drawEmoji(canvas, emoji, cx, cy, cell * if (latest) 0.78f else 0.62f)
+            if (i < counted) {
+                val r = cell * 0.17f
+                val by = cy + cell * 0.36f
+                fillPaint.color = Palette.INK
+                canvas.drawCircle(cx, by, r, fillPaint)
+                drawText(canvas, badge(i), cx, by, r * 1.3f, Palette.WHITE, r * 1.8f)
+            }
+        }
+    }
+
     /** Sets [out] to a square of half-size [half] centered on ([cx], [cy]). */
     protected fun squareAt(out: RectF, cx: Float, cy: Float, half: Float): RectF {
         out.set(cx - half, cy - half, cx + half, cy + half)
