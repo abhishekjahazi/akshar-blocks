@@ -34,8 +34,8 @@ private fun isCombiningMark(c: Char): Boolean {
         type == Character.ENCLOSING_MARK.toInt()
 }
 
-internal val ALPHABET_GAMES = listOf(GameMode.LEARN, GameMode.TRACE, GameMode.FIND, GameMode.BALLOONS, GameMode.MATCH)
-internal val NUMBER_GAMES = listOf(GameMode.LEARN, GameMode.COUNT, GameMode.FIND, GameMode.TRACE)
+internal val ALPHABET_GAMES = listOf(GameMode.LEARN, GameMode.TRACE, GameMode.FIND, GameMode.BALLOONS, GameMode.MATCH, GameMode.MEMORY)
+internal val NUMBER_GAMES = listOf(GameMode.LEARN, GameMode.COUNT, GameMode.FIND, GameMode.TRACE, GameMode.MEMORY)
 
 /** A set of letters to learn, with its own voice and on-screen language. */
 enum class Track(

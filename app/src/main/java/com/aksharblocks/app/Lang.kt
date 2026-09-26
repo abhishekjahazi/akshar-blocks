@@ -37,6 +37,8 @@ interface Lang {
     fun countAsk(thing: CountThing): String
     fun countRight(number: Letter, thing: CountThing, random: Random): String
     fun countWrong(thing: CountThing): String
+    val memoryAsk: String
+    fun memoryDone(): String
 
     // On screen
     fun learnTitle(number: Int, total: Int): String
@@ -46,6 +48,7 @@ interface Lang {
     val matchTitle: String
     fun traceTitle(number: Int, total: Int): String
     val countTitle: String
+    val memoryTitle: String
     fun modeLabel(mode: GameMode): String
 }
 
@@ -75,6 +78,8 @@ open class EnglishLang : Lang {
     override fun countRight(number: Letter, thing: CountThing, random: Random) =
         "${praise(random)}|${number.word}|${if (number.symbol == "1") thing.one else thing.many}!"
     override fun countWrong(thing: CountThing) = "Let's count again.|How many ${thing.many}?"
+    override val memoryAsk = "Find the pairs!"
+    override fun memoryDone() = "You found all the pairs!"
 
     override fun learnTitle(number: Int, total: Int) = "Letter $number of $total"
     override val findTitle = "Find the letter"
@@ -83,11 +88,13 @@ open class EnglishLang : Lang {
     override val matchTitle = "Which letter?"
     override fun traceTitle(number: Int, total: Int) = "Trace $number of $total"
     override val countTitle = "How many?"
+    override val memoryTitle = "Find the pairs"
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "Learn"
         GameMode.TRACE -> "Trace"
         GameMode.BUILD -> "Build"
         GameMode.COUNT -> "Count"
+        GameMode.MEMORY -> "Memory"
         GameMode.FIND -> "Find it"
         GameMode.BALLOONS -> "Balloons"
         GameMode.MATCH -> "Pictures"
@@ -145,6 +152,8 @@ open class HindiLang : Lang {
     override fun countRight(number: Letter, thing: CountThing, random: Random) =
         "${praise(random)}|${number.word}|${thing.hindi}!"
     override fun countWrong(thing: CountThing) = "फिर से गिनो!|${thing.hindiHowMany} ${thing.hindi} हैं?"
+    override val memoryAsk = "जोड़ी मिलाओ!"
+    override fun memoryDone() = "शाबाश! सारी जोड़ियाँ मिल गईं!"
 
     override fun learnTitle(number: Int, total: Int) = "अक्षर $number / $total"
     override val findTitle = "अक्षर ढूंढो"
@@ -153,11 +162,13 @@ open class HindiLang : Lang {
     override val matchTitle = "कौन सा अक्षर?"
     override fun traceTitle(number: Int, total: Int) = "लिखो $number / $total"
     override val countTitle = "कितने हैं?"
+    override val memoryTitle = "जोड़ी मिलाओ"
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "सीखो"
         GameMode.TRACE -> "लिखो"
         GameMode.BUILD -> "जोड़ो"
         GameMode.COUNT -> "गिनो"
+        GameMode.MEMORY -> "जोड़ी"
         GameMode.FIND -> "ढूंढो"
         GameMode.BALLOONS -> "गुब्बारे"
         GameMode.MATCH -> "चित्र"

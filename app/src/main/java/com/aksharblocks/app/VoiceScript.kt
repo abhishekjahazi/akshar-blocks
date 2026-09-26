@@ -71,6 +71,10 @@ object VoiceScript {
                 }
                 add(lang, section, "*", lang.traceAgain())
                 if (GameMode.BALLOONS in track.modes) add(lang, section, "*", lang.balloonsDone())
+                if (GameMode.MEMORY in track.modes) {
+                    add(lang, section, "*", lang.memoryAsk, lang.memoryDone())
+                    letters.filter { it.hasPicture }.forEach { add(lang, section, it.symbol, "${it.word}!") }
+                }
                 if (GameMode.COUNT in track.modes) {
                     for (thing in Counting.things) {
                         add(lang, section, thing.emoji, lang.countAsk(thing), lang.countWrong(thing))
