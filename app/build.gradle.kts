@@ -11,13 +11,13 @@ val keystoreProperties = Properties().apply {
 }
 
 android {
-    namespace = "com.kirtigames.abcd"
+    namespace = "com.aksharblocks.app"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.kirtigames.abcd"
+        applicationId = "com.aksharblocks.app"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

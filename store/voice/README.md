@@ -6,9 +6,9 @@ every phone sounds the same, even without a Hindi voice installed.
 
 **Remaking it** (after the games change what they say – the unit test VoiceFilesTest fails
 and lists the missing lines): connect a phone, then run
-`gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.kirtigames.abcd.VoiceMaker -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true`
-and `store/voice/make-voice.sh` (needs ffmpeg). Then uninstall com.kirtigames.abcd.debug
-and com.kirtigames.abcd.debug.test from the phone.
+`gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.aksharblocks.app.VoiceMaker -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true`
+and `store/voice/make-voice.sh` (needs ffmpeg). Then uninstall com.aksharblocks.app.debug
+and com.aksharblocks.app.debug.test from the phone.
 
 **Replacing it with a human voice:** record a line and save it under the same FILE name; it
 replaces the built-in clip.

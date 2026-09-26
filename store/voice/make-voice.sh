@@ -2,7 +2,7 @@
 # Makes the app's built-in voice from the phone's text-to-speech.
 #
 # 1. With the phone connected:
-#      gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.kirtigames.abcd.VoiceMaker
+#      gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.aksharblocks.app.VoiceMaker
 #    (says every script line on the phone and saves WAV files there)
 # 2. Then run this script from the project folder:
 #      FFMPEG=/path/to/ffmpeg ADB=/path/to/adb store/voice/make-voice.sh
@@ -16,7 +16,7 @@ WORK="${WORK:-build/voice-wav}"
 OUT="app/src/main/assets/voice"
 
 rm -rf "$WORK" && mkdir -p "$WORK"
-MSYS_NO_PATHCONV=1 "$ADB" pull /sdcard/Android/data/com.kirtigames.abcd.debug/files/voice-wav/. "$WORK" >/dev/null
+MSYS_NO_PATHCONV=1 "$ADB" pull /sdcard/Android/data/com.aksharblocks.app.debug/files/voice-wav/. "$WORK" >/dev/null
 
 # Trim silence at both ends (keeping a hair of it so words aren't clipped), mono, 24 kHz,
 # 40 kbps AAC: small, and clear enough for speech.
