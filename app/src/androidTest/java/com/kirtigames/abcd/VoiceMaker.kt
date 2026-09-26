@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit
  * store/voice/make-voice.sh pulls, trims and compresses them into assets/voice/.
  *
  * Run: gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.kirtigames.abcd.VoiceMaker
+ *   (add -Pandroid.testInstrumentationRunnerArguments.enVoice=... and .hiVoice=... to choose voices)
  */
 @RunWith(AndroidJUnit4::class)
 class VoiceMaker {
@@ -54,10 +55,17 @@ class VoiceMaker {
             override fun onError(utteranceId: String) { finished[utteranceId]?.countDown() }
         })
 
+        // Optional: pick exact voices (see VoiceSamples), e.g. -e enVoice en-in-x-ena-local -e hiVoice hi-in-x-hia-local
+        val arguments = InstrumentationRegistry.getArguments()
         for ((language, lines) in VoiceScript.lines()) {
             val locale = if (language == "hi") Hindi.locale else English.locale
             val result = tts.setLanguage(locale)
             assertTrue("no $language voice on this phone", result >= TextToSpeech.LANG_AVAILABLE)
+            arguments.getString("${language}Voice")?.let { name ->
+                val voice = tts.voices.orEmpty().firstOrNull { it.name == name }
+                assertTrue("voice $name is not on this phone", voice != null)
+                tts.voice = voice
+            }
             val dir = File(out, language).apply { mkdirs() }
             for (line in lines) {
                 val file = File(dir, "${line.file}.wav")
