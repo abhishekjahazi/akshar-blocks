@@ -50,7 +50,8 @@ interface Lang {
 }
 
 open class EnglishLang : Lang {
-    override val locale: Locale = Locale.US
+    // Indian English: the built-in voice is Google's en-IN "enc" voice, and live speech should match it.
+    override val locale: Locale = Locale.forLanguageTag("en-IN")
 
     // A lone "A" is often read as the word "a" ("uh"), so it is spelled the way it sounds.
     override fun name(letter: Letter) = if (letter.symbol == "A") "ay" else letter.symbol

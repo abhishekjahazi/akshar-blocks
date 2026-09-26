@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import java.util.Locale
 
 /**
  * Screens: Home (pick English / Hindi vowels / Hindi consonants) → that track's
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     private fun greet() {
         val name = player.profile.name
         val hindiName = name.any { it in 'ऀ'..'ॿ' }
-        speaker.say(if (hindiName) CommonWords.helloHindi(name) else CommonWords.hello(name), if (hindiName) Hindi.locale else Locale.US)
+        speaker.say(if (hindiName) CommonWords.helloHindi(name) else CommonWords.hello(name), if (hindiName) Hindi.locale else English.locale)
     }
 
     private fun showHome() {

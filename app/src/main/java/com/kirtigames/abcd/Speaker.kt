@@ -51,7 +51,7 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
     }
 
     /** Says [text] in [locale], interrupting anything that is still being said. */
-    fun say(text: String, locale: Locale = Locale.US) {
+    fun say(text: String, locale: Locale = English.locale) {
         val clips = Voice.clipsFor(text, locale)
         if (clips != null) {
             if (ready) tts.stop()
