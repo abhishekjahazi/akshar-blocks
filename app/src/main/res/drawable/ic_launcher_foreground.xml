@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Two toy blocks, like the game: a big red "A" (ABCD) and a small yellow "K" (Kirti).
+     Everything stays inside the 66dp safe zone so no launcher mask clips it. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:pivotX="45"
+        android:pivotY="47"
+        android:rotation="-6">
+        <!-- Darker side, then the face on top. -->
+        <path
+            android:fillColor="#B8413A"
+            android:pathData="M36,34h18a8,8 0,0 1,8 8v18a8,8 0,0 1,-8 8h-18a8,8 0,0 1,-8 -8v-18a8,8 0,0 1,8 -8z" />
+        <path
+            android:fillColor="#FF5A4E"
+            android:pathData="M36,30h18a8,8 0,0 1,8 8v18a8,8 0,0 1,-8 8h-18a8,8 0,0 1,-8 -8v-18a8,8 0,0 1,8 -8z" />
+        <path
+            android:fillColor="#FFFFFF"
+            android:fillType="evenOdd"
+            android:pathData="M42.5,36L47.5,36L56,58L51,58L49.3,53L40.7,53L39,58L34,58Z M45,40.5L47.9,49L42.1,49Z" />
+    </group>
+
+    <group
+        android:pivotX="66"
+        android:pivotY="66"
+        android:rotation="8">
+        <path
+            android:fillColor="#B78D2C"
+            android:pathData="M61,59h10a5,5 0,0 1,5 5v10a5,5 0,0 1,-5 5h-10a5,5 0,0 1,-5 -5v-10a5,5 0,0 1,5 -5z" />
+        <path
+            android:fillColor="#FFC53D"
+            android:pathData="M61,56h10a5,5 0,0 1,5 5v10a5,5 0,0 1,-5 5h-10a5,5 0,0 1,-5 -5v-10a5,5 0,0 1,5 -5z" />
+        <path
+            android:fillColor="#1D2B53"
+            android:pathData="M61,60L64,60L64,64.8L67.8,60L71.4,60L66.4,66L71.6,72L68,72L64,67.2L64,72L61,72Z" />
+    </group>
+</vector>

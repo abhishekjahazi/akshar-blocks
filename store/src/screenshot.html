@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- Framed Play Store screenshot, 1080×1920. Usage: screenshot.html?img=raw/menu.png&title=...&bg=%23CFE8FF -->
+<html><head><meta charset="utf-8"><title>Screenshot</title>
+<style>
+  html,body { margin:0; width:1080px; height:1920px; overflow:hidden; }
+  body { font-family:"Segoe UI Black","Segoe UI",Arial,sans-serif; font-weight:900; color:#1D2B53;
+    display:flex; flex-direction:column; align-items:center; }
+  h1 { margin:96px 60px 0; font-size:84px; line-height:1.05; text-align:center; letter-spacing:-1px; }
+  .phone { margin-top:72px; width:690px; height:1533px; border-radius:56px; overflow:hidden;
+    border:14px solid #1D2B53; background:#1D2B53; }
+  .phone img { width:100%; height:100%; display:block; object-fit:cover; object-position:top; }
+</style></head>
+<body>
+  <h1 id="t"></h1>
+  <div class="phone"><img id="i" alt=""></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  document.getElementById('t').textContent = q.get('title');
+  document.getElementById('i').src = q.get('img');
+  document.body.style.background = q.get('bg') || '#CFE8FF';
+</script>
+</body></html>
