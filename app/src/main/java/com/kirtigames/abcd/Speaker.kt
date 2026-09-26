@@ -112,12 +112,6 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
         player = null
     }
 
-    /** False when the phone has no voice for [locale]. Unknown (engine still starting) counts as available. */
-    fun hasVoiceFor(locale: Locale): Boolean {
-        if (!ready) return true
-        return tts.isLanguageAvailable(locale) >= TextToSpeech.LANG_AVAILABLE
-    }
-
     fun stop() {
         pending = null
         stopClips()

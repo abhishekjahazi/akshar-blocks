@@ -22,19 +22,12 @@ class TrackMenuView(
 
     var onPick: ((GameMode) -> Unit)? = null
 
-    /** Opens the phone's screen for downloading a text-to-speech voice. */
-    var onInstallVoice: (() -> Unit)? = null
-
     override val title = track.label
 
     private val modes = track.modes
     private val cards = modes.map { RectF() }
     private val sample = track.letters.take(4)
     private val titleBlocks = List(sample.size) { RectF() }
-    private val voiceBanner = RectF()
-
-    /** Checked once: asking the voice engine every frame would be slow. */
-    private val voiceMissing = !speaker.hasVoiceFor(track.lang.locale)
 
     override fun drawGame(canvas: Canvas) {
         val landscape = width > height
@@ -42,18 +35,7 @@ class TrackMenuView(
         val titleBottom = titleTop + height * (if (landscape) 0.24f else 0.16f)
         drawTitleBlocks(canvas, sample.map { it.symbol }, sample.indices.map(track::colorFor), titleTop, titleBottom, titleBlocks)
 
-        var bottom = contentBottom
-        if (voiceMissing) {
-            val bannerHeight = dp(64f)
-            voiceBanner.set(contentLeft, bottom - bannerHeight - dp(6f), contentRight, bottom - dp(6f))
-            val sink = drawBlock(canvas, voiceBanner, Palette.WHITE, radius = dp(18f), depth = dp(6f))
-            drawText(
-                canvas, "🔈 Tap to install the ${voiceName()} voice", voiceBanner.centerX(), voiceBanner.centerY() + sink,
-                dp(19f), Palette.INK, voiceBanner.width() * 0.9f,
-            )
-            bottom = voiceBanner.top - dp(14f)
-        }
-
+        val bottom = contentBottom
         val cols = if (landscape) modes.size else 2
         val rows = (modes.size + cols - 1) / cols
         val gap = dp(18f)
@@ -85,13 +67,7 @@ class TrackMenuView(
         }
     }
 
-    private fun voiceName() = if (track.lang.locale == Hindi.locale) "Hindi" else "English"
-
     override fun onTap(x: Float, y: Float) {
-        if (voiceMissing && voiceBanner.contains(x, y)) {
-            onInstallVoice?.invoke()
-            return
-        }
         val block = titleBlocks.indexOfFirst { it.contains(x, y) }
         if (block >= 0) {
             speaker.say(track.lang.name(sample[block]), track.lang.locale)

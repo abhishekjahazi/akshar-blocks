@@ -70,7 +70,7 @@ SAFE FOR KIDS
 
 Great for toddlers, preschool and kindergarten children aged 2 to 6.
 
-The voice uses the phone's built-in text-to-speech. If a phone doesn't have the Hindi voice, the app shows a button to install it.
+The English and Hindi voice is built into the app, so it works on every phone, even without a Hindi voice installed.
 ```
 
 **Category:** Education (or Games → Educational)

@@ -38,6 +38,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Test builds install next to the real app, so they never touch children's progress.
+            applicationIdSuffix = ".debug"
+        }
         release {
             optimization {
                 enable = true

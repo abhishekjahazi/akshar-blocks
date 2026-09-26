@@ -1,9 +1,7 @@
 package com.kirtigames.abcd
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -114,7 +112,6 @@ class MainActivity : AppCompatActivity() {
         speaker.stop()
         setContentView(TrackMenuView(this, speaker, player, track).apply {
             onPick = { mode -> startGame(track, mode) }
-            onInstallVoice = ::installVoice
             onHome = ::showHome
         })
     }
@@ -135,19 +132,6 @@ class MainActivity : AppCompatActivity() {
         screen = Screen.GAME
         goBack.isEnabled = true
         setContentView(view)
-    }
-
-    /** Opens the voice download screen, or the text-to-speech settings if that isn't available. */
-    private fun installVoice() {
-        try {
-            startActivity(Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA))
-        } catch (_: ActivityNotFoundException) {
-            try {
-                startActivity(Intent("com.android.settings.TTS_SETTINGS"))
-            } catch (_: ActivityNotFoundException) {
-                // Nothing to open on this phone; the banner stays as a hint.
-            }
-        }
     }
 
     override fun onPause() {

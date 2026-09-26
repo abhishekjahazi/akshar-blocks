@@ -1,7 +1,17 @@
-# Recording the voice for ABCD by Kirti
+# The voice of ABCD by Kirti
 
-The app speaks with the phone's built-in voice until real recordings are added. Every
-recording you add replaces that robot voice for the sentences it completes.
+The app has a **built-in voice**: every line in the scripts below was spoken by Google's
+text-to-speech on a phone and saved as a small .m4a file in app/src/main/assets/voice/, so
+every phone sounds the same, even without a Hindi voice installed.
+
+**Remaking it** (after the games change what they say – the unit test VoiceFilesTest fails
+and lists the missing lines): connect a phone, then run
+`gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.kirtigames.abcd.VoiceMaker -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true`
+and `store/voice/make-voice.sh` (needs ffmpeg). Then uninstall com.kirtigames.abcd.debug
+and com.kirtigames.abcd.debug.test from the phone.
+
+**Replacing it with a human voice:** record a line and save it under the same FILE name; it
+replaces the built-in clip.
 
 ## The two scripts
 
