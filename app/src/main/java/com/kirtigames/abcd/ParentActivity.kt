@@ -23,6 +23,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 /** Grown-ups only (reached through [ParentGate]): children, their progress, and settings. */
 class ParentActivity : AppCompatActivity() {
@@ -39,9 +40,17 @@ class ParentActivity : AppCompatActivity() {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(16), dp(8), dp(16), dp(32))
         }
+        // A readable column on tablets: at most 640 dp wide, centered.
+        val column = android.widget.FrameLayout(this).apply {
+            addView(content, android.widget.FrameLayout.LayoutParams(
+                minOf(resources.displayMetrics.widthPixels, dp(640)),
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_HORIZONTAL,
+            ))
+        }
         val scroll = ScrollView(this).apply {
             setBackgroundColor(Palette.ICE)
-            addView(content)
+            addView(column)
         }
         ViewCompat.setOnApplyWindowInsetsListener(scroll) { view, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
@@ -81,10 +90,23 @@ class ParentActivity : AppCompatActivity() {
         section("Voice speed")
         content.addView(voiceSpeed())
 
+        section("Sounds")
+        content.addView(SwitchMaterial(this).apply {
+            text = "Game sounds (dings, pops and cheers)"
+            textSize = 16f
+            isChecked = Settings(this@ParentActivity).soundEffects
+            setOnCheckedChangeListener { _, on ->
+                Settings(this@ParentActivity).soundEffects = on
+                Sounds.enabled = on
+            }
+            layoutParams = spaced(top = 4)
+        })
+
         section("About")
         content.addView(text(
             "ABCD by Kirti ${versionName()}\nNo ads. No accounts. No internet. " +
-                "Stars and progress are saved only on this phone and are deleted if the app is uninstalled.",
+                "Stars and progress are saved only on this phone and are deleted if the app is uninstalled.\n\n" +
+                "Pictures: Noto Emoji by Google, used under the Apache License 2.0.",
             15f, muted = true, top = 4,
         ))
     }
@@ -296,4 +318,8 @@ class Settings(context: Context) {
     var slowVoice: Boolean
         get() = prefs.getBoolean("slow_voice", false)
         set(value) = prefs.edit().putBoolean("slow_voice", value).apply()
+
+    var soundEffects: Boolean
+        get() = prefs.getBoolean("sound_effects", true)
+        set(value) = prefs.edit().putBoolean("sound_effects", value).apply()
 }

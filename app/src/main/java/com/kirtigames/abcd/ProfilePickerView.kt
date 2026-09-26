@@ -47,6 +47,9 @@ class ProfilePickerView(
 
     override fun onTap(x: Float, y: Float) {
         val index = cards.indexOfFirst { it.contains(x, y) }
-        if (index >= 0) onPick?.invoke(profiles[index])
+        if (index >= 0) {
+            Sounds.play(Sound.TAP)
+            onPick?.invoke(profiles[index])
+        }
     }
 }

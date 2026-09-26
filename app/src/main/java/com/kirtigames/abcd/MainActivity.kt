@@ -50,7 +50,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        speaker.slow = Settings(this).slowVoice
+        Settings(this).let {
+            speaker.slow = it.slowVoice
+            Sounds.enabled = it.soundEffects
+        }
         // A parent may have renamed, added or removed children in the parent area.
         val current = profiles.current()
         if (current != player.profile) {
@@ -154,6 +157,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         speaker.shutdown()
+        if (isFinishing) Sounds.release()
         super.onDestroy()
     }
 

@@ -141,6 +141,7 @@ class CountView(
             countOut()
         } else {
             player.wrong(track, answer, options[i])
+            Sounds.play(Sound.WRONG)
             shakeTime[i] = 0f
             speaker.say(lang.countWrong(thing), lang.locale)
         }

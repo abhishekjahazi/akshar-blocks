@@ -141,6 +141,7 @@ class MatraGameView(
         } else {
             val made = consonant + picked.sign
             player.wrong(track, targetLetter, Letter(made, group = consonant))
+            Sounds.play(Sound.WRONG)
             shakeTime[i] = 0f
             wrongPick = picked
             wrongAt = time

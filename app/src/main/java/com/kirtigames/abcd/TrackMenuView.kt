@@ -100,6 +100,7 @@ class TrackMenuView(
         val index = cards.indexOfFirst { it.contains(x, y) }
         if (index < 0) return
         val mode = modes[index]
+        Sounds.play(Sound.TAP)
         speaker.say(track.lang.modeLabel(mode), track.lang.locale)
         onPick?.invoke(mode)
     }

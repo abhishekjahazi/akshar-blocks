@@ -158,6 +158,7 @@ class BalloonView(
             pop(b)
         } else {
             player.wrong(track, next, b.letter)
+            Sounds.play(Sound.WRONG)
             b.shake = 0f
             if (time - lastHint > 1.5f) {
                 lastHint = time
@@ -168,6 +169,7 @@ class BalloonView(
 
     private fun pop(b: Balloon) {
         balloons.remove(b)
+        Sounds.play(Sound.POP)
         celebrate(drawnX(b), b.y, 24)
         addStar()
         if (nextIndex == letters.lastIndex) {

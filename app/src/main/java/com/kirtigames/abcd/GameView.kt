@@ -61,6 +61,12 @@ object Palette {
 private val TITLE_TILT = floatArrayOf(-6f, 4f, -3f, 5f)
 private const val REVEAL_SECONDS = 4.5f
 
+/** Artwork is drawn this much larger than the font size it replaces, to match emoji glyphs. */
+private const val ART_SCALE = 1.1f
+
+/** Widest the game content gets (dp); wider screens center it. */
+private const val MAX_CONTENT_DP = 960f
+
 /**
  * Base class for every screen. Runs the animation loop and draws the
  * background, the top bar (home button, title, stars) and confetti. Touches
@@ -106,8 +112,10 @@ abstract class GameView(
     /** The area below the top bar that screens lay their content out in. */
     protected val contentTop get() = safeTop + dp(88f)
     protected val contentBottom get() = height - safeBottom - dp(20f)
-    protected val contentLeft get() = safeLeft + dp(16f)
-    protected val contentRight get() = width - safeRight - dp(16f)
+    // On tablets the content stays a comfortable width, centered, instead of stretching edge to edge.
+    private val sideSpace get() = maxOf(dp(16f), (width - safeLeft - safeRight - dp(MAX_CONTENT_DP)) / 2f)
+    protected val contentLeft get() = safeLeft + sideSpace
+    protected val contentRight get() = width - safeRight - sideSpace
     protected val safeTopInset get() = safeTop
 
     /** Vertical center of the top bar (home button, title, stars). */
@@ -128,6 +136,8 @@ abstract class GameView(
     private val blockRect = RectF()
     private val homeRect = RectF()
     protected val starsRect = RectF()
+    private val artRect = RectF()
+    private val artPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
     private val revealCard = RectF()
 
     /** A sticker just earned, shown big over the game until tapped or timed out. */
@@ -177,11 +187,13 @@ abstract class GameView(
     protected fun addStar() {
         val unlockedBefore = Stickers.unlocked(player.stars)
         player.addStar()
+        Sounds.play(Sound.RIGHT)
         val unlockedNow = Stickers.unlocked(player.stars)
         if (unlockedNow > unlockedBefore) {
             val sticker = Stickers.all[unlockedNow - 1]
             reveal = sticker
             revealAt = time
+            after(0.5f) { if (reveal == sticker) Sounds.play(Sound.FANFARE) }
             // Let the game's own praise finish first.
             after(1.6f) { if (reveal == sticker) speaker.say("New sticker! A ${sticker.name}!") }
         }
@@ -282,14 +294,23 @@ abstract class GameView(
         canvas.drawText(text, cx, cy - (metrics.ascent + metrics.descent) / 2f, textPaint)
     }
 
-    protected fun drawEmoji(canvas: Canvas, emoji: String, cx: Float, cy: Float, size: Float) =
-        drawText(canvas, emoji, cx, cy, size, Color.BLACK)
+    /** Draws a picture: the bundled artwork when there is one, otherwise the phone's emoji font. */
+    protected fun drawEmoji(canvas: Canvas, emoji: String, cx: Float, cy: Float, size: Float) {
+        val side = size * ART_SCALE
+        val bitmap = Art.bitmap(emoji, side)
+        if (bitmap == null) {
+            drawText(canvas, emoji, cx, cy, size, Color.BLACK)
+            return
+        }
+        artRect.set(cx - side / 2f, cy - side / 2f, cx + side / 2f, cy + side / 2f)
+        canvas.drawBitmap(bitmap, null, artRect, artPaint)
+    }
 
     private val glyphCache = HashMap<String, Boolean>()
 
     /** False for emoji this phone's font can't draw (older Android versions lack newer emoji). */
     protected fun canDraw(emoji: String?): Boolean =
-        emoji != null && glyphCache.getOrPut(emoji) { textPaint.hasGlyph(emoji) }
+        emoji != null && glyphCache.getOrPut(emoji) { Art.has(emoji) || textPaint.hasGlyph(emoji) }
 
     /** Draws [word] centered, with its first [headLength] characters in [highlight]. */
     protected fun drawWord(
@@ -539,13 +560,20 @@ abstract class GameView(
             drawText(canvas, title, width / 2f, barY, dp(24f), Palette.INK, maxWidth)
         }
         if (showStars) {
-            val label = "⭐ ${player.stars}"
+            val count = player.stars.toString()
             textPaint.textSize = dp(24f)
-            val pillWidth = textPaint.measureText(label) + dp(28f)
+            val star = dp(26f)
+            val pillWidth = star + dp(8f) + textPaint.measureText(count) + dp(28f)
             val right = width - safeRight - dp(16f)
             starsRect.set(right - pillWidth, barY - size / 2f, right, barY + size / 2f)
             val sink = drawBlock(canvas, starsRect, Palette.WHITE, depth = dp(5f), pressable = starsTappable)
-            drawText(canvas, label, starsRect.centerX(), barY + sink, dp(24f), Palette.INK)
+            val starX = starsRect.left + dp(14f) + star / 2f
+            drawEmoji(canvas, "⭐", starX, barY + sink, star / ART_SCALE)
+            textPaint.textAlign = Paint.Align.LEFT
+            textPaint.color = Palette.INK
+            val metrics = textPaint.fontMetrics
+            canvas.drawText(count, starX + star / 2f + dp(8f), barY + sink - (metrics.ascent + metrics.descent) / 2f, textPaint)
+            textPaint.textAlign = Paint.Align.CENTER
         }
     }
 }

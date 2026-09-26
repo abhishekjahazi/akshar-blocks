@@ -132,6 +132,7 @@ class MatchView(
             after(2.8f) { newRound() }
         } else {
             player.wrong(track, card, options[i])
+            Sounds.play(Sound.WRONG)
             shakeTime[i] = 0f
             speaker.say(lang.matchWrong(card), lang.locale)
         }

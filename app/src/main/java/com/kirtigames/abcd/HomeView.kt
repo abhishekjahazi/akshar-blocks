@@ -114,7 +114,10 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
             return
         }
         val index = cards.indexOfFirst { it.contains(x, y) }
-        if (index >= 0) onPick?.invoke(tracks[index])
+        if (index >= 0) {
+            Sounds.play(Sound.TAP)
+            onPick?.invoke(tracks[index])
+        }
     }
 
     private companion object {

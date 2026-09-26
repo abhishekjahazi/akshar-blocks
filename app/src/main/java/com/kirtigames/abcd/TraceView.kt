@@ -299,6 +299,7 @@ class TraceView(
             val token = letterToken
             after(2.4f) { if (token == letterToken) showLetter(index + 1) }
         } else if (grid.outsideShare > SCRIBBLE && grid.paintedCount > grid.targetCount) {
+            Sounds.play(Sound.WRONG)
             speaker.say(lang.traceAgain(), lang.locale)
             after(0.6f) { clearDrawing() }
         }

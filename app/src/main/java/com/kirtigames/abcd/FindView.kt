@@ -112,6 +112,7 @@ class FindView(
             after(2f) { newRound() }
         } else {
             player.wrong(track, target, options[i])
+            Sounds.play(Sound.WRONG)
             shakeTime[i] = 0f
             speaker.say(lang.notThis(options[i], target), lang.locale)
         }
