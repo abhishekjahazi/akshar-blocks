@@ -1,7 +1,6 @@
 package com.kirtigames.abcd
 
 import android.content.res.AssetManager
-import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
 
@@ -18,40 +17,19 @@ object Voice {
     /** File extensions accepted for recordings, in order of preference. */
     val EXTENSIONS = listOf("m4a", "mp3", "ogg", "wav")
 
-    /**
-     * clip id → where the recording is: an asset path (bundled with the app) or, in the
-     * recording-studio build, an absolute file path of a take recorded on this phone.
-     */
+    /** clip id → asset path, for the recordings bundled with the app. */
     private var clips: Map<String, String> = emptyMap()
 
-    private lateinit var assets: AssetManager
-    private var recordingsDir: File? = null
-
-    /** [recordingsDir] holds takes from the recording studio; it wins over bundled clips. */
-    fun load(assets: AssetManager, recordingsDir: File? = null) {
-        this.assets = assets
-        this.recordingsDir = recordingsDir
-        reload()
-    }
-
-    /** Looks for recordings again (the studio calls this after each take). */
-    fun reload() {
+    fun load(assets: AssetManager) {
         val found = HashMap<String, String>()
         for (language in listOf("en", "hi")) {
             for (file in assets.list("voice/$language").orEmpty()) {
-                if (isAudio(file)) found[file.substringBeforeLast('.')] = "voice/$language/$file"
-            }
-            File(recordingsDir ?: continue, language).listFiles().orEmpty().forEach { file ->
-                if (isAudio(file.name)) found[file.nameWithoutExtension] = file.absolutePath
+                val id = file.substringBeforeLast('.')
+                if (file.substringAfterLast('.').lowercase(Locale.ROOT) in EXTENSIONS) found[id] = "voice/$language/$file"
             }
         }
         clips = found
     }
-
-    /** True for an absolute file path (a studio take) rather than an asset. */
-    fun isFile(path: String) = path.startsWith("/")
-
-    private fun isAudio(name: String) = name.substringAfterLast('.').lowercase(Locale.ROOT) in EXTENSIONS
 
     /** The sentence as the phone voice should read it. */
     fun spokenText(text: String): String = parts(text).joinToString(" ")

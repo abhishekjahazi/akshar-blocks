@@ -44,15 +44,6 @@ android {
             }
             signingConfig = signingConfigs.findByName("release")
         }
-        // Voice Studio: a separate, never-published app for recording the voice (adds the
-        // microphone permission and a recording screen from src/studio). Installs next to the
-        // normal app. Build with: gradlew assembleStudio
-        create("studio") {
-            initWith(getByName("debug"))
-            applicationIdSuffix = ".studio"
-            versionNameSuffix = "-studio"
-            matchingFallbacks += listOf("debug")
-        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

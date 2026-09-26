@@ -9,7 +9,6 @@ class AbcdApp : Application() {
         // Load letters before any screen needs them (also after Android restarts the app).
         Content.load(assets)
         Art.load(assets)
-        // Only the Voice Studio build also plays takes recorded on this phone.
-        Voice.load(assets, if (resources.getBoolean(R.bool.studio_build)) getExternalFilesDir("voice") else null)
+        Voice.load(assets)
     }
 }
