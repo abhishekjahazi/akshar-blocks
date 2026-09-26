@@ -9,5 +9,18 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:windowBackground">@color/sky</item>
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="28">shortEdges</item>
+        <!-- Screens draw behind the system bars, so the bars are see-through with dark icons. -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <!-- Sentence-case buttons (Material's default is all caps). -->
+        <item name="textAppearanceButton">@style/TextAppearance.ABCD.Button</item>
+    </style>
+
+    <style name="TextAppearance.ABCD.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>
