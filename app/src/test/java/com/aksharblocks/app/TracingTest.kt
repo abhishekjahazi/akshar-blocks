@@ -41,6 +41,23 @@ class TracingTest {
     }
 
     @Test
+    fun everySmallLetterHasStrokesInsideItsBox() {
+        for (letter in Track.LOWER.letters) {
+            val strokes = requireNotNull(Content.strokes(Track.LOWER, letter)) { "no strokes for ${letter.symbol}" }
+            for (point in strokes.flatMap { it.points }) {
+                assertTrue("${letter.symbol} $point", point.x in 0f..1f && point.y in 0f..1f)
+            }
+        }
+    }
+
+    @Test
+    fun smallLettersMatchCapitals() {
+        assertEquals(Track.ENGLISH.letters.map { it.symbol.lowercase() }, Track.LOWER.letters.map { it.symbol })
+        assertEquals("B", Track.LOWER.prompt(Track.LOWER.letters[1]))
+        assertEquals("b", Track.ENGLISH.prompt(Letter("b")))
+    }
+
+    @Test
     fun hindiLettersFallBackToTheirShape() {
         assertNull(Content.strokes(Track.SWAR, Track.SWAR.letters.first()))
     }

@@ -96,6 +96,18 @@ open class EnglishLang : Lang {
 
 object English : EnglishLang()
 
+/**
+ * English wording for small letters. Most lines match the capital-letter ones word for word
+ * ("b is for ball"), so they share voice clips; finding asks for the "small letter".
+ */
+object EnglishSmall : EnglishLang() {
+    override fun name(letter: Letter) = if (letter.symbol.equals("a", ignoreCase = true)) "ay" else letter.symbol
+    override fun find(target: Letter) = "Find the small letter|${name(target)}!"
+    override fun traceAsk(letter: Letter) = "Trace the small letter|${name(letter)}!"
+    override fun learnTitle(number: Int, total: Int) = "Small letter $number of $total"
+    override val findTitle = "Find the small letter"
+}
+
 /** English wording for the number track: "Find the number seven", not "the letter". */
 object EnglishNumbers : EnglishLang() {
     // Spoken as words: a recording of "seven" is clearer than asking what "7" should sound like.

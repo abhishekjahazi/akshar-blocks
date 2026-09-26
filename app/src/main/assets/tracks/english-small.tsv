@@ -1,0 +1,28 @@
+# Small (lowercase) English letters, in teaching order. LETTER <tab> WORD <tab> PICTURE.
+# Made from english.tsv with lowercase letters and words. Lines starting with # are ignored.
+a	apple	🍎
+b	ball	⚽
+c	cat	🐱
+d	dog	🐶
+e	elephant	🐘
+f	fish	🐟
+g	grapes	🍇
+h	house	🏠
+i	ice cream	🍦
+j	juice	🧃
+k	kite	🪁
+l	lion	🦁
+m	monkey	🐒
+n	nose	👃
+o	orange	🍊
+p	penguin	🐧
+q	queen	👸
+r	rabbit	🐰
+s	sun	☀️
+t	tree	🌳
+u	umbrella	☂️
+v	violin	🎻
+w	watch	⌚
+x	xmas tree	🎄
+y	yo-yo	🪀
+z	zebra	🦓

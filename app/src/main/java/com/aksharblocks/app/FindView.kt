@@ -62,7 +62,7 @@ class FindView(
         val promptY = contentTop + side / 2f
         val cx = width / 2f
         squareAt(targetBlock, cx - dp(4f) - side / 2f, promptY, side / 2f)
-        drawLetterBlock(canvas, targetBlock, Palette.INK, target.symbol, Palette.WHITE)
+        drawLetterBlock(canvas, targetBlock, Palette.INK, track.prompt(target), Palette.WHITE)
         squareAt(speakerButton, cx + dp(12f) + side * 0.4f, promptY, side * 0.34f)
         val sink = drawBlock(canvas, speakerButton, Palette.WHITE, depth = dp(5f))
         drawEmoji(canvas, "🔊", speakerButton.centerX(), speakerButton.centerY() + sink, side * 0.36f)

@@ -51,6 +51,7 @@ enum class Track(
     val modes: List<GameMode> = ALPHABET_GAMES,
 ) {
     ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true),
+    LOWER("Small letters", "a b c d", Palette.TEAL, EnglishSmall, "english-small.tsv", showsCase = false),
     SWAR("हिंदी स्वर", "Hindi vowels", Palette.TOMATO, Hindi, "swar.tsv", showsCase = false),
     VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false),
     BARAKHADI(
@@ -63,6 +64,12 @@ enum class Track(
     val letters: List<Letter> get() = Content.letters(this)
 
     val isNumbers get() = this == NUMBERS || this == GINTI
+
+    /**
+     * What the Find game shows as the letter to look for. Small letters show the capital, so the
+     * child matches B with b.
+     */
+    fun prompt(letter: Letter): String = if (this == LOWER) letter.symbol.uppercase() else letter.symbol
 
     /**
      * Letters to offer as wrong answers next to [target]: the same group when it has one,

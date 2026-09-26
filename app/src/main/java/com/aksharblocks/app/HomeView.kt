@@ -47,8 +47,11 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val cellH = (contentBottom - areaTop) / rows
         tracks.forEachIndexed { i, track ->
             val card = cards[i]
-            val left = contentLeft + cellW * (i % cols)
-            val top = areaTop + cellH * (i / cols)
+            // A last row with fewer sections is centered.
+            val row = i / cols
+            val inRow = minOf(cols, tracks.size - row * cols)
+            val left = contentLeft + (cols - inRow) * cellW / 2f + cellW * (i % cols)
+            val top = areaTop + cellH * row
             card.set(left + gap / 2f, top + gap / 2f, left + cellW - gap / 2f, top + cellH - gap / 2f - dp(8f))
 
             val appear = popIn((time - 0.4f - i * 0.1f) / 0.4f)
