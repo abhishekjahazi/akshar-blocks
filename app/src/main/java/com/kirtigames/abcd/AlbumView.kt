@@ -21,7 +21,7 @@ class AlbumView(context: Context, speaker: Speaker, player: Player) : GameView(c
 
     init {
         val streak = player.streak
-        speaker.say(if (streak >= 2) "$streak days in a row! Wow!" else "Your stickers!")
+        speaker.say(if (streak >= 2) CommonWords.streak(streak) else CommonWords.YOUR_STICKERS)
     }
 
     override fun drawGame(canvas: Canvas) {
@@ -81,7 +81,7 @@ class AlbumView(context: Context, speaker: Speaker, player: Player) : GameView(c
         if (i < Stickers.unlocked(player.stars)) {
             speaker.say(Stickers.all[i].name)
         } else {
-            speaker.say("Win more stars to get this sticker!")
+            speaker.say(CommonWords.WIN_MORE_STARS)
         }
     }
 }

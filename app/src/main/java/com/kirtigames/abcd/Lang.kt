@@ -3,18 +3,27 @@ package com.kirtigames.abcd
 import java.util.Locale
 import kotlin.random.Random
 
-/** Everything a track says out loud or shows as text, in its own language. */
+/**
+ * Everything a track says out loud or shows as text, in its own language.
+ *
+ * Spoken sentences are split into reusable parts with `|` (see [Voice]): "Find the letter|B!"
+ * lets one recording of "Find the letter" serve every letter. The phone voice reads the
+ * parts joined with spaces; the `|` is never shown or spoken.
+ */
 interface Lang {
     val locale: Locale
 
     /** How the voice should say a letter's name. */
     fun name(letter: Letter): String
-    fun praise(random: Random): String
+
+    /** Praise lines; one is picked at random. */
+    val praises: List<String>
+    fun praise(random: Random): String = praises.random(random)
 
     // Spoken
     fun learn(letter: Letter): String
     fun find(target: Letter): String
-    fun found(target: Letter, random: Random): String = "${praise(random)} ${name(target)}!"
+    fun found(target: Letter, random: Random): String = "${praise(random)}|${name(target)}!"
     fun notThis(tapped: Letter, target: Letter): String
     fun balloonsStart(first: Letter): String
     fun balloonsDone(): String
@@ -46,26 +55,25 @@ open class EnglishLang : Lang {
     // A lone "A" is often read as the word "a" ("uh"), so it is spelled the way it sounds.
     override fun name(letter: Letter) = if (letter.symbol == "A") "ay" else letter.symbol
 
-    override fun praise(random: Random) =
-        listOf("Great job!", "Well done!", "Super!", "Awesome!", "You got it!", "Yay!").random(random)
+    override val praises = listOf("Great job!", "Well done!", "Super!", "Awesome!", "You got it!", "Yay!")
 
-    override fun learn(letter: Letter) = "${name(letter)}. ${name(letter)} is for ${letter.word}."
-    override fun find(target: Letter) = "Find the letter ${name(target)}!"
-    override fun notThis(tapped: Letter, target: Letter) = "That is ${name(tapped)}. Find ${name(target)}!"
-    override fun balloonsStart(first: Letter) = "Pop the balloons from ay to Z! Find the letter ${name(first)}."
+    override fun learn(letter: Letter) = "${name(letter)}.|${name(letter)} is for ${letter.word}."
+    override fun find(target: Letter) = "Find the letter|${name(target)}!"
+    override fun notThis(tapped: Letter, target: Letter) = "That is|${name(tapped)}.|Find|${name(target)}!"
+    override fun balloonsStart(first: Letter) = "Pop the balloons from ay to Z!|Find the letter|${name(first)}."
     override fun balloonsDone() = "Hooray! You popped all the letters from ay to Z!"
-    override fun balloonsAgain(first: Letter) = "Let's go again! Find the letter ${name(first)}."
-    override fun matchAsk(letter: Letter) = "${letter.word}. Which letter does ${letter.word} start with?"
+    override fun balloonsAgain(first: Letter) = "Let's go again!|Find the letter|${name(first)}."
+    override fun matchAsk(letter: Letter) = "${letter.word}.|Which letter does ${letter.word} start with?"
     override fun matchRight(letter: Letter, random: Random) =
-        "${praise(random)} ${letter.word} starts with ${name(letter)}!"
-    override fun matchWrong(letter: Letter) = "Try again! ${letter.word}."
-    override fun traceAsk(letter: Letter) = "Trace the letter ${name(letter)}!"
-    override fun traceDone(letter: Letter, random: Random) = "${praise(random)} You wrote ${name(letter)}!"
+        "${praise(random)}|${letter.word} starts with ${name(letter)}!"
+    override fun matchWrong(letter: Letter) = "Try again!|${letter.word}."
+    override fun traceAsk(letter: Letter) = "Trace the letter|${name(letter)}!"
+    override fun traceDone(letter: Letter, random: Random) = "${praise(random)}|You wrote|${name(letter)}!"
     override fun traceAgain() = "Try again. Draw over the letter."
     override fun countAsk(thing: CountThing) = "How many ${thing.many}?"
     override fun countRight(number: Letter, thing: CountThing, random: Random) =
-        "${praise(random)} ${number.word} ${if (number.symbol == "1") thing.one else thing.many}!"
-    override fun countWrong(thing: CountThing) = "Let's count again. How many ${thing.many}?"
+        "${praise(random)}|${number.word}|${if (number.symbol == "1") thing.one else thing.many}!"
+    override fun countWrong(thing: CountThing) = "Let's count again.|How many ${thing.many}?"
 
     override fun learnTitle(number: Int, total: Int) = "Letter $number of $total"
     override val findTitle = "Find the letter"
@@ -87,12 +95,13 @@ open class EnglishLang : Lang {
 
 object English : EnglishLang()
 
-/** English wording for the number track: "Find the number 7", not "the letter". */
+/** English wording for the number track: "Find the number seven", not "the letter". */
 object EnglishNumbers : EnglishLang() {
-    override fun name(letter: Letter) = letter.symbol
-    override fun learn(letter: Letter) = "${letter.word}."
-    override fun find(target: Letter) = "Find the number ${target.symbol}!"
-    override fun traceAsk(letter: Letter) = "Trace the number ${letter.symbol}!"
+    // Spoken as words: a recording of "seven" is clearer than asking what "7" should sound like.
+    override fun name(letter: Letter) = letter.word ?: letter.symbol
+    override fun learn(letter: Letter) = "${name(letter)}."
+    override fun find(target: Letter) = "Find the number|${name(target)}!"
+    override fun traceAsk(letter: Letter) = "Trace the number|${name(letter)}!"
     override fun traceAgain() = "Try again. Draw over the number."
     override fun learnTitle(number: Int, total: Int) = "Number $number of $total"
     override val findTitle = "Find the number"
@@ -103,27 +112,26 @@ open class HindiLang : Lang {
 
     override fun name(letter: Letter) = letter.symbol
 
-    override fun praise(random: Random) =
-        listOf("शाबाश!", "बहुत बढ़िया!", "वाह!", "बहुत अच्छे!").random(random)
+    override val praises = listOf("शाबाश!", "बहुत बढ़िया!", "वाह!", "बहुत अच्छे!")
 
     override fun learn(letter: Letter) =
-        if (letter.word != null) "${letter.symbol}. ${letter.symbol} से ${letter.word}." else "${letter.symbol}."
-    override fun find(target: Letter) = "${name(target)} ढूंढो!"
-    override fun notThis(tapped: Letter, target: Letter) = "यह ${name(tapped)} है। ${name(target)} ढूंढो!"
-    override fun balloonsStart(first: Letter) = "गुब्बारे फोड़ो! ${first.symbol} से शुरू करो।"
+        if (letter.word != null) "${letter.symbol}.|${letter.symbol} से ${letter.word}." else "${letter.symbol}."
+    override fun find(target: Letter) = "${name(target)}|ढूंढो!"
+    override fun notThis(tapped: Letter, target: Letter) = "यह|${name(tapped)}|है।|${name(target)}|ढूंढो!"
+    override fun balloonsStart(first: Letter) = "गुब्बारे फोड़ो!|${first.symbol}|से शुरू करो।"
     override fun balloonsDone() = "शाबाश! तुमने सारे अक्षर फोड़ दिए!"
-    override fun balloonsAgain(first: Letter) = "फिर से खेलो! ${first.symbol} ढूंढो।"
-    override fun matchAsk(letter: Letter) = "${letter.word}. ${letter.word} किस अक्षर से शुरू होता है?"
+    override fun balloonsAgain(first: Letter) = "फिर से खेलो!|${first.symbol}|ढूंढो।"
+    override fun matchAsk(letter: Letter) = "${letter.word}.|${letter.word} किस अक्षर से शुरू होता है?"
     override fun matchRight(letter: Letter, random: Random) =
-        "${praise(random)} ${letter.word}, ${letter.symbol} से शुरू होता है!"
-    override fun matchWrong(letter: Letter) = "फिर से कोशिश करो! ${letter.word}."
-    override fun traceAsk(letter: Letter) = "${name(letter)} बनाओ!"
-    override fun traceDone(letter: Letter, random: Random) = "${praise(random)} तुमने ${name(letter)} लिखा!"
+        "${praise(random)}|${letter.word}, ${letter.symbol} से शुरू होता है!"
+    override fun matchWrong(letter: Letter) = "फिर से कोशिश करो!|${letter.word}."
+    override fun traceAsk(letter: Letter) = "${name(letter)}|बनाओ!"
+    override fun traceDone(letter: Letter, random: Random) = "${praise(random)}|तुमने|${name(letter)}|लिखा!"
     override fun traceAgain() = "फिर से कोशिश करो। अक्षर के ऊपर बनाओ।"
     override fun countAsk(thing: CountThing) = "${thing.hindi} गिनो! ${thing.hindiHowMany} हैं?"
     override fun countRight(number: Letter, thing: CountThing, random: Random) =
-        "${praise(random)} ${number.word} ${thing.hindi}!"
-    override fun countWrong(thing: CountThing) = "फिर से गिनो! ${thing.hindiHowMany} ${thing.hindi} हैं?"
+        "${praise(random)}|${number.word}|${thing.hindi}!"
+    override fun countWrong(thing: CountThing) = "फिर से गिनो!|${thing.hindiHowMany} ${thing.hindi} हैं?"
 
     override fun learnTitle(number: Int, total: Int) = "अक्षर $number / $total"
     override val findTitle = "अक्षर ढूंढो"
@@ -160,10 +168,21 @@ object BarakhadiWords {
     const val BUILD_TITLE = "मात्रा जोड़ो"
 
     /** "क, आ, का": the consonant, the vowel, then the syllable they make. */
-    fun sound(consonant: String, matra: Matra, syllable: String) = "$consonant, ${matra.vowel}, $syllable"
-    fun intro(consonant: String) = "$consonant की बारहखड़ी। छूकर सुनो!"
-    fun buildAsk(syllable: String) = "$syllable बनाओ! कौन सी मात्रा लगेगी?"
+    fun sound(consonant: String, matra: Matra, syllable: String) = "$consonant,|${matra.vowel},|$syllable"
+    fun intro(consonant: String) = "$consonant|की बारहखड़ी। छूकर सुनो!"
+    fun buildAsk(syllable: String) = "$syllable|बनाओ! कौन सी मात्रा लगेगी?"
     fun buildRight(consonant: String, matra: Matra, syllable: String, random: Random) =
-        "${Hindi.praise(random)} $consonant में ${matra.vowel} की मात्रा, $syllable!"
-    fun buildWrong(made: String, target: String) = "यह $made है। $target बनाओ!"
+        "${Hindi.praise(random)}|$consonant|में|${matra.vowel} की मात्रा,|$syllable!"
+    fun buildWrong(made: String, target: String) = "यह|$made|है।|$target|बनाओ!"
+}
+
+/** Things the app says that don't belong to one track. */
+object CommonWords {
+    const val LETS_PLAY = "Let's play!"
+    fun hello(name: String) = "Hi $name!|$LETS_PLAY"
+    fun helloHindi(name: String) = "नमस्ते $name!"
+    const val YOUR_STICKERS = "Your stickers!"
+    const val WIN_MORE_STARS = "Win more stars to get this sticker!"
+    fun streak(days: Int) = "$days days in a row! Wow!"
+    fun newSticker(sticker: Sticker) = "New sticker!|A ${sticker.name}!"
 }

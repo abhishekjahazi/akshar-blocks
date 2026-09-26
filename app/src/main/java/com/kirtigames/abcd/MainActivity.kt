@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
     private fun greet() {
         val name = player.profile.name
         val hindiName = name.any { it in 'ऀ'..'ॿ' }
-        speaker.say(if (hindiName) "नमस्ते $name!" else "Hi $name! Let's play!", if (hindiName) Hindi.locale else Locale.US)
+        speaker.say(if (hindiName) CommonWords.helloHindi(name) else CommonWords.hello(name), if (hindiName) Hindi.locale else Locale.US)
     }
 
     private fun showHome() {

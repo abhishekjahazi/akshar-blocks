@@ -63,8 +63,8 @@ class NumbersTest {
     @Test
     fun numbersAreSpokenAsNumbersNotLetters() {
         val seven = Track.GINTI.letters[6]
-        assertEquals("सात ढूंढो!", HindiNumbers.find(seven))
-        assertEquals("Find the number 7!", EnglishNumbers.find(Track.NUMBERS.letters[6]))
+        assertEquals("सात ढूंढो!", Voice.spokenText(HindiNumbers.find(seven)))
+        assertEquals("Find the number seven!", Voice.spokenText(EnglishNumbers.find(Track.NUMBERS.letters[6])))
     }
 
     @Test
@@ -72,8 +72,8 @@ class NumbersTest {
         val apples = Counting.things.first()
         val random = Random(1)
         assertEquals("How many apples?", English.countAsk(apples))
-        assertTrue(EnglishNumbers.countRight(Track.NUMBERS.letters[0], apples, random).endsWith("one apple!"))
-        assertTrue(EnglishNumbers.countRight(Track.NUMBERS.letters[6], apples, random).endsWith("seven apples!"))
-        assertTrue(HindiNumbers.countRight(Track.GINTI.letters[6], apples, random).endsWith("सात सेब!"))
+        assertTrue(Voice.spokenText(EnglishNumbers.countRight(Track.NUMBERS.letters[0], apples, random)).endsWith("one apple!"))
+        assertTrue(Voice.spokenText(EnglishNumbers.countRight(Track.NUMBERS.letters[6], apples, random)).endsWith("seven apples!"))
+        assertTrue(Voice.spokenText(HindiNumbers.countRight(Track.GINTI.letters[6], apples, random)).endsWith("सात सेब!"))
     }
 }

@@ -9,5 +9,6 @@ class AbcdApp : Application() {
         // Load letters before any screen needs them (also after Android restarts the app).
         Content.load(assets)
         Art.load(assets)
+        Voice.load(assets)
     }
 }

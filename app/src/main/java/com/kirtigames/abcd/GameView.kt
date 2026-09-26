@@ -195,7 +195,7 @@ abstract class GameView(
             revealAt = time
             after(0.5f) { if (reveal == sticker) Sounds.play(Sound.FANFARE) }
             // Let the game's own praise finish first.
-            after(1.6f) { if (reveal == sticker) speaker.say("New sticker! A ${sticker.name}!") }
+            after(1.6f) { if (reveal == sticker) speaker.say(CommonWords.newSticker(sticker)) }
         }
     }
 

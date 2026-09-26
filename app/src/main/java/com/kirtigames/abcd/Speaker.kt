@@ -1,13 +1,19 @@
 package com.kirtigames.abcd
 
 import android.content.Context
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import java.util.Locale
 
-/** Speaks words out loud with the phone's built-in text-to-speech voice, in English or Hindi. */
+/**
+ * Speaks to the child: recorded clips when every part of the sentence has been recorded
+ * (see [Voice]), otherwise the phone's text-to-speech voice, in English or Hindi.
+ */
 class Speaker(context: Context) : TextToSpeech.OnInitListener {
 
+    private val assets = context.applicationContext.assets
     private val tts = TextToSpeech(context.applicationContext, this)
 
     @Volatile
@@ -16,6 +22,20 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
 
     /** Last thing asked for before the engine finished starting up. */
     private var pending: Pair<String, Locale>? = null
+
+    /** The recording playing now, and a counter that makes older playback stop chaining. */
+    private var player: MediaPlayer? = null
+    private var playToken = 0
+
+    private var rate = NORMAL_RATE
+
+    /** Slower speech for the youngest children (a parent setting). */
+    var slow: Boolean = false
+        set(value) {
+            field = value
+            rate = if (value) SLOW_RATE else NORMAL_RATE
+            if (ready) tts.setSpeechRate(rate)
+        }
 
     override fun onInit(status: Int) {
         if (status != TextToSpeech.SUCCESS) {
@@ -30,18 +50,16 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
         pending = null
     }
 
-    private var rate = NORMAL_RATE
-
-    /** Slower speech for the youngest children (a parent setting). */
-    var slow: Boolean = false
-        set(value) {
-            field = value
-            rate = if (value) SLOW_RATE else NORMAL_RATE
-            if (ready) tts.setSpeechRate(rate)
-        }
-
-    /** Says [text] in [locale], interrupting anything that is still being spoken. */
+    /** Says [text] in [locale], interrupting anything that is still being said. */
     fun say(text: String, locale: Locale = Locale.US) {
+        val clips = Voice.clipsFor(text, locale)
+        if (clips != null) {
+            if (ready) tts.stop()
+            pending = null
+            playClips(clips, 0, ++playToken)
+            return
+        }
+        stopClips()
         if (!ready) {
             pending = text to locale
             return
@@ -53,7 +71,45 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
             }
             currentLocale = locale
         }
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, text.hashCode().toString())
+        val spoken = Voice.spokenText(text)
+        tts.speak(spoken, TextToSpeech.QUEUE_FLUSH, null, spoken.hashCode().toString())
+    }
+
+    /** Plays recordings one after another; a newer sentence cancels the rest. */
+    private fun playClips(clips: List<String>, index: Int, token: Int) {
+        releasePlayer()
+        if (index >= clips.size || token != playToken) return
+        try {
+            val fd = assets.openFd(clips[index])
+            player = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_GAME)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .build(),
+                )
+                setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
+                fd.close()
+                setOnCompletionListener { playClips(clips, index + 1, token) }
+                prepare()
+                if (slow) playbackParams = playbackParams.setSpeed(SLOW_CLIP_SPEED)
+                start()
+            }
+        } catch (e: Exception) {
+            // A broken recording must not silence the game: skip to the next part.
+            Log.w(TAG, "Could not play ${clips[index]}", e)
+            playClips(clips, index + 1, token)
+        }
+    }
+
+    private fun stopClips() {
+        playToken++
+        releasePlayer()
+    }
+
+    private fun releasePlayer() {
+        player?.release()
+        player = null
     }
 
     /** False when the phone has no voice for [locale]. Unknown (engine still starting) counts as available. */
@@ -64,10 +120,12 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
 
     fun stop() {
         pending = null
+        stopClips()
         if (ready) tts.stop()
     }
 
     fun shutdown() {
+        stopClips()
         tts.shutdown()
     }
 
@@ -75,5 +133,6 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
         const val TAG = "Speaker"
         const val NORMAL_RATE = 0.85f
         const val SLOW_RATE = 0.7f
+        const val SLOW_CLIP_SPEED = 0.85f
     }
 }
