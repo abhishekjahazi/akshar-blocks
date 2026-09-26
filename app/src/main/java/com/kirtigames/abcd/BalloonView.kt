@@ -10,8 +10,8 @@ import kotlin.math.sin
 
 /** Letter balloons float up; pop them in alphabet order. */
 class BalloonView(
-    context: Context, speaker: Speaker, stars: StarBank, private val track: Track,
-) : GameView(context, speaker, stars) {
+    context: Context, speaker: Speaker, player: Player, private val track: Track,
+) : GameView(context, speaker, player) {
 
     private class Balloon(
         val letter: Letter, val x: Float, var y: Float,
@@ -154,8 +154,10 @@ class BalloonView(
         if (finished) return
         val b = balloons.asReversed().firstOrNull { distance(x, y, drawnX(it), it.y) <= radius * 1.15f } ?: return
         if (b.letter == next) {
+            player.correct(track, next)
             pop(b)
         } else {
+            player.wrong(track, next, b.letter)
             b.shake = 0f
             if (time - lastHint > 1.5f) {
                 lastHint = time

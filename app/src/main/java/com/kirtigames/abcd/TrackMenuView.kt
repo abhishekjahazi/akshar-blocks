@@ -14,8 +14,8 @@ enum class GameMode(val emoji: String, val color: Int, val textColor: Int) {
 
 /** The four games for one track, under that track's first letters dropping in as blocks. */
 class TrackMenuView(
-    context: Context, speaker: Speaker, stars: StarBank, private val track: Track,
-) : GameView(context, speaker, stars) {
+    context: Context, speaker: Speaker, player: Player, private val track: Track,
+) : GameView(context, speaker, player) {
 
     var onPick: ((GameMode) -> Unit)? = null
 

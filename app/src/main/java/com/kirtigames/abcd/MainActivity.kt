@@ -4,29 +4,35 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.view.WindowInsets
-import android.view.WindowInsetsController
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import java.util.Locale
 
 /**
  * Screens: Home (pick English / Hindi vowels / Hindi consonants) → that track's
- * game menu → a game. Back always goes up one level.
+ * game menu → a game. Back always goes up one level. Grown-ups reach
+ * [ParentActivity] from Home through the [ParentGate].
  */
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var speaker: Speaker
-    private lateinit var stars: StarBank
+    private enum class Screen { HOME, CHILDREN, TRACK, GAME }
 
-    /** The track whose menu or game is showing; null on the home screen. */
+    private lateinit var speaker: Speaker
+    private lateinit var profiles: ProfileStore
+    private lateinit var player: Player
+
+    private var screen = Screen.HOME
+
+    /** The track whose menu or game is showing. */
     private var track: Track? = null
-    private var inGame = false
 
     private val goBack = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             val current = track
-            if (inGame && current != null) showTrack(current) else showHome()
+            if (screen == Screen.GAME && current != null) showTrack(current) else showHome()
         }
     }
 
@@ -35,26 +41,68 @@ class MainActivity : AppCompatActivity() {
         // Draw behind the (hidden) system bars; GameView keeps content clear of cutouts.
         WindowCompat.setDecorFitsSystemWindows(window, false)
         speaker = Speaker(this)
-        stars = StarBank(this)
+        profiles = ProfileStore(this)
+        player = Player(this, profiles.current())
         onBackPressedDispatcher.addCallback(this, goBack)
         showHome()
-        speaker.say("Let's play!")
+        greet()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        speaker.slow = Settings(this).slowVoice
+        // A parent may have renamed, added or removed children in the parent area.
+        val current = profiles.current()
+        if (current != player.profile) {
+            player = Player(this, current)
+            if (screen == Screen.HOME || screen == Screen.CHILDREN) showHome()
+        }
+    }
+
+    private fun greet() {
+        val name = player.profile.name
+        val hindiName = name.any { it in 'ऀ'..'ॿ' }
+        speaker.say(if (hindiName) "नमस्ते $name!" else "Hi $name! Let's play!", if (hindiName) Hindi.locale else Locale.US)
     }
 
     private fun showHome() {
+        screen = Screen.HOME
         track = null
-        inGame = false
         goBack.isEnabled = false
         speaker.stop()
-        setContentView(HomeView(this, speaker, stars).apply { onPick = ::showTrack })
+        setContentView(HomeView(this, speaker, player).apply {
+            onPick = ::showTrack
+            onParent = { ParentGate.show(this@MainActivity) { startActivity(Intent(this@MainActivity, ParentActivity::class.java)) } }
+            onChild = ::showChildren
+        })
+    }
+
+    /** "Who is playing?" when there are several children; with one, just say hello. */
+    private fun showChildren() {
+        val all = profiles.all()
+        if (all.size < 2) {
+            greet()
+            return
+        }
+        screen = Screen.CHILDREN
+        goBack.isEnabled = true
+        setContentView(ProfilePickerView(this, speaker, player, all).apply {
+            onPick = { profile ->
+                profiles.currentId = profile.id
+                player = Player(this@MainActivity, profile)
+                showHome()
+                greet()
+            }
+            onHome = ::showHome
+        })
     }
 
     private fun showTrack(track: Track) {
+        screen = Screen.TRACK
         this.track = track
-        inGame = false
         goBack.isEnabled = true
         speaker.stop()
-        setContentView(TrackMenuView(this, speaker, stars, track).apply {
+        setContentView(TrackMenuView(this, speaker, player, track).apply {
             onPick = { mode -> startGame(track, mode) }
             onInstallVoice = ::installVoice
             onHome = ::showHome
@@ -63,13 +111,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun startGame(track: Track, mode: GameMode) {
         val view = when (mode) {
-            GameMode.LEARN -> LearnView(this, speaker, stars, track)
-            GameMode.FIND -> FindView(this, speaker, stars, track)
-            GameMode.BALLOONS -> BalloonView(this, speaker, stars, track)
-            GameMode.MATCH -> MatchView(this, speaker, stars, track)
+            GameMode.LEARN -> LearnView(this, speaker, player, track)
+            GameMode.FIND -> FindView(this, speaker, player, track)
+            GameMode.BALLOONS -> BalloonView(this, speaker, player, track)
+            GameMode.MATCH -> MatchView(this, speaker, player, track)
         }
         view.onHome = { showTrack(track) }
-        inGame = true
+        screen = Screen.GAME
         goBack.isEnabled = true
         setContentView(view)
     }
@@ -105,9 +153,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideSystemUi() {
-        window.insetsController?.apply {
-            hide(WindowInsets.Type.systemBars())
-            systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            hide(WindowInsetsCompat.Type.systemBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
     }
 }

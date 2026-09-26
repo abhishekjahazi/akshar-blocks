@@ -9,8 +9,8 @@ import kotlin.math.sin
 
 /** Flip through a track's letters: big letter, picture and word, read out loud. */
 class LearnView(
-    context: Context, speaker: Speaker, stars: StarBank, private val track: Track,
-) : GameView(context, speaker, stars) {
+    context: Context, speaker: Speaker, player: Player, private val track: Track,
+) : GameView(context, speaker, player) {
 
     private val letters = track.letters
     private var index = 0
@@ -93,7 +93,8 @@ class LearnView(
             side * 0.66f, Palette.WHITE, letterBlock.width() * 0.86f,
         )
         if (word != null) {
-            val emoji = letter.emoji
+            // Older phones can't draw every emoji; show the word without a picture then.
+            val emoji = letter.emoji?.takeIf { canDraw(it) }
             if (emoji != null) {
                 drawEmoji(canvas, emoji, card.centerX(), card.top + h * 0.64f, min(h * 0.22f, w * 0.4f))
             }

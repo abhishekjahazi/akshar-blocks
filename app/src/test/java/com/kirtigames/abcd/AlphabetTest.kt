@@ -4,22 +4,33 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
+import org.junit.BeforeClass
 import org.junit.Test
+import java.io.File
 import kotlin.random.Random
 
 class AlphabetTest {
 
+    companion object {
+        @JvmStatic
+        @BeforeClass
+        fun loadContent() {
+            // Unit tests run from the app module folder, so this reads the real content files.
+            Content.loadFrom(File("src/main/assets/tracks"))
+        }
+    }
+
     @Test
     fun englishHasEveryLetterInOrder() {
-        assertEquals(('A'..'Z').map { it.toString() }, Letters.english.map { it.symbol })
+        assertEquals(('A'..'Z').map { it.toString() }, Track.ENGLISH.letters.map { it.symbol })
     }
 
     @Test
     fun hindiHasAllVowelsAndConsonants() {
-        assertEquals(13, Letters.swar.size)
-        assertEquals(36, Letters.vyanjan.size)
-        assertEquals("अ", Letters.swar.first().symbol)
-        assertEquals("ज्ञ", Letters.vyanjan.last().symbol)
+        assertEquals(13, Track.SWAR.letters.size)
+        assertEquals(36, Track.VYANJAN.letters.size)
+        assertEquals("अ", Track.SWAR.letters.first().symbol)
+        assertEquals("ज्ञ", Track.VYANJAN.letters.last().symbol)
     }
 
     @Test
@@ -83,9 +94,9 @@ class AlphabetTest {
     @Test
     fun anyExceptSkipsExcludedItem() {
         val random = Random(7)
-        val excluded = Letters.swar[3]
+        val excluded = Track.SWAR.letters[3]
         repeat(200) {
-            assertNotEquals(excluded, Pick.anyExcept(Letters.swar, excluded, random))
+            assertNotEquals(excluded, Pick.anyExcept(Track.SWAR.letters, excluded, random))
         }
     }
 }

@@ -11,7 +11,10 @@ import android.graphics.Typeface
 import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
-import android.view.WindowInsets
+import android.os.Build
+import android.provider.Settings
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.hypot
@@ -65,7 +68,8 @@ private val TITLE_TILT = floatArrayOf(-6f, 4f, -3f, 5f)
 abstract class GameView(
     context: Context,
     protected val speaker: Speaker,
-    private val starBank: StarBank,
+    /** The child playing now: their stars and results. */
+    protected val player: Player,
 ) : View(context) {
 
     var onHome: (() -> Unit)? = null
@@ -84,7 +88,9 @@ abstract class GameView(
         private set
 
     /** False when the phone's "remove animations" setting is on. */
-    protected val motionEnabled = ValueAnimator.areAnimatorsEnabled()
+    protected val motionEnabled =
+        if (Build.VERSION.SDK_INT >= 26) ValueAnimator.areAnimatorsEnabled()
+        else Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) != 0f
 
     // Space taken by notches, camera holes and any visible system bars.
     private var safeLeft = 0f
@@ -99,9 +105,13 @@ abstract class GameView(
     protected val contentRight get() = width - safeRight - dp(16f)
     protected val safeTopInset get() = safeTop
 
+    /** Vertical center of the top bar (home button, title, stars). */
+    protected val topBarCenter get() = safeTop + dp(42f)
+
     protected val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        typeface = Typeface.create(Typeface.DEFAULT, 900, false)
+        typeface = if (Build.VERSION.SDK_INT >= 28) Typeface.create(Typeface.DEFAULT, 900, false)
+        else Typeface.create("sans-serif-black", Typeface.NORMAL)
     }
     protected val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     protected val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -151,7 +161,7 @@ abstract class GameView(
     }
 
     /** Gives the child a star; the total is kept between visits. */
-    protected fun addStar() = starBank.add()
+    protected fun addStar() = player.addStar()
 
     /** Bursts confetti out from ([x], [y]). */
     protected fun celebrate(x: Float, y: Float, count: Int = 36) {
@@ -251,6 +261,12 @@ abstract class GameView(
     protected fun drawEmoji(canvas: Canvas, emoji: String, cx: Float, cy: Float, size: Float) =
         drawText(canvas, emoji, cx, cy, size, Color.BLACK)
 
+    private val glyphCache = HashMap<String, Boolean>()
+
+    /** False for emoji this phone's font can't draw (older Android versions lack newer emoji). */
+    protected fun canDraw(emoji: String?): Boolean =
+        emoji != null && glyphCache.getOrPut(emoji) { textPaint.hasGlyph(emoji) }
+
     /** Draws [word] centered, with its first [headLength] characters in [highlight]. */
     protected fun drawWord(
         canvas: Canvas, word: String, headLength: Int, highlight: Int,
@@ -309,13 +325,16 @@ abstract class GameView(
 
     // --- View plumbing ----------------------------------------------------------
 
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
-        val safe = insets.getInsets(WindowInsets.Type.displayCutout() or WindowInsets.Type.systemBars())
-        safeLeft = safe.left.toFloat()
-        safeTop = safe.top.toFloat()
-        safeRight = safe.right.toFloat()
-        safeBottom = safe.bottom.toFloat()
-        return super.onApplyWindowInsets(insets)
+    init {
+        // Keep content clear of notches, camera holes and any visible system bars (all Android versions).
+        ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
+            val safe = insets.getInsets(WindowInsetsCompat.Type.displayCutout() or WindowInsetsCompat.Type.systemBars())
+            safeLeft = safe.left.toFloat()
+            safeTop = safe.top.toFloat()
+            safeRight = safe.right.toFloat()
+            safeBottom = safe.bottom.toFloat()
+            insets
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -426,7 +445,7 @@ abstract class GameView(
     }
 
     private fun drawTopBar(canvas: Canvas) {
-        val barY = safeTop + dp(42f)
+        val barY = topBarCenter
         val size = dp(52f)
         if (showHomeButton) {
             homeRect.set(safeLeft + dp(16f), barY - size / 2f, safeLeft + dp(16f) + size, barY + size / 2f)
@@ -438,7 +457,7 @@ abstract class GameView(
             drawText(canvas, title, width / 2f, barY, dp(24f), Palette.INK, maxWidth)
         }
         if (showStars) {
-            val label = "⭐ ${starBank.count}"
+            val label = "⭐ ${player.stars}"
             textPaint.textSize = dp(24f)
             val pillWidth = textPaint.measureText(label) + dp(28f)
             val right = width - safeRight - dp(16f)

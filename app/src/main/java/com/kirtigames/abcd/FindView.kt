@@ -7,8 +7,8 @@ import kotlin.math.min
 
 /** "Find the letter B!" / "क ढूंढो!": tap the right one of four letter blocks. */
 class FindView(
-    context: Context, speaker: Speaker, stars: StarBank, private val track: Track,
-) : GameView(context, speaker, stars) {
+    context: Context, speaker: Speaker, player: Player, private val track: Track,
+) : GameView(context, speaker, player) {
 
     override val title = track.lang.findTitle
     override val skyColor = Palette.MINT
@@ -102,12 +102,14 @@ class FindView(
         if (i < 0) return
         if (options[i] == target) {
             solvedIndex = i
+            player.correct(track, target)
             solvedAt = roundTime
             addStar()
             celebrate(tiles[i].centerX(), tiles[i].centerY())
             speaker.say(lang.found(target, random), lang.locale)
             after(2f) { newRound() }
         } else {
+            player.wrong(track, target, options[i])
             shakeTime[i] = 0f
             speaker.say(lang.notThis(options[i], target), lang.locale)
         }

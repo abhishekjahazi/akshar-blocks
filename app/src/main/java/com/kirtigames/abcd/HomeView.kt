@@ -6,9 +6,15 @@ import android.graphics.RectF
 import kotlin.math.min
 
 /** First screen: pick English ABC, Hindi vowels or Hindi consonants. */
-class HomeView(context: Context, speaker: Speaker, stars: StarBank) : GameView(context, speaker, stars) {
+class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(context, speaker, player) {
 
     var onPick: ((Track) -> Unit)? = null
+
+    /** Grown-ups button (goes through the parent gate). */
+    var onParent: (() -> Unit)? = null
+
+    /** The child name tag was tapped. */
+    var onChild: (() -> Unit)? = null
 
     override val showHomeButton = false
 
@@ -16,8 +22,12 @@ class HomeView(context: Context, speaker: Speaker, stars: StarBank) : GameView(c
     private val cards = tracks.map { RectF() }
     private val titleBlocks = List(TITLE.size) { RectF() }
     private val miniBlock = RectF()
+    private val parentButton = RectF()
+    private val childTag = RectF()
 
     override fun drawGame(canvas: Canvas) {
+        drawTopRow(canvas)
+
         val landscape = width > height
         val titleTop = contentTop - dp(16f)
         val titleBottom = titleTop + height * (if (landscape) 0.26f else 0.17f)
@@ -65,7 +75,32 @@ class HomeView(context: Context, speaker: Speaker, stars: StarBank) : GameView(c
         }
     }
 
+    /** Grown-ups lock on the left, then the playing child's picture and name. */
+    private fun drawTopRow(canvas: Canvas) {
+        val size = dp(52f)
+        val barY = topBarCenter
+        parentButton.set(contentLeft + dp(4f), barY - size / 2f, contentLeft + dp(4f) + size, barY + size / 2f)
+        val lockSink = drawBlock(canvas, parentButton, Palette.WHITE, depth = dp(5f))
+        drawEmoji(canvas, "🔒", parentButton.centerX(), parentButton.centerY() + lockSink, size * 0.45f)
+
+        val label = "${player.profile.avatar} ${player.profile.name}"
+        textPaint.textSize = dp(22f)
+        val maxWidth = width * 0.42f
+        val tagWidth = min(textPaint.measureText(label) + dp(32f), maxWidth)
+        childTag.set(parentButton.right + dp(12f), barY - size / 2f, parentButton.right + dp(12f) + tagWidth, barY + size / 2f)
+        val tagSink = drawBlock(canvas, childTag, Palette.WHITE, radius = size / 2f, depth = dp(5f))
+        drawText(canvas, label, childTag.centerX(), childTag.centerY() + tagSink, dp(22f), Palette.INK, tagWidth - dp(24f))
+    }
+
     override fun onTap(x: Float, y: Float) {
+        if (parentButton.contains(x, y)) {
+            onParent?.invoke()
+            return
+        }
+        if (childTag.contains(x, y)) {
+            onChild?.invoke()
+            return
+        }
         val block = titleBlocks.indexOfFirst { it.contains(x, y) }
         if (block >= 0) {
             val track = TITLE_TRACKS[block]

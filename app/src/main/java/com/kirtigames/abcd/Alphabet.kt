@@ -34,13 +34,16 @@ enum class Track(
     val subtitle: String,
     val color: Int,
     val lang: Lang,
-    val letters: List<Letter>,
+    /** The content file in assets/tracks/. */
+    val file: String,
     /** English shows "Aa" (capital and small); Hindi has no letter case. */
     val showsCase: Boolean,
 ) {
-    ENGLISH("English", "A B C D", Palette.OCEAN, English, Letters.english, showsCase = true),
-    SWAR("हिंदी स्वर", "Hindi vowels", Palette.TOMATO, Hindi, Letters.swar, showsCase = false),
-    VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, Letters.vyanjan, showsCase = false);
+    ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true),
+    SWAR("हिंदी स्वर", "Hindi vowels", Palette.TOMATO, Hindi, "swar.tsv", showsCase = false),
+    VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false);
+
+    val letters: List<Letter> get() = Content.letters(this)
 
     /** Letters that have a word and picture, for the picture game. */
     val pictureLetters: List<Letter> get() = letters.filter { it.hasPicture }
@@ -61,94 +64,6 @@ enum class Track(
     }
 }
 
-object Letters {
-
-    val english = listOf(
-        Letter("A", "Apple", "🍎"),
-        Letter("B", "Ball", "⚽"),
-        Letter("C", "Cat", "🐱"),
-        Letter("D", "Dog", "🐶"),
-        Letter("E", "Elephant", "🐘"),
-        Letter("F", "Fish", "🐟"),
-        Letter("G", "Grapes", "🍇"),
-        Letter("H", "House", "🏠"),
-        Letter("I", "Ice cream", "🍦"),
-        Letter("J", "Juice", "🧃"),
-        Letter("K", "Kite", "🪁"),
-        Letter("L", "Lion", "🦁"),
-        Letter("M", "Monkey", "🐒"),
-        Letter("N", "Nose", "👃"),
-        Letter("O", "Orange", "🍊"),
-        Letter("P", "Penguin", "🐧"),
-        Letter("Q", "Queen", "👸"),
-        Letter("R", "Rabbit", "🐰"),
-        Letter("S", "Sun", "☀️"),
-        Letter("T", "Tree", "🌳"),
-        Letter("U", "Umbrella", "☂️"),
-        Letter("V", "Violin", "🎻"),
-        Letter("W", "Watch", "⌚"),
-        Letter("X", "Xmas tree", "🎄"),
-        Letter("Y", "Yo-yo", "🪀"),
-        Letter("Z", "Zebra", "🦓"),
-    )
-
-    /** स्वर: the 13 Hindi vowels. अः has no common word, so it is shown on its own. */
-    val swar = listOf(
-        Letter("अ", "अनानास", "🍍"),
-        Letter("आ", "आम", "🥭"),
-        Letter("इ", "इमारत", "🏢"),
-        Letter("ई", "ईद", "🌙"),
-        Letter("उ", "उल्लू", "🦉"),
-        Letter("ऊ", "ऊन", "🧶"),
-        Letter("ऋ", "ऋषि", "🧘"),
-        Letter("ए", "एक", "1️⃣"),
-        Letter("ऐ", "ऐनक", "👓"),
-        Letter("ओ", "ओस", "💧"),
-        Letter("औ", "औरत", "👩"),
-        Letter("अं", "अंगूर", "🍇"),
-        Letter("अः"),
-    )
-
-    /** व्यंजन: the 36 Hindi consonants. ङ, ञ and ण begin no common words, so they have none. */
-    val vyanjan = listOf(
-        Letter("क", "कबूतर", "🕊️"),
-        Letter("ख", "खरगोश", "🐰"),
-        Letter("ग", "गाय", "🐄"),
-        Letter("घ", "घड़ी", "⌚"),
-        Letter("ङ"),
-        Letter("च", "चम्मच", "🥄"),
-        Letter("छ", "छतरी", "☂️"),
-        Letter("ज", "जहाज", "🚢"),
-        Letter("झ", "झंडा", "🚩"),
-        Letter("ञ"),
-        Letter("ट", "टमाटर", "🍅"),
-        Letter("ठ", "ठेला", "🛒"),
-        Letter("ड", "डमरू", "🥁"),
-        Letter("ढ", "ढोल", "🪘"),
-        Letter("ण"),
-        Letter("त", "तरबूज", "🍉"),
-        Letter("थ", "थाली", "🍽️"),
-        Letter("द", "दरवाज़ा", "🚪"),
-        Letter("ध", "धनुष", "🏹"),
-        Letter("न", "नल", "🚰"),
-        Letter("प", "पतंग", "🪁"),
-        Letter("फ", "फूल", "🌸"),
-        Letter("ब", "बतख", "🦆"),
-        Letter("भ", "भालू", "🐻"),
-        Letter("म", "मछली", "🐟"),
-        Letter("य", "यज्ञ", "🔥"),
-        Letter("र", "रेलगाड़ी", "🚂"),
-        Letter("ल", "लहसुन", "🧄"),
-        Letter("व", "वकील", "👨‍⚖️"),
-        Letter("श", "शेर", "🦁"),
-        Letter("ष", "षट्कोण"),
-        Letter("स", "सेब", "🍎"),
-        Letter("ह", "हाथी", "🐘"),
-        Letter("क्ष", "क्षत्रिय"),
-        Letter("त्र", "त्रिशूल", "🔱"),
-        Letter("ज्ञ", "ज्ञानी"),
-    )
-}
 
 /** Random choices for the games. */
 object Pick {

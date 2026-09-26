@@ -7,14 +7,15 @@ import kotlin.math.min
 
 /** Show a picture; the child picks the letter its word starts with. */
 class MatchView(
-    context: Context, speaker: Speaker, stars: StarBank, private val track: Track,
-) : GameView(context, speaker, stars) {
+    context: Context, speaker: Speaker, player: Player, private val track: Track,
+) : GameView(context, speaker, player) {
 
     override val title = track.lang.matchTitle
     override val skyColor = Palette.LILAC
 
     private val lang = track.lang
-    private val pictures = track.pictureLetters
+    // Only pictures this phone can draw (older Android versions lack newer emoji).
+    private val pictures = track.pictureLetters.filter { canDraw(it.emoji) }.ifEmpty { track.pictureLetters }
     private var card = pictures.random(random)
     private var options = emptyList<Letter>()
     private val tiles = Array(OPTION_COUNT) { RectF() }
@@ -123,12 +124,14 @@ class MatchView(
         if (i < 0) return
         if (options[i] == card) {
             solvedIndex = i
+            player.correct(track, card)
             solvedAt = roundTime
             addStar()
             celebrate(tiles[i].centerX(), tiles[i].centerY())
             speaker.say(lang.matchRight(card, random), lang.locale)
             after(2.8f) { newRound() }
         } else {
+            player.wrong(track, card, options[i])
             shakeTime[i] = 0f
             speaker.say(lang.matchWrong(card), lang.locale)
         }

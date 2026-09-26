@@ -23,12 +23,22 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
             return
         }
         // A little slower and brighter than normal, for young listeners.
-        tts.setSpeechRate(0.85f)
+        tts.setSpeechRate(rate)
         tts.setPitch(1.15f)
         ready = true
         pending?.let { (text, locale) -> say(text, locale) }
         pending = null
     }
+
+    private var rate = NORMAL_RATE
+
+    /** Slower speech for the youngest children (a parent setting). */
+    var slow: Boolean = false
+        set(value) {
+            field = value
+            rate = if (value) SLOW_RATE else NORMAL_RATE
+            if (ready) tts.setSpeechRate(rate)
+        }
 
     /** Says [text] in [locale], interrupting anything that is still being spoken. */
     fun say(text: String, locale: Locale = Locale.US) {
@@ -63,5 +73,7 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
 
     private companion object {
         const val TAG = "Speaker"
+        const val NORMAL_RATE = 0.85f
+        const val SLOW_RATE = 0.7f
     }
 }
