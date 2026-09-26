@@ -16,7 +16,7 @@ class AlphabetTest {
         @BeforeClass
         fun loadContent() {
             // Unit tests run from the app module folder, so this reads the real content files.
-            Content.loadFrom(File("src/main/assets/tracks"))
+            Content.loadFrom(File("src/main/assets"))
         }
     }
 

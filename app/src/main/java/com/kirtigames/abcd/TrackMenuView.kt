@@ -7,6 +7,7 @@ import kotlin.math.min
 
 enum class GameMode(val emoji: String, val color: Int, val textColor: Int) {
     LEARN("📖", Palette.OCEAN, Palette.WHITE),
+    TRACE("✏️", Palette.ORANGE, Palette.WHITE),
     FIND("🔍", Palette.GRASS, Palette.WHITE),
     BALLOONS("🎈", Palette.SUN, Palette.INK),
     MATCH("🍎", Palette.GRAPE, Palette.WHITE),
@@ -51,15 +52,18 @@ class TrackMenuView(
             bottom = voiceBanner.top - dp(14f)
         }
 
-        val cols = if (landscape) 4 else 2
-        val rows = modes.size / cols
+        val cols = if (landscape) modes.size else 2
+        val rows = (modes.size + cols - 1) / cols
         val gap = dp(18f)
         val areaTop = titleBottom + dp(16f)
         val cellW = (contentRight - contentLeft) / cols
         val cellH = (bottom - areaTop) / rows
         modes.forEachIndexed { i, mode ->
-            val left = contentLeft + cellW * (i % cols)
-            val top = areaTop + cellH * (i / cols)
+            // A last row with fewer cards is centered.
+            val row = i / cols
+            val inRow = minOf(cols, modes.size - row * cols)
+            val left = contentLeft + (cols - inRow) * cellW / 2f + cellW * (i % cols)
+            val top = areaTop + cellH * row
             val card = cards[i]
             card.set(left + gap / 2f, top + gap / 2f, left + cellW - gap / 2f, top + cellH - gap / 2f - dp(8f))
 

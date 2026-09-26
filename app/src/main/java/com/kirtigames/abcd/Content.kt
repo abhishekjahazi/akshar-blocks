@@ -10,21 +10,33 @@ import java.io.File
 object Content {
 
     private val letters = HashMap<Track, List<Letter>>()
+    private val strokes = HashMap<Track, Map<String, List<Stroke>>>()
 
     fun letters(track: Track): List<Letter> =
         letters[track] ?: error("Content not loaded yet: ${track.name}")
+
+    /** How to write [letter] for tracing, or null when the track has no stroke data for it. */
+    fun strokes(track: Track, letter: Letter): List<Stroke>? = strokes[track]?.get(letter.symbol)
 
     /** Loads every track from the app's assets. Called once when the app starts. */
     fun load(assets: AssetManager) {
         for (track in Track.entries) {
             letters[track] = assets.open("tracks/${track.file}").bufferedReader().use { parse(it.readText()) }
+            // Stroke files are optional: letters without one are traced over their shape.
+            strokes[track] = if (assets.list("tracing").orEmpty().contains(track.file)) {
+                assets.open("tracing/${track.file}").bufferedReader().use { Tracing.parse(it.readText()) }
+            } else {
+                emptyMap()
+            }
         }
     }
 
-    /** Loads every track from a folder on disk (used by tests). */
+    /** Loads every track from an assets folder on disk (used by tests). */
     fun loadFrom(folder: File) {
         for (track in Track.entries) {
-            letters[track] = parse(File(folder, track.file).readText())
+            letters[track] = parse(File(folder, "tracks/${track.file}").readText())
+            val strokeFile = File(folder, "tracing/${track.file}")
+            strokes[track] = if (strokeFile.exists()) Tracing.parse(strokeFile.readText()) else emptyMap()
         }
     }
 

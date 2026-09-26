@@ -22,6 +22,9 @@ interface Lang {
     fun matchAsk(letter: Letter): String
     fun matchRight(letter: Letter, random: Random): String
     fun matchWrong(letter: Letter): String
+    fun traceAsk(letter: Letter): String
+    fun traceDone(letter: Letter, random: Random): String
+    fun traceAgain(): String
 
     // On screen
     fun learnTitle(number: Int, total: Int): String
@@ -29,6 +32,7 @@ interface Lang {
     fun popTitle(next: Letter): String
     val doneTitle: String
     val matchTitle: String
+    fun traceTitle(number: Int, total: Int): String
     fun modeLabel(mode: GameMode): String
 }
 
@@ -51,14 +55,19 @@ object English : Lang {
     override fun matchRight(letter: Letter, random: Random) =
         "${praise(random)} ${letter.word} starts with ${name(letter)}!"
     override fun matchWrong(letter: Letter) = "Try again! ${letter.word}."
+    override fun traceAsk(letter: Letter) = "Trace the letter ${name(letter)}!"
+    override fun traceDone(letter: Letter, random: Random) = "${praise(random)} You wrote ${name(letter)}!"
+    override fun traceAgain() = "Try again. Draw over the letter."
 
     override fun learnTitle(number: Int, total: Int) = "Letter $number of $total"
     override val findTitle = "Find the letter"
     override fun popTitle(next: Letter) = "Pop the letter ${next.symbol}"
     override val doneTitle = "Hooray!"
     override val matchTitle = "Which letter?"
+    override fun traceTitle(number: Int, total: Int) = "Trace $number of $total"
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "Learn"
+        GameMode.TRACE -> "Trace"
         GameMode.FIND -> "Find it"
         GameMode.BALLOONS -> "Balloons"
         GameMode.MATCH -> "Pictures"
@@ -84,14 +93,19 @@ object Hindi : Lang {
     override fun matchRight(letter: Letter, random: Random) =
         "${praise(random)} ${letter.word}, ${letter.symbol} से शुरू होता है!"
     override fun matchWrong(letter: Letter) = "फिर से कोशिश करो! ${letter.word}."
+    override fun traceAsk(letter: Letter) = "${letter.symbol} बनाओ!"
+    override fun traceDone(letter: Letter, random: Random) = "${praise(random)} तुमने ${letter.symbol} लिखा!"
+    override fun traceAgain() = "फिर से कोशिश करो। अक्षर के ऊपर बनाओ।"
 
     override fun learnTitle(number: Int, total: Int) = "अक्षर $number / $total"
     override val findTitle = "अक्षर ढूंढो"
     override fun popTitle(next: Letter) = "${next.symbol} फोड़ो"
     override val doneTitle = "शाबाश!"
     override val matchTitle = "कौन सा अक्षर?"
+    override fun traceTitle(number: Int, total: Int) = "लिखो $number / $total"
     override fun modeLabel(mode: GameMode) = when (mode) {
         GameMode.LEARN -> "सीखो"
+        GameMode.TRACE -> "लिखो"
         GameMode.FIND -> "ढूंढो"
         GameMode.BALLOONS -> "गुब्बारे"
         GameMode.MATCH -> "चित्र"

@@ -40,6 +40,7 @@ object Palette {
     const val MINT = 0xFFD2F4E1.toInt()
     const val LILAC = 0xFFE6DCFF.toInt()
     const val ICE = 0xFFDCE8FF.toInt()
+    const val PEACH = 0xFFFFE9D9.toInt()
 
     /** Colors for answer tiles, by position (never by letter, so color can't give the answer away). */
     val TILES = intArrayOf(OCEAN, GRASS, GRAPE, TOMATO)

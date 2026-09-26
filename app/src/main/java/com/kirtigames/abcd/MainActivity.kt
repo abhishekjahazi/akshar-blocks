@@ -112,6 +112,7 @@ class MainActivity : AppCompatActivity() {
     private fun startGame(track: Track, mode: GameMode) {
         val view = when (mode) {
             GameMode.LEARN -> LearnView(this, speaker, player, track)
+            GameMode.TRACE -> TraceView(this, speaker, player, track)
             GameMode.FIND -> FindView(this, speaker, player, track)
             GameMode.BALLOONS -> BalloonView(this, speaker, player, track)
             GameMode.MATCH -> MatchView(this, speaker, player, track)
