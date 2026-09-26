@@ -186,4 +186,5 @@ object CommonWords {
     const val WIN_MORE_STARS = "Win more stars to get this sticker!"
     fun streak(days: Int) = "$days days in a row! Wow!"
     fun newSticker(sticker: Sticker) = "New sticker!|A ${sticker.name}!"
+    const val REST = "Great playing today!|Time to rest now. See you tomorrow!"
 }

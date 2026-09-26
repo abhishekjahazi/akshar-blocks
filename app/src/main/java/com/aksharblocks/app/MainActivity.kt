@@ -2,11 +2,15 @@ package com.aksharblocks.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
  * Screens: Home (pick English / Hindi vowels / Hindi consonants) → that track's
@@ -15,7 +19,7 @@ import androidx.core.view.WindowInsetsControllerCompat
  */
 class MainActivity : AppCompatActivity() {
 
-    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME }
+    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, REST }
 
     private lateinit var speaker: Speaker
     private lateinit var profiles: ProfileStore
@@ -25,6 +29,19 @@ class MainActivity : AppCompatActivity() {
 
     /** The track whose menu or game is showing. */
     private var track: Track? = null
+
+    // Daily play-time limit: time is counted while the app is on screen, checked every few seconds.
+    private val playTime by lazy { PlayTime(this) }
+    private val ticker = Handler(Looper.getMainLooper())
+    private var lastTick = 0L
+    private var carryMs = 0L
+    private val tick = object : Runnable {
+        override fun run() {
+            countPlayTime()
+            checkPlayLimit()
+            ticker.postDelayed(this, TICK_MS)
+        }
+    }
 
     private val goBack = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -51,11 +68,54 @@ class MainActivity : AppCompatActivity() {
             speaker.slow = it.slowVoice
             Sounds.enabled = it.soundEffects
         }
+        lastTick = SystemClock.elapsedRealtime()
+        ticker.post(tick)
         // A parent may have renamed, added or removed children in the parent area.
         val current = profiles.current()
         if (current != player.profile) {
             player = Player(this, current)
             if (screen == Screen.HOME || screen == Screen.CHILDREN) showHome()
+        }
+    }
+
+    private fun countPlayTime() {
+        val now = SystemClock.elapsedRealtime()
+        if (lastTick > 0) {
+            val ms = now - lastTick + carryMs
+            playTime.add(ms / 1000)
+            carryMs = ms % 1000
+        }
+        lastTick = now
+    }
+
+    private fun checkPlayLimit() {
+        val over = PlayLimit.isOver(Settings(this).dailyLimitMinutes, playTime.secondsToday, playTime.extraMinutesToday)
+        if (over && screen != Screen.REST) showRest()
+        // A new day (or a parent's extra time) lifts the rest screen.
+        if (!over && screen == Screen.REST) showHome()
+    }
+
+    private fun showRest() {
+        screen = Screen.REST
+        track = null
+        // Back simply leaves the app from here.
+        goBack.isEnabled = false
+        speaker.stop()
+        setContentView(RestView(this, speaker, player).apply { onParent = ::restGate })
+    }
+
+    /** A grown-up can give a little more time or open the parent area. */
+    private fun restGate() {
+        ParentGate.show(this) {
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Play time is over for today")
+                .setPositiveButton("10 more minutes") { _, _ ->
+                    playTime.addExtraMinutes(10)
+                    showHome()
+                }
+                .setNeutralButton("Parent area") { _, _ -> startActivity(Intent(this, ParentActivity::class.java)) }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 
@@ -135,6 +195,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        countPlayTime()
+        lastTick = 0L
+        ticker.removeCallbacks(tick)
         speaker.stop()
     }
 
@@ -156,5 +219,9 @@ class MainActivity : AppCompatActivity() {
             hide(WindowInsetsCompat.Type.systemBars())
             systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }
+    }
+
+    private companion object {
+        const val TICK_MS = 5_000L
     }
 }

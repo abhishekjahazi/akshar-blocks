@@ -45,7 +45,7 @@ object VoiceScript {
                 GameMode.entries.forEach { add(lang, EVERYDAY, "*", lang.modeLabel(it)) }
             }
             with(CommonWords) {
-                add(English, EVERYDAY, "*", LETS_PLAY, YOUR_STICKERS, WIN_MORE_STARS)
+                add(English, EVERYDAY, "*", LETS_PLAY, YOUR_STICKERS, WIN_MORE_STARS, REST)
             }
 
             for (track in Track.entries) {

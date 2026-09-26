@@ -91,7 +91,7 @@ class Player(context: Context, val profile: Profile) {
 
     /** Adds a star and counts today toward the daily streak. */
     fun addStar() {
-        val today = today()
+        val today = todayNumber()
         prefs.edit()
             .putInt(KEY_STARS, stars + 1)
             .putInt(KEY_STREAK, Streak.next(prefs.getLong(KEY_LAST_DAY, Long.MIN_VALUE / 2), prefs.getInt(KEY_STREAK, 0), today))
@@ -101,7 +101,7 @@ class Player(context: Context, val profile: Profile) {
 
     /** Days played in a row (0 when the last play was before yesterday). */
     val streak: Int
-        get() = Streak.current(prefs.getLong(KEY_LAST_DAY, Long.MIN_VALUE / 2), prefs.getInt(KEY_STREAK, 0), today())
+        get() = Streak.current(prefs.getLong(KEY_LAST_DAY, Long.MIN_VALUE / 2), prefs.getInt(KEY_STREAK, 0), todayNumber())
 
     fun setStars(count: Int) = prefs.edit().putInt(KEY_STARS, count).apply()
 
@@ -150,12 +150,6 @@ class Player(context: Context, val profile: Profile) {
         private const val MIX = "mix"
 
         private fun fileFor(id: Int) = "progress_$id"
-
-        /** Today as a day number in the phone's own time zone. */
-        private fun today(): Long {
-            val now = System.currentTimeMillis()
-            return (now + java.util.TimeZone.getDefault().getOffset(now)) / (24L * 60 * 60 * 1000)
-        }
 
         fun erase(context: Context, id: Int) {
             context.deleteSharedPreferences(fileFor(id))

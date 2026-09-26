@@ -102,6 +102,9 @@ class ParentActivity : AppCompatActivity() {
             layoutParams = spaced(top = 4)
         })
 
+        section("Daily play time")
+        content.addView(playLimit())
+
         section("About")
         content.addView(text(
             "Akshar Blocks ${versionName()}\nNo ads. No accounts. No internet. " +
@@ -272,6 +275,39 @@ class ParentActivity : AppCompatActivity() {
         }
     }
 
+    /** Daily limit (all children together): off or 15–60 minutes, and today's play so far. */
+    private fun playLimit(): View {
+        val settings = Settings(this)
+        val playTime = PlayTime(this)
+        val column = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = spaced(top = 4)
+        }
+        val minutesToday = playTime.secondsToday / 60
+        column.addView(text("Played today: $minutesToday min", 15f, muted = true))
+        column.addView(RadioGroup(this).apply {
+            orientation = RadioGroup.VERTICAL
+            val buttons = PlayLimit.CHOICES.associateWith { minutes ->
+                RadioButton(this@ParentActivity).apply {
+                    id = View.generateViewId()
+                    text = if (minutes == 0) "No limit" else "$minutes minutes a day"
+                    textSize = 16f
+                }
+            }
+            buttons.values.forEach { addView(it) }
+            buttons[settings.dailyLimitMinutes]?.let { check(it.id) }
+            setOnCheckedChangeListener { _, checked ->
+                settings.dailyLimitMinutes = buttons.entries.first { it.value.id == checked }.key
+            }
+        })
+        column.addView(text(
+            "When time is up, the app shows a calm \"Time to rest\" screen until tomorrow. " +
+                "Grown-ups can add 10 minutes from the 🔒 on that screen.",
+            14f, muted = true, top = 4,
+        ))
+        return column
+    }
+
     private fun confirm(title: String, message: String, onYes: () -> Unit) {
         MaterialAlertDialogBuilder(this)
             .setTitle(title)
@@ -322,6 +358,11 @@ class Settings(context: Context) {
     var soundEffects: Boolean
         get() = prefs.getBoolean("sound_effects", true)
         set(value) = prefs.edit().putBoolean("sound_effects", value).apply()
+
+    /** 0 means no limit. */
+    var dailyLimitMinutes: Int
+        get() = prefs.getInt("daily_limit_minutes", 0)
+        set(value) = prefs.edit().putInt("daily_limit_minutes", value).apply()
 }
 
 /** A vertical column that is never wider than [maxWidth] px, so text stays readable on tablets. */
