@@ -1,0 +1,14 @@
+# पहले हिंदी शब्द (बिना मात्रा) for the Words game: built letter by letter, e.g. ज + ल = जल.
+# One per line: WORD <tab> PICTURE (emoji). Lines starting with # are ignored.
+जल	💧
+घर	🏠
+नल	🚰
+फल	🍇
+बस	🚌
+कप	☕
+कलम	🖊️
+बतख	🦆
+मगर	🐊
+भवन	🏢
+नमक	🧂
+कमल	🪷

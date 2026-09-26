@@ -183,6 +183,7 @@ class MainActivity : AppCompatActivity() {
             GameMode.BUILD -> MatraGameView(this, speaker, player, track)
             GameMode.COUNT -> CountView(this, speaker, player, track)
             GameMode.MEMORY -> MemoryView(this, speaker, player, track)
+            GameMode.WORDS -> WordsView(this, speaker, player, track)
             GameMode.TRACE -> TraceView(this, speaker, player, track)
             GameMode.FIND -> FindView(this, speaker, player, track)
             GameMode.BALLOONS -> BalloonView(this, speaker, player, track)

@@ -12,6 +12,7 @@ en_d0fa5548	Trace	Everyday phrases
 en_80754af9	Build	Everyday phrases
 en_ee9f38e1	Count	Everyday phrases
 en_81c5d49b	Memory	Everyday phrases
+en_efb89361	Words	Everyday phrases
 en_f554dd29	Find it	Everyday phrases
 en_1a9be7ff	Balloons	Everyday phrases
 en_0a3c1579	Pictures	Everyday phrases
@@ -34,7 +35,9 @@ en_758bd36c	Try again!	Everyday phrases
 en_84a51684	C!	Everyday phrases
 en_8bec0406	Ball.	Everyday phrases
 en_3c363836	D!	Everyday phrases
+en_9d989e8d	Cat.	Everyday phrases
 en_58e6b3a4	E!	Everyday phrases
+en_e4951252	Dog.	Everyday phrases
 en_4a0a1921	F!	Everyday phrases
 en_0ae9e4de	Elephant.	Everyday phrases
 en_54fd1711	G!	Everyday phrases
@@ -55,6 +58,7 @@ en_73335c22	Penguin.	Everyday phrases
 en_4dc7c9ec	R!	Everyday phrases
 en_a0f1490a	S!	Everyday phrases
 en_8efd86fb	T!	Everyday phrases
+en_22fa6121	Sun.	Everyday phrases
 en_51e69892	U!	Everyday phrases
 en_7a38d8cb	V!	Everyday phrases
 en_aff024fe	W!	Everyday phrases
@@ -63,6 +67,7 @@ en_95cb0bfd	Y!	Everyday phrases
 en_395df8f7	Z!	Everyday phrases
 en_19232bfb	Try again. Draw over the letter.	Everyday phrases
 en_7d79adc6	Hooray! You popped all the letters from ay to Z!	Everyday phrases
+en_483157aa	Make the word	Everyday phrases
 en_90d8f411	Find the pairs!	Everyday phrases
 en_8f53f629	You found all the pairs!	Everyday phrases
 en_1159f188	Find the small letter	Everyday phrases
@@ -85,11 +90,9 @@ en_17ce6c99	B is for Ball.	English
 en_986c1d1b	Which letter does Ball start with?	English
 en_777aca7a	Ball starts with B!	English
 en_d9653b48	C is for Cat.	English
-en_9d989e8d	Cat.	English
 en_3f30cfaa	Which letter does Cat start with?	English
 en_2be8b999	Cat starts with C!	English
 en_5eb0fa69	D is for Dog.	English
-en_e4951252	Dog.	English
 en_96984528	Which letter does Dog start with?	English
 en_4cb8f970	Dog starts with D!	English
 en_e897cc5a	E is for Elephant.	English
@@ -144,7 +147,6 @@ en_6d0ebbbd	Rabbit.	English
 en_96dc6889	Which letter does Rabbit start with?	English
 en_34038461	Rabbit starts with R!	English
 en_3dbeefa9	S is for Sun.	English
-en_22fa6121	Sun.	English
 en_1c4b7201	Which letter does Sun start with?	English
 en_a2791b55	Sun starts with S!	English
 en_dd950a94	T is for Tree.	English
@@ -175,6 +177,23 @@ en_574acaac	Z is for Zebra.	English
 en_38aa53de	Zebra.	English
 en_abe6dc93	Which letter does Zebra start with?	English
 en_e18adf0f	Zebra starts with Z!	English
+en_32c70ceb	bus!	English
+en_2cd4ba93	pig!	English
+en_d8110861	hen!	English
+en_ff0f0a8b	fox!	English
+en_9b64d4ad	bat!	English
+en_ad00c690	cup!	English
+en_c7d8a6d7	box!	English
+en_fefe2393	bed!	English
+en_31a841af	pen!	English
+en_10e58660	hat!	English
+en_efa44987	van!	English
+en_4fa6024f	egg!	English
+en_64bd05d8	ant!	English
+en_8bbddb4a	cow!	English
+en_917ee46d	bee!	English
+en_9e32521d	car!	English
+en_2c730e3a	owl!	English
 en_fe05bcdc	one	Numbers
 en_ad782ecd	two!	Numbers
 en_b802f384	three!	Numbers
@@ -285,7 +304,6 @@ en_326de722	balloon!	Numbers
 en_8dc72e62	How many flowers?	Numbers
 en_5a46b825	flower!	Numbers
 en_8c52ce89	How many cars?	Numbers
-en_9e32521d	car!	Numbers
 en_33ec68cb	How many chicks?	Numbers
 en_ed10eb98	chick!	Numbers
 en_26d33687	puppy	Stickers
@@ -302,7 +320,6 @@ en_8b1dd15c	A monkey!	Stickers
 en_14e60d90	A chick!	Stickers
 en_75105193	turtle	Stickers
 en_d06efd20	A turtle!	Stickers
-en_917ee46d	bee	Stickers
 en_6bb4716a	A bee!	Stickers
 en_e6d9f1c2	ladybug	Stickers
 en_3dfc4743	A ladybug!	Stickers
@@ -313,11 +330,9 @@ en_09f5edeb	bear	Stickers
 en_4da045cf	A bear!	Stickers
 en_7a7363ee	koala	Stickers
 en_3615523c	A koala!	Stickers
-en_8bbddb4a	cow	Stickers
 en_d7e7d0fc	A cow!	Stickers
 en_e57ebff8	piggy	Stickers
 en_03ff0c68	A piggy!	Stickers
-en_d8110861	hen	Stickers
 en_ccba5add	A hen!	Stickers
 en_9e05e683	mouse	Stickers
 en_46f5de03	A mouse!	Stickers

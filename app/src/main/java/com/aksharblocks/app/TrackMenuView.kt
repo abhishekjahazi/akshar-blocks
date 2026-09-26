@@ -11,6 +11,7 @@ enum class GameMode(val emoji: String, val color: Int, val textColor: Int) {
     BUILD("➕", Palette.TEAL, Palette.WHITE),
     COUNT("🔢", Palette.GRAPE, Palette.WHITE),
     MEMORY("🃏", Palette.PINK, Palette.WHITE),
+    WORDS("🔤", Palette.TOMATO, Palette.WHITE),
     FIND("🔍", Palette.GRASS, Palette.WHITE),
     BALLOONS("🎈", Palette.SUN, Palette.INK),
     MATCH("🍎", Palette.GRAPE, Palette.WHITE),

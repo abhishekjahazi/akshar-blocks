@@ -1,0 +1,22 @@
+# First English words for the Words game: short words a child can build letter by letter.
+# One per line: WORD <tab> PICTURE (emoji). Use small letters. Lines starting with # are ignored.
+cat	🐱
+dog	🐶
+sun	☀️
+bus	🚌
+pig	🐷
+hen	🐔
+fox	🦊
+bat	🦇
+cup	☕
+box	📦
+bed	🛏️
+pen	🖊️
+hat	🎩
+van	🚐
+egg	🥚
+ant	🐜
+cow	🐮
+bee	🐝
+car	🚗
+owl	🦉

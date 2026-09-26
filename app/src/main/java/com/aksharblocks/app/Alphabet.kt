@@ -27,7 +27,7 @@ data class Letter(
         }
 }
 
-private fun isCombiningMark(c: Char): Boolean {
+internal fun isCombiningMark(c: Char): Boolean {
     val type = Character.getType(c)
     return type == Character.NON_SPACING_MARK.toInt() ||
         type == Character.COMBINING_SPACING_MARK.toInt() ||
@@ -50,10 +50,10 @@ enum class Track(
     /** The games offered for this track, in menu order. */
     val modes: List<GameMode> = ALPHABET_GAMES,
 ) {
-    ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true),
+    ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true, modes = ALPHABET_GAMES + GameMode.WORDS),
     LOWER("Small letters", "a b c d", Palette.TEAL, EnglishSmall, "english-small.tsv", showsCase = false),
     SWAR("हिंदी स्वर", "Hindi vowels", Palette.TOMATO, Hindi, "swar.tsv", showsCase = false),
-    VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false),
+    VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false, modes = ALPHABET_GAMES + GameMode.WORDS),
     BARAKHADI(
         "बारहखड़ी", "Hindi syllables", Palette.GRAPE, Hindi, file = null, showsCase = false,
         modes = listOf(GameMode.LEARN, GameMode.BUILD, GameMode.FIND, GameMode.TRACE),
@@ -70,6 +70,16 @@ enum class Track(
      * child matches B with b.
      */
     fun prompt(letter: Letter): String = if (this == LOWER) letter.symbol.uppercase() else letter.symbol
+
+    /** First words to build, in assets/words/, for tracks with the Words game. */
+    val wordsFile: String?
+        get() = when (this) {
+            ENGLISH -> "english.tsv"
+            VYANJAN -> "hindi.tsv"
+            else -> null
+        }
+
+    val words: List<Word> get() = Content.words(this)
 
     /**
      * Letters to offer as wrong answers next to [target]: the same group when it has one,

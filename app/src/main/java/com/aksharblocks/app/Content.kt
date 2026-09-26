@@ -11,9 +11,13 @@ object Content {
 
     private val letters = HashMap<Track, List<Letter>>()
     private val strokes = HashMap<Track, Map<String, List<Stroke>>>()
+    private val words = HashMap<Track, List<Word>>()
 
     fun letters(track: Track): List<Letter> =
         letters[track] ?: error("Content not loaded yet: ${track.name}")
+
+    /** First words for the Words game (empty for tracks without it). */
+    fun words(track: Track): List<Word> = words[track].orEmpty()
 
     /** How to write [letter] for tracing, or null when the track has no stroke data for it. */
     fun strokes(track: Track, letter: Letter): List<Stroke>? = strokes[track]?.get(letter.symbol)
@@ -21,6 +25,9 @@ object Content {
     /** Loads every track from the app's assets. Called once when the app starts. */
     fun load(assets: AssetManager) {
         for (track in Track.entries) {
+            track.wordsFile?.let { file ->
+                words[track] = assets.open("words/$file").bufferedReader().use { Words.parse(it.readText()) }
+            }
             if (track.file == null) continue
             letters[track] = assets.open("tracks/${track.file}").bufferedReader().use { parse(it.readText()) }
             // Stroke files are optional: letters without one are traced over their shape.
@@ -36,6 +43,7 @@ object Content {
     /** Loads every track from an assets folder on disk (used by tests). */
     fun loadFrom(folder: File) {
         for (track in Track.entries) {
+            track.wordsFile?.let { file -> words[track] = Words.parse(File(folder, "words/$file").readText()) }
             if (track.file == null) continue
             letters[track] = parse(File(folder, "tracks/${track.file}").readText())
             val strokeFile = File(folder, "tracing/${track.file}")
