@@ -78,6 +78,26 @@ class TracingTest {
     }
 
     @Test
+    fun letterAIsNotDoneUntilItsBarIsDrawn() {
+        val strokes = Content.strokes(Track.ENGLISH, Track.ENGLISH.letters.first())!!.map { it.sample() }
+        val grid = TraceGrid()
+        strokes.forEach { grid.addTargetLine(it, Tracing.TARGET_RADIUS) }
+        fun trace(line: List<P>) {
+            for (i in 1 until line.size) grid.paint(line[i - 1], line[i], Tracing.CRAYON_RADIUS)
+        }
+
+        // Both slanted sides alone already cover most of the letter...
+        trace(strokes[0])
+        trace(strokes[1])
+        assertTrue("coverage ${grid.coverage}", grid.coverage >= Tracing.PASS_WITH_STROKES)
+        // ...but the bar is still missing, so it must not count yet.
+        assertTrue("weakest ${grid.weakestStroke}", grid.weakestStroke < Tracing.PASS_EACH_STROKE)
+
+        trace(strokes[2])
+        assertTrue("weakest ${grid.weakestStroke}", grid.weakestStroke >= Tracing.PASS_EACH_STROKE)
+    }
+
+    @Test
     fun scribblingOverTheWholeBoxDoesNotPass() {
         val (grid, _) = gridForLetterT()
         var y = 0f

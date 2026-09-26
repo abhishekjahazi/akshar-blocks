@@ -56,6 +56,9 @@ object Tracing {
     /** At most this share of the crayon may land off the letter (stops "scribble everywhere"). */
     const val MAX_OUTSIDE = 0.55f
 
+    /** Every stroke on its own must be at least this well covered. */
+    const val PASS_EACH_STROKE = 0.6f
+
     /**
      * Reads a stroke file: one letter per line, `LETTER <tab> STROKES`. Strokes are separated
      * by `;`, points by spaces, each point is `x,y` from 0 to 1. A stroke starting with `~`
@@ -89,6 +92,9 @@ object Tracing {
 class TraceGrid(private val size: Int = 64) {
 
     private val target = BooleanArray(size * size)
+
+    /** Each stroke's own cells, so every stroke can be checked (not just the total). */
+    private val strokeTargets = ArrayList<BooleanArray>()
     private val painted = BooleanArray(size * size)
 
     var targetCount = 0
@@ -98,13 +104,17 @@ class TraceGrid(private val size: Int = 64) {
 
     fun clearTarget() {
         target.fill(false)
+        strokeTargets.clear()
         targetCount = 0
     }
 
     /** Marks a stroke of the letter, drawn with the given radius (box units). */
     fun addTargetLine(points: List<P>, radius: Float) {
-        for (i in 1 until points.size) stamp(points[i - 1], points[i], radius, target)
-        if (points.size == 1) stamp(points[0], points[0], radius, target)
+        val own = BooleanArray(size * size)
+        for (i in 1 until points.size) stamp(points[i - 1], points[i], radius, own)
+        if (points.size == 1) stamp(points[0], points[0], radius, own)
+        strokeTargets += own
+        for (i in own.indices) if (own[i]) target[i] = true
         targetCount = target.count { it }
     }
 
@@ -134,6 +144,21 @@ class TraceGrid(private val size: Int = 64) {
             for (i in target.indices) if (target[i] && painted[i]) hit++
             return hit / targetCount.toFloat()
         }
+
+    /**
+     * The lowest coverage of any single stroke (1 when there are no separate strokes).
+     * Stops a letter counting as done while one of its strokes, like the bar of an A, is missing.
+     */
+    val weakestStroke: Float
+        get() = strokeTargets.minOfOrNull { own ->
+            var total = 0
+            var hit = 0
+            for (i in own.indices) if (own[i]) {
+                total++
+                if (painted[i]) hit++
+            }
+            if (total == 0) 1f else hit / total.toFloat()
+        } ?: 1f
 
     /** Share of the crayon that is off the letter, 0 to 1. */
     val outsideShare: Float

@@ -7,6 +7,7 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.RectF
 import android.view.MotionEvent
+import kotlin.math.hypot
 import kotlin.math.min
 
 /**
@@ -36,6 +37,12 @@ class TraceView(
     private var drawing = false
     private var solved = false
 
+    /** A touch that started on the letter while celebrating; ignored so it can't flip letters. */
+    private var ignoringTouch = false
+
+    /** Changes whenever a new letter is shown, so a pending "next letter" can tell it's stale. */
+    private var letterToken = 0
+
     /** When the stroke demonstration starts (game time), or null when it isn't playing. */
     private var demoStart: Float? = null
 
@@ -61,6 +68,7 @@ class TraceView(
     }
 
     private fun showLetter(i: Int) {
+        letterToken++
         index = (i + letters.size) % letters.size
         val letter = letters[index]
         strokes = Content.strokes(track, letter)
@@ -160,7 +168,12 @@ class TraceView(
 
         val dot = box.width() * 0.045f
         strokeSamples.forEachIndexed { i, points ->
-            val start = toScreenX(points.first().x) to toScreenY(points.first().y)
+            // When strokes start at the same spot (like both sides of an A), move this
+            // number a little way along its own stroke so the numbers don't cover each other.
+            val first = points.first()
+            val shared = (0 until i).any { j -> strokeSamples[j].first().let { hypot(it.x - first.x, it.y - first.y) < 0.08f } }
+            val at = if (shared) points[(points.lastIndex * 0.18f).toInt()] else first
+            val start = toScreenX(at.x) to toScreenY(at.y)
             fillPaint.color = Palette.INK
             canvas.drawCircle(start.first, start.second, dot, fillPaint)
             drawText(canvas, "${i + 1}", start.first, start.second, dot * 1.3f, Palette.WHITE)
@@ -235,7 +248,14 @@ class TraceView(
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
-            drawing = !solved && card.contains(event.x, event.y)
+            val onLetter = card.contains(event.x, event.y)
+            ignoringTouch = solved && onLetter
+            drawing = !solved && onLetter
+        }
+        if (ignoringTouch) {
+            val action = event.actionMasked
+            if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) ignoringTouch = false
+            return true
         }
         if (!drawing) return super.onTouchEvent(event)
 
@@ -267,12 +287,16 @@ class TraceView(
     /** After each stroke: done if enough of the letter is covered without scribbling everywhere. */
     private fun check() {
         val pass = if (strokes != null) Tracing.PASS_WITH_STROKES else Tracing.PASS_WITH_SHAPE
-        if (grid.coverage >= pass && grid.outsideShare <= Tracing.MAX_OUTSIDE) {
+        val passed = grid.coverage >= pass &&
+            grid.weakestStroke >= Tracing.PASS_EACH_STROKE &&
+            grid.outsideShare <= Tracing.MAX_OUTSIDE
+        if (passed) {
             solved = true
             addStar()
             celebrate(box.centerX(), box.centerY(), 48)
             speaker.say(lang.traceDone(letters[index], random), lang.locale)
-            after(2.4f) { showLetter(index + 1) }
+            val token = letterToken
+            after(2.4f) { if (token == letterToken) showLetter(index + 1) }
         } else if (grid.outsideShare > SCRIBBLE && grid.paintedCount > grid.targetCount) {
             speaker.say(lang.traceAgain(), lang.locale)
             after(0.6f) { clearDrawing() }
