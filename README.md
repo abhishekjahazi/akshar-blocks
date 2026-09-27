@@ -19,11 +19,11 @@
 
 ## Screenshots
 
-<p align="center">
-  <img src="store/screenshot-2-find.png" alt="Find the letter" width="240">
-  <img src="store/screenshot-3-balloons.png" alt="Balloon pop" width="240">
-  <img src="store/screenshot-4-match.png" alt="Match the picture" width="240">
-</p>
+| Home: 7 learning tracks | Game modes for a track | Tracing with stroke order |
+|:---:|:---:|:---:|
+| <img src="docs/screenshots/1-home.png" alt="Home screen with seven learning tracks" width="230"> | <img src="docs/screenshots/2-games.png" alt="English track with its game modes" width="230"> | <img src="docs/screenshots/3-trace.png" alt="Tracing the letter A with numbered strokes" width="230"> |
+| **First words: build s-u-n** | **Memory: find the pairs** | **बारहखड़ी: add the vowel sign** |
+| <img src="docs/screenshots/4-words.png" alt="Building the word sun from letter blocks" width="230"> | <img src="docs/screenshots/5-memory.png" alt="Memory game with two cards turned over" width="230"> | <img src="docs/screenshots/6-barakhadi.png" alt="Barakhadi game: ष plus which vowel sign makes षू" width="230"> |
 
 ## Features
 
