@@ -1,93 +1,120 @@
-# abcd-games
+<p align="center">
+  <img src="store/feature-graphic-1024x500.png" alt="Akshar Blocks – English and Hindi letters, बारहखड़ी and numbers, learned by playing" width="720">
+</p>
 
+<h1 align="center">Akshar Blocks</h1>
 
+<p align="center">
+  An offline Android learning app that teaches children aged 3–7 <b>English ABC</b>, <b>Hindi letters</b> (स्वर, व्यंजन, बारहखड़ी) and <b>numbers</b> through play.
+</p>
 
-## Getting started
+<p align="center">
+  <img src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin">
+  <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
+  <img src="https://img.shields.io/badge/offline-100%25-2E7BFF" alt="Works offline">
+  <img src="https://img.shields.io/badge/unit%20tests-71-22B35E" alt="71 unit tests">
+</p>
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+---
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Screenshots
 
-## Add your files
+<p align="center">
+  <img src="store/screenshot-2-find.png" alt="Find the letter" width="240">
+  <img src="store/screenshot-3-balloons.png" alt="Balloon pop" width="240">
+  <img src="store/screenshot-4-match.png" alt="Match the picture" width="240">
+</p>
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+## Features
+
+**Seven learning tracks**
+
+| Track | What the child learns |
+|---|---|
+| English ABC | Capital letters A–Z with a picture for each (A for Apple) |
+| Small letters | a–z, matched to their capitals |
+| स्वर (Swar) | Hindi vowels अ – अः |
+| व्यंजन (Vyanjan) | Hindi consonants क – ज्ञ |
+| बारहखड़ी (Barakhadi) | Consonant + vowel sign (क का कि की …) |
+| Numbers | 1–100, with counting games |
+| गिनती (Ginti) | Hindi numerals १–१०० |
+
+**Nine game modes**: Learn, Trace (follow the strokes with a finger), Find it, Balloon pop, Match the picture, Memory pairs, First words (build c-a-t or ज-ल from letter blocks), Count, and Build a syllable (बारहखड़ी).
+
+**Voice in English and Hindi.** Every instruction and letter name is spoken. 1,100+ pre-recorded clips ship with the app, and text-to-speech covers anything else, so it works with no internet.
+
+**Learns with the child.** Adaptive practice brings back letters a child gets wrong, and tracks which letters get mixed up (b ↔ d, ब ↔ व).
+
+**Rewards.** Stars, a sticker album (a new sticker every 5 stars) and a daily streak.
+
+**Parent area**, behind a typed maths question so children can't open it:
+- Up to 4 child profiles, each with their own progress.
+- A daily play-time limit (15–60 minutes), with a friendly "time to rest" screen.
+- A **report card** for each child: level per track, a colour-coded letter map, a weekly play-time chart, letters that need practice, and a Share button.
+
+**Private by design.** No ads, no accounts, no internet permission, no analytics. All progress stays on the device and backups are turned off. The app follows Google Play's Families policy.
+
+**Phones and tablets**, in portrait and landscape.
+
+## Tech stack
+
+| | |
+|---|---|
+| Language | Kotlin |
+| Platform | Android SDK (min API 24, target API 37), Android Gradle Plugin 9 |
+| UI | Custom `Canvas` game engine (`GameView`) with animation, plus Material Components for the parent area |
+| Audio | `MediaPlayer` for bundled voice clips, Android `TextToSpeech` as fallback, `AudioTrack` for sound effects generated in code |
+| Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
+| Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
+| Testing | JUnit: 71 unit tests covering content, tracing, rewards, reports, play-time limits and voice clips |
+| Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
+
+## Project structure
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/abhishekjahazi/abcd-games.git
-git branch -M main
-git push -uf origin main
+app/src/main/
+├── java/com/aksharblocks/app/
+│   ├── MainActivity.kt        # Screen navigation (home, tracks, games, rest)
+│   ├── GameView.kt            # Base game engine: drawing, animation, taps
+│   ├── LearnView.kt, TraceView.kt, FindView.kt, BalloonView.kt,
+│   │   MatchView.kt, MemoryView.kt, WordsView.kt, CountView.kt,
+│   │   BarakhadiView.kt       # One class per game mode
+│   ├── Alphabet.kt, Lang.kt   # Tracks, letters, and English/Hindi phrases
+│   ├── Voice.kt, Speaker.kt   # Bundled voice clips with TTS fallback
+│   ├── Profiles.kt, Rewards.kt, PlayTime.kt
+│   ├── ParentActivity.kt, ParentGate.kt, ReportCard.kt
+│   └── ...
+└── assets/
+    ├── tracks/     # Letters and pictures for each track (TSV)
+    ├── tracing/    # Stroke paths for tracing (TSV)
+    ├── words/      # Word lists for "First words" (TSV)
+    ├── art/        # Noto Emoji images
+    └── voice/      # English and Hindi voice clips (.m4a)
 ```
 
-## Integrate with your tools
+## Build and run
 
-* [Set up project integrations](https://gitlab.com/abhishekjahazi/abcd-games/-/settings/integrations)
+Requirements: Android Studio (latest), JDK 17+, an Android device or emulator on Android 7.0+.
 
-## Collaborate with your team
+```bash
+git clone https://github.com/abhishekjahazi/akshar-blocks.git
+cd akshar-blocks
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+./gradlew installDebug        # build and install on a connected device
+./gradlew testDebugUnitTest   # run the unit tests
+```
 
-## Test and Deploy
+Release builds need a signing key in `keystore.properties`, which is not part of this repository.
 
-Use the built-in continuous integration in GitLab.
+## Status
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+Version 1.0, being prepared for release on Google Play.
 
-***
+## Credits
 
-# Editing this README
+- Emoji art: [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, Apache License 2.0 (see `app/src/main/assets/art/LICENSE-noto-emoji.txt`).
+- Voices: generated with Google's on-device text-to-speech voices.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+---
 
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+<p align="center">Made by <a href="https://github.com/abhishekjahazi">Abhisek Jahaji</a></p>
