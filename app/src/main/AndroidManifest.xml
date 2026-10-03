@@ -49,6 +49,12 @@
             android:exported="false"
             android:label="Parent area"
             android:noHistory="true" />
+        <!-- Saves or restores a backup file for the parent area (only started from there). -->
+        <activity
+            android:name=".BackupActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|fontScale|density|locale|layoutDirection"
+            android:exported="false"
+            android:theme="@style/Theme.ABCDGame.Invisible" />
         <!-- Google AdMob app ID (set per build type in build.gradle.kts). -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

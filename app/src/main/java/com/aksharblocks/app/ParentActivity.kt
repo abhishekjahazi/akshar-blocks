@@ -128,10 +128,28 @@ class ParentActivity : AppCompatActivity() {
         section("Daily play time")
         content.addView(playLimit())
 
+        section("Backup")
+        content.addView(text(
+            "Progress is kept only on this phone. Save a backup file to keep it safe, or to move it to a new phone.",
+            15f, muted = true, top = 4,
+        ))
+        val backup = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            layoutParams = spaced(top = 6)
+        }
+        backup.addView(textButton("Save a backup") { BackupActivity.save(this) })
+        backup.addView(textButton("Restore a backup") {
+            confirm("Restore a backup?", "The children and progress on this phone will be replaced by the ones in the file you pick.") {
+                BackupActivity.restore(this)
+            }
+        })
+        content.addView(backup)
+
         section("About")
         content.addView(text(
-            "Akshar Blocks ${versionName()}\nNo ads. No accounts. No internet. " +
-                "Stars and progress are saved only on this phone and are deleted if the app is uninstalled.\n\n" +
+            "Akshar Blocks ${versionName()}\nNo accounts. The games work without internet. " +
+                "Stars and progress are saved only on this phone and are deleted if the app is uninstalled " +
+                "(save a backup to keep them). One small ad shows on the home screen; there are no ads in the games.\n\n" +
                 "Pictures: Noto Emoji by Google, used under the Apache License 2.0.",
             15f, muted = true, top = 4,
         ))
