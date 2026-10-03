@@ -3,7 +3,10 @@ package com.aksharblocks.app
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import java.util.Locale
 
@@ -21,7 +24,15 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
     private var currentLocale: Locale? = null
 
     /** Last thing asked for before the engine finished starting up. */
-    private var pending: Pair<String, Locale>? = null
+    private var pending: Triple<String, Locale, (() -> Unit)?>? = null
+
+    private val main = Handler(Looper.getMainLooper())
+
+    /** Called once the sentence being said now has finished (not when it is cut off). */
+    private var onDone: (() -> Unit)? = null
+
+    /** Told when speech starts and stops, so background music can play quieter under it. */
+    var onSpeaking: ((Boolean) -> Unit)? = null
 
     /** The recording playing now, and a counter that makes older playback stop chaining. */
     private var player: MediaPlayer? = null
@@ -45,30 +56,48 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
         // A little slower and brighter than normal, for young listeners.
         tts.setSpeechRate(rate)
         tts.setPitch(1.15f)
+        tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+            override fun onStart(utteranceId: String) {}
+            override fun onDone(utteranceId: String) { main.post { if (utteranceId == lastUtterance) finished() } }
+            @Deprecated("Deprecated in Java")
+            override fun onError(utteranceId: String) { main.post { if (utteranceId == lastUtterance) finished() } }
+        })
         ready = true
-        pending?.let { (text, locale) -> say(text, locale) }
+        pending?.let { (text, locale, done) -> say(text, locale, done) }
         pending = null
     }
 
-    /** Says [text] in [locale], interrupting anything that is still being said. */
-    fun say(text: String, locale: Locale = English.locale) {
+    /** The id of the last utterance queued for the phone voice; its end is the sentence's end. */
+    private var lastUtterance: String? = null
+
+    /**
+     * Says [text] in [locale], interrupting anything that is still being said. [done] runs when
+     * it has all been said (rhymes use it to go on to the next line).
+     */
+    fun say(text: String, locale: Locale = English.locale, done: (() -> Unit)? = null) {
+        onDone = done
+        onSpeaking?.invoke(true)
         val clips = Voice.clipsFor(text, locale)
         if (clips != null) {
             if (ready) tts.stop()
             pending = null
+            lastUtterance = null
             playClips(clips, 0, ++playToken)
             return
         }
         stopClips()
         if (!ready) {
-            pending = text to locale
+            pending = Triple(text, locale, done)
             return
         }
         // A sentence can switch language part way ("Cow!|@hi गाय!"): each run is queued in its own voice.
-        Voice.spokenRuns(text, locale).forEachIndexed { i, (runLocale, spoken) ->
+        val runs = Voice.spokenRuns(text, locale)
+        runs.forEachIndexed { i, (runLocale, spoken) ->
             setLanguage(runLocale)
             val mode = if (i == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD
-            tts.speak(spoken, mode, null, spoken.hashCode().toString())
+            val id = "say${playToken}_$i"
+            if (i == runs.lastIndex) lastUtterance = id
+            tts.speak(spoken, mode, null, id)
         }
     }
 
@@ -84,7 +113,11 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
     /** Plays recordings one after another; a newer sentence cancels the rest. */
     private fun playClips(clips: List<String>, index: Int, token: Int) {
         releasePlayer()
-        if (index >= clips.size || token != playToken) return
+        if (token != playToken) return
+        if (index >= clips.size) {
+            finished()
+            return
+        }
         // Kept in a local until it's playing, so a clip that fails to load is still released.
         val next = MediaPlayer()
         try {
@@ -108,6 +141,13 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
         }
     }
 
+    private fun finished() {
+        onSpeaking?.invoke(false)
+        val done = onDone ?: return
+        onDone = null
+        done()
+    }
+
     private fun stopClips() {
         playToken++
         releasePlayer()
@@ -120,8 +160,11 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
 
     fun stop() {
         pending = null
+        onDone = null
+        lastUtterance = null
         stopClips()
         if (ready) tts.stop()
+        onSpeaking?.invoke(false)
     }
 
     fun shutdown() {

@@ -19,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 class MainActivity : AppCompatActivity() {
 
-    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, REST }
+    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, RHYMES, REST }
 
     private lateinit var speaker: Speaker
     private lateinit var profiles: ProfileStore
@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
 
     /** The step of today's path being played, or null outside the path. */
     private var pathStep: Int? = null
+
+    /** True while a rhyme is playing, so Back returns to the list of rhymes. */
+    private var inRhyme = false
 
     /** Counts up for each game shown, so a late "step finished" timer can tell it's stale. */
     private var gameToken = 0
@@ -53,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         override fun handleOnBackPressed() {
             val current = track
             when {
+                screen == Screen.GAME && inRhyme -> showRhymes()
                 screen == Screen.GAME && pathStep != null -> showPath()
                 screen == Screen.GAME && current != null -> showTrack(current)
                 else -> showHome()
@@ -149,6 +153,8 @@ class MainActivity : AppCompatActivity() {
             onChild = ::showChildren
             onAlbum = ::showAlbum
             onPath = { showPath() }
+            onName = ::showName
+            onRhymes = ::showRhymes
             pathDone = player.pathDone
         })
     }
@@ -214,9 +220,42 @@ class MainActivity : AppCompatActivity() {
 
     private fun showGame(view: GameView) {
         gameToken++
+        inRhyme = false
         screen = Screen.GAME
         goBack.isEnabled = true
         setContentView(view)
+    }
+
+    private fun showRhymes() {
+        screen = Screen.RHYMES
+        track = null
+        pathStep = null
+        inRhyme = false
+        goBack.isEnabled = true
+        speaker.stop()
+        setContentView(RhymesView(this, speaker, player).apply {
+            onPick = ::showRhyme
+            onHome = ::showHome
+        })
+    }
+
+    private fun showRhyme(rhyme: Rhyme) {
+        speaker.stop()
+        val view = RhymeView(this, speaker, player, rhyme)
+        view.onHome = ::showRhymes
+        showGame(view)
+        inRhyme = true
+    }
+
+    /** Trace the playing child's own name. */
+    private fun showName() {
+        val letters = NameLetters.of(player.profile.name)
+        if (letters.isEmpty()) return
+        val view = TraceView(this, speaker, player, Track.ENGLISH, name = letters)
+        view.onHome = ::showHome
+        showGame(view)
+        track = null
+        pathStep = null
     }
 
     /** Today's games: the list of steps, with the next one ready to tap. */

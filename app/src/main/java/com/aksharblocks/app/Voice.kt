@@ -44,6 +44,10 @@ object Voice {
     /** The sentence as one string, parts joined with spaces (language tags removed). */
     fun spokenText(text: String): String = parts(text).joinToString(" ")
 
+    /** [text] with every part tagged as [language], so it keeps its voice inside another sentence. */
+    fun tagged(text: String, language: String): String =
+        segments(text, language).joinToString("|") { "@${it.language} ${it.text}" }
+
     /** The parts of [text] as written, language tags removed. */
     fun parts(text: String): List<String> = segments(text, "en").map { it.text }
 

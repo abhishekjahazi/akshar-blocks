@@ -7,7 +7,7 @@ import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.sin
 
-/** First screen: pick English ABC, Hindi vowels or Hindi consonants. */
+/** First screen: today's games, then every section (letters, numbers, pictures, rhymes, my name). */
 class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(context, speaker, player) {
 
     var onPick: ((Track) -> Unit)? = null
@@ -31,8 +31,30 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
 
     override val showHomeButton = false
 
-    private val tracks = Track.entries
-    private val cards = tracks.map { RectF() }
+    /** Rhymes was tapped. */
+    var onRhymes: (() -> Unit)? = null
+
+    /** "My name" was tapped: trace the child's own name. */
+    var onName: (() -> Unit)? = null
+
+    /** One section on Home: a track, or one of the extra corners (rhymes, my name). */
+    private class Section(
+        val label: String,
+        val subtitle: String,
+        val color: Int,
+        /** A few letters or pictures shown on little white blocks. */
+        val sample: List<String>,
+        val sampleColor: (Int) -> Int,
+        val open: () -> Unit,
+    )
+
+    private val sections: List<Section> = Track.entries.map { track ->
+        Section(track.label, track.subtitle, track.color, track.letters.take(SAMPLE_SIZE).map { it.symbol }, track::colorFor) { onPick?.invoke(track) }
+    } + listOf(
+        Section("Rhymes", "कविताएँ", Palette.RUST, listOf("🎵", "⭐", "🐟"), { Palette.RUST }) { onRhymes?.invoke() },
+        Section("My name", "मेरा नाम", Palette.ROYAL, NameLetters.sample(player.profile.name, SAMPLE_SIZE), Track.ENGLISH::colorFor) { onName?.invoke() },
+    )
+    private val cards = sections.map { RectF() }
     private val pathBanner = RectF()
     private val pathDot = RectF()
     private val miniBlock = RectF()
@@ -47,43 +69,43 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val titleBottom = titleTop + height * (if (landscape) 0.22f else 0.14f)
         drawPathBanner(canvas, titleTop + dp(8f), titleBottom)
 
-        // A grid of sections: two columns in portrait, three in landscape.
-        val gap = dp(14f)
-        val areaTop = titleBottom + dp(8f)
-        val cols = if (landscape) 3 else 2
-        val rows = (tracks.size + cols - 1) / cols
+        // A grid of sections: three columns in portrait, five in landscape.
+        val gap = dp(10f)
+        val areaTop = titleBottom + dp(4f)
+        val cols = if (landscape) 5 else 3
+        val rows = (sections.size + cols - 1) / cols
         val cellW = (contentRight - contentLeft) / cols
         val cellH = (contentBottom - areaTop) / rows
-        tracks.forEachIndexed { i, track ->
+        sections.forEachIndexed { i, section ->
             val card = cards[i]
             // A last row with fewer sections is centered.
             val row = i / cols
-            val inRow = minOf(cols, tracks.size - row * cols)
+            val inRow = minOf(cols, sections.size - row * cols)
             val left = contentLeft + (cols - inRow) * cellW / 2f + cellW * (i % cols)
             val top = areaTop + cellH * row
-            card.set(left + gap / 2f, top + gap / 2f, left + cellW - gap / 2f, top + cellH - gap / 2f - dp(8f))
+            card.set(left + gap / 2f, top + gap / 2f, left + cellW - gap / 2f, top + cellH - gap / 2f - dp(7f))
 
-            val appear = popIn((time - 0.4f - i * 0.1f) / 0.4f)
+            val appear = popIn((time - 0.4f - i * 0.05f) / 0.4f)
             if (appear <= 0.01f) return@forEachIndexed
             canvas.save()
             canvas.scale(appear, appear, card.centerX(), card.centerY())
-            val sink = drawBlock(canvas, card, track.color, radius = dp(30f), depth = dp(10f))
+            val sink = drawBlock(canvas, card, section.color, radius = dp(24f), depth = dp(8f))
             val h = card.height()
             val w = card.width()
-            drawText(canvas, track.label, card.centerX(), card.top + h * 0.24f + sink, min(h * 0.17f, dp(30f)), Palette.WHITE, w * 0.88f)
-            drawText(canvas, track.subtitle, card.centerX(), card.top + h * 0.43f + sink, min(h * 0.09f, dp(16f)), 0xDDFFFFFF.toInt(), w * 0.88f)
+            drawText(canvas, section.label, card.centerX(), card.top + h * 0.25f + sink, min(h * 0.17f, dp(24f)), Palette.WHITE, w * 0.86f)
+            drawText(canvas, section.subtitle, card.centerX(), card.top + h * 0.45f + sink, min(h * 0.1f, dp(14f)), 0xDDFFFFFF.toInt(), w * 0.86f)
 
-            // A row of the track's first letters on little white blocks.
-            val sample = track.letters.take(SAMPLE_SIZE)
-            val side = min(h * 0.28f, (w - dp(20f)) / SAMPLE_SIZE - dp(6f))
-            val rowWidth = side * SAMPLE_SIZE + dp(6f) * (SAMPLE_SIZE - 1)
+            // A row of the section's first letters (or pictures) on little white blocks.
+            val count = section.sample.size
+            val side = min(h * 0.27f, (w - dp(14f)) / SAMPLE_SIZE - dp(4f))
+            val rowWidth = side * count + dp(4f) * (count - 1)
             var x = card.centerX() - rowWidth / 2f
-            val y = card.top + h * 0.72f + sink
-            sample.forEachIndexed { j, letter ->
+            val y = card.top + h * 0.73f + sink
+            section.sample.forEachIndexed { j, symbol ->
                 miniBlock.set(x, y - side / 2f, x + side, y + side / 2f)
-                drawBlock(canvas, miniBlock, Palette.WHITE, depth = dp(4f), pressable = false)
-                drawText(canvas, letter.symbol, miniBlock.centerX(), miniBlock.centerY(), side * 0.62f, track.colorFor(j), side * 0.86f)
-                x += side + dp(6f)
+                drawBlock(canvas, miniBlock, Palette.WHITE, depth = dp(3f), pressable = false)
+                drawText(canvas, symbol, miniBlock.centerX(), miniBlock.centerY(), side * 0.62f, section.sampleColor(j), side * 0.86f)
+                x += side + dp(4f)
             }
             canvas.restore()
         }
@@ -180,11 +202,11 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val index = cards.indexOfFirst { it.contains(x, y) }
         if (index >= 0) {
             Sounds.play(Sound.TAP)
-            onPick?.invoke(tracks[index])
+            sections[index].open()
         }
     }
 
     private companion object {
-        const val SAMPLE_SIZE = 4
+        const val SAMPLE_SIZE = 3
     }
 }

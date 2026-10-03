@@ -310,4 +310,9 @@ object CommonWords {
     const val PATH_START = "Today's games!|Tap the big block to play."
     const val PATH_NEXT = "Well done!|Next game!"
     const val PATH_DONE = "You finished today's games!|Come back tomorrow for more."
+    const val MY_NAME = "My name"
+    const val RHYMES = "Rhymes"
+    const val RHYMES_ASK = "Pick a rhyme!"
+    const val NAME_START = "Let's write your name!"
+    const val NAME_DONE = "Wonderful!|You wrote your name!"
 }

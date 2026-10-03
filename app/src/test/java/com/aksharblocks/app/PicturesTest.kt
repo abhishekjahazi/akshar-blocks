@@ -78,7 +78,7 @@ class PicturesTest {
         assertEquals("क शोधा!", Voice.spokenText(Marathi.find(Letter("क"))))
         assertTrue(Marathi.learn(Track.MARATHI.letters.first()).contains("अननस"))
         // Marathi lines are recorded in their own voice.
-        assertTrue(VoiceScript.lines().getValue("mr").any { it.text == "शोधा!" })
+        assertTrue(VoiceScript.lines().getValue("mr").any { Voice.key(it.text) == "शोधा" })
         assertTrue(Voice.clipId("mr", "शोधा").startsWith("mr_"))
     }
 
@@ -88,5 +88,54 @@ class PicturesTest {
             GameMode.entries.forEach { assertTrue(lang.modeLabel(it).isNotBlank()) }
         }
         assertTrue(AnimalWords.soundRight(Track.ANIMALS.letters.first(), Random(1)).endsWith("The cow says moo!"))
+    }
+}
+
+class RhymesAndNamesTest {
+
+    companion object {
+        @JvmStatic
+        @BeforeClass
+        fun loadContent() {
+            Content.loadFrom(File("src/main/assets"))
+        }
+    }
+
+    @Test
+    fun rhymesLoadWithTheirLanguages() {
+        val rhymes = Rhymes.all
+        assertEquals(12, rhymes.size)
+        assertEquals("Twinkle, Twinkle", rhymes.first().title)
+        assertEquals(6, rhymes.first().lines.size)
+        assertEquals(setOf("en", "hi", "mr"), rhymes.map { it.language }.toSet())
+        rhymes.forEach { assertTrue(it.title, it.lines.size in 2..8 && it.emoji.isNotBlank()) }
+        // Every line is recorded in the rhyme's own language.
+        val hindi = VoiceScript.lines().getValue("hi").map { Voice.key(it.text) }.toSet()
+        assertTrue(Voice.key("मछली जल की रानी है,") in hindi)
+    }
+
+    @Test
+    fun englishNamesStartWithACapital() {
+        val aarav = NameLetters.of("Aarav 2")
+        assertEquals(listOf("A", "a", "r", "a", "v"), aarav.map { it.letter.symbol })
+        assertEquals(Track.ENGLISH, aarav.first().track)
+        assertTrue(aarav.drop(1).all { it.track == Track.LOWER })
+        assertEquals(listOf("A", "N", "U").size, NameLetters.of("ANU").size)
+        assertEquals("n", NameLetters.of("ANU")[1].letter.symbol)
+    }
+
+    @Test
+    fun hindiNamesSplitIntoBlocks() {
+        val riya = NameLetters.of("रिया")
+        assertEquals(listOf("रि", "या"), riya.map { it.letter.symbol })
+        assertTrue(riya.all { it.track == Track.BARAKHADI })
+        assertEquals(Track.SWAR, NameLetters.of("आरव").first().track)
+    }
+
+    @Test
+    fun homeCardShowsTheNameOrAPencil() {
+        assertEquals(listOf("C", "h", "i"), NameLetters.sample("Child 1", 3))
+        assertEquals(listOf("✍️"), NameLetters.sample("123", 3))
+        assertTrue(NameLetters.of("A very long name indeed").size <= NameLetters.MAX)
     }
 }

@@ -38,6 +38,7 @@ object Content {
             }
         }
         buildDerived()
+        Rhymes.load(assets)
     }
 
     /** Loads every track from an assets folder on disk (used by tests). */
@@ -50,6 +51,7 @@ object Content {
             strokes[track] = if (strokeFile.exists()) Tracing.parse(strokeFile.readText()) else emptyMap()
         }
         buildDerived()
+        Rhymes.loadFrom(folder)
     }
 
     /** Tracks made from other tracks: the बारहखड़ी comes from the consonants. */

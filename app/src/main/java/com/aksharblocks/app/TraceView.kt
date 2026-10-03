@@ -17,10 +17,19 @@ import kotlin.math.min
  */
 class TraceView(
     context: Context, speaker: Speaker, player: Player, private val track: Track, start: Int = 0,
+    /** "My name": trace these letters (the child's name) instead of the track's. */
+    private val name: List<NameLetter>? = null,
 ) : GameView(context, speaker, player) {
 
-    private val lang = track.lang
-    private val letters = track.letters
+    private val letters = name?.map { it.letter } ?: track.letters
+
+    /** The track a letter belongs to: its stroke order and voice. In a name, letters can come from several. */
+    private fun trackAt(i: Int) = name?.getOrNull(i)?.track ?: track
+    private val lang get() = trackAt(index).lang
+
+    /** Letters of the name already written, and the boxes they show in along the top. */
+    private var nameDone = 0
+    private val nameBlocks = List(name?.size ?: 0) { RectF() }
     private var index = 0
 
     /** Stroke order for the current letter, or null to trace over its shape. */
@@ -63,7 +72,7 @@ class TraceView(
     }
     private val glyphPaint = Paint(textPaint).apply { textAlign = Paint.Align.CENTER }
 
-    override val title get() = lang.traceTitle(index + 1, letters.size)
+    override val title get() = if (name != null) CommonWords.MY_NAME else lang.traceTitle(index + 1, letters.size)
     override val skyColor = Palette.PEACH
 
     init {
@@ -74,7 +83,7 @@ class TraceView(
         letterToken++
         index = (i + letters.size) % letters.size
         val letter = letters[index]
-        strokes = Content.strokes(track, letter)
+        strokes = Content.strokes(trackAt(index), letter)
         strokeSamples = strokes?.map { it.sample() }.orEmpty()
 
         grid.clearTarget()
@@ -87,7 +96,13 @@ class TraceView(
         clearDrawing()
         solved = false
         demoStart = if (known != null) time + DEMO_DELAY else null
-        speaker.say(lang.traceAsk(letter), lang.locale)
+        val ask = lang.traceAsk(letter)
+        if (name != null && index == 0) {
+            // "Let's write your name!" first, then the letter in its own language.
+            speaker.say(CommonWords.NAME_START + "|" + Voice.tagged(ask, Voice.languageOf(lang.locale)))
+        } else {
+            speaker.say(ask, lang.locale)
+        }
     }
 
     private fun clearDrawing() {
@@ -127,7 +142,10 @@ class TraceView(
         }
         if (strokes == null) demoButton.setEmpty()
 
-        card.set(contentLeft, contentTop, contentRight, buttonTop - dp(28f))
+        // A name shows its letters in a row above the card.
+        val nameRow = if (name != null) min(dp(64f), (contentRight - contentLeft) / letters.size) + dp(10f) else 0f
+        layoutNameRow(contentTop, nameRow - dp(10f))
+        card.set(contentLeft, contentTop + nameRow, contentRight, buttonTop - dp(28f))
         val side = min(card.width(), card.height()) - dp(40f)
         box.set(card.centerX() - side / 2f, card.centerY() - side / 2f, card.centerX() + side / 2f, card.centerY() + side / 2f)
     }
@@ -135,6 +153,7 @@ class TraceView(
     override fun drawGame(canvas: Canvas) {
         layout()
         drawBlock(canvas, card, Palette.WHITE, radius = dp(36f), depth = dp(10f), pressable = false)
+        drawNameRow(canvas)
 
         val color = track.colorFor(index)
         if (strokes != null) drawStrokeGuide(canvas, if (solved) color else GUIDE_FILL) else drawShapeGuide(canvas, if (solved) color else GUIDE_FILL)
@@ -154,6 +173,31 @@ class TraceView(
         if (!demoButton.isEmpty) {
             val demoSink = drawBlock(canvas, demoButton, Palette.WHITE, depth = dp(6f))
             drawEmoji(canvas, "👆", demoButton.centerX(), demoButton.centerY() + demoSink, demoButton.height() * 0.45f)
+        }
+    }
+
+    private fun layoutNameRow(top: Float, side: Float) {
+        if (name == null) return
+        val gap = dp(6f)
+        var x = width / 2f - (side * letters.size + gap * (letters.size - 1)) / 2f
+        for (block in nameBlocks) {
+            block.set(x, top, x + side, top + side)
+            x += side + gap
+        }
+    }
+
+    /** The name along the top: written letters in color, the one being traced outlined. */
+    private fun drawNameRow(canvas: Canvas) {
+        nameBlocks.forEachIndexed { i, block ->
+            val written = i < nameDone
+            val face = if (written) track.colorFor(i) else Palette.WHITE
+            drawBlock(canvas, block, face, depth = dp(4f), pressable = false)
+            drawText(canvas, letters[i].symbol, block.centerX(), block.centerY(), block.height() * 0.6f, if (written) Palette.WHITE else GUIDE_DASH, block.width() * 0.86f)
+            if (i == index && !written) {
+                strokePaint.color = Palette.OCEAN
+                strokePaint.strokeWidth = dp(3f)
+                canvas.drawRoundRect(block, block.height() * 0.24f, block.height() * 0.24f, strokePaint)
+            }
         }
     }
 
@@ -309,9 +353,17 @@ class TraceView(
             solved = true
             addStar()
             celebrate(box.centerX(), box.centerY(), 48)
-            speaker.say(lang.traceDone(letters[index], random), lang.locale)
             val token = letterToken
-            after(2.4f) { if (token == letterToken) showLetter(index + 1) }
+            if (name != null) nameDone = maxOf(nameDone, index + 1)
+            if (name != null && index == letters.lastIndex) {
+                // The whole name: a bigger party, then start again from the first letter.
+                celebrate(width / 2f, contentTop, 80)
+                speaker.say(CommonWords.NAME_DONE)
+                after(4.5f) { if (token == letterToken) { nameDone = 0; showLetter(0) } }
+            } else {
+                speaker.say(lang.traceDone(letters[index], random), lang.locale)
+                after(2.4f) { if (token == letterToken) showLetter(index + 1) }
+            }
         } else if (grid.outsideShare > SCRIBBLE && grid.paintedCount > grid.targetCount) {
             Sounds.play(Sound.WRONG)
             speaker.say(lang.traceAgain(), lang.locale)
