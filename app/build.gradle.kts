@@ -55,7 +55,10 @@ android {
                 enable = true
             }
             proguardFiles("proguard-rules.pro")
+            // CI has no release key. With -PciDebugSigning (CI only) the release build is signed with the
+            // debug key so it can be installed on an emulator and smoke-tested; nobody ever gets that build.
             signingConfig = signingConfigs.findByName("release")
+                ?: signingConfigs.getByName("debug").takeIf { providers.gradleProperty("ciDebugSigning").isPresent }
         }
     }
     buildFeatures {
