@@ -19,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 class MainActivity : AppCompatActivity() {
 
-    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, RHYMES, REST }
+    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, RHYMES, CERTIFICATE, REST }
 
     private lateinit var speaker: Speaker
     private lateinit var profiles: ProfileStore
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         player = Player(this, profiles.current())
         onBackPressedDispatcher.addCallback(this, goBack)
         showHome()
-        greet()
+        if (screen == Screen.HOME) greet()
     }
 
     override fun onResume() {
@@ -142,6 +142,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showHome() {
+        if (certificateFirst(::showHome)) return
         screen = Screen.HOME
         track = null
         pathStep = null
@@ -186,6 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showTrack(track: Track) {
+        if (certificateFirst { showTrack(track) }) return
         screen = Screen.TRACK
         this.track = track
         pathStep = null
@@ -247,6 +249,21 @@ class MainActivity : AppCompatActivity() {
         inRhyme = true
     }
 
+    /**
+     * When the child has just learned enough of a section, their certificate comes first, then
+     * [then]. Returns false when there is no new certificate.
+     */
+    private fun certificateFirst(then: () -> Unit): Boolean {
+        val earned = player.newCertificate() ?: return false
+        screen = Screen.CERTIFICATE
+        track = null
+        pathStep = null
+        goBack.isEnabled = true
+        speaker.stop()
+        setContentView(CertificateView(this, speaker, player, earned).apply { onDone = then })
+        return true
+    }
+
     /** Trace the playing child's own name. */
     private fun showName() {
         val letters = NameLetters.of(player.profile.name)
@@ -260,6 +277,7 @@ class MainActivity : AppCompatActivity() {
 
     /** Today's games: the list of steps, with the next one ready to tap. */
     private fun showPath(justFinished: Boolean = false) {
+        if (certificateFirst { showPath(justFinished) }) return
         screen = Screen.PATH
         track = null
         pathStep = null

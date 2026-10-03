@@ -313,6 +313,8 @@ object CommonWords {
     const val MY_NAME = "My name"
     const val RHYMES = "Rhymes"
     const val RHYMES_ASK = "Pick a rhyme!"
+    const val CERTIFICATE = "Certificate"
+    const val CERTIFICATE_EARNED = "Congratulations!|You earned a certificate!"
     const val NAME_START = "Let's write your name!"
     const val NAME_DONE = "Wonderful!|You wrote your name!"
 }

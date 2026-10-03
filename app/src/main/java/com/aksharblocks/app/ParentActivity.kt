@@ -151,6 +151,7 @@ class ParentActivity : AppCompatActivity() {
             val unit = when {
                 track == Track.BARAKHADI -> "syllables"
                 track.isNumbers -> "numbers"
+                track.isPictures -> "pictures"
                 else -> "letters"
             }
             body.addView(text("${report.known} of ${report.total} $unit known", 15f, top = 2))
@@ -192,6 +193,11 @@ class ParentActivity : AppCompatActivity() {
             })
         }
         body.addView(actions)
+        val certificates = player.certificates()
+        if (certificates.isNotEmpty()) {
+            // On its own line: the row above is already full on a phone.
+            body.addView(textButton("🏆 Certificates (${certificates.size})") { showCertificates(profile) })
+        }
 
         return MaterialCardView(this).apply {
             radius = dp(16).toFloat()
@@ -240,6 +246,34 @@ class ParentActivity : AppCompatActivity() {
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         startActivity(Intent.createChooser(send, "Share report card"))
+    }
+
+    /** The certificates a child has earned; picking one shares it as a picture. */
+    private fun showCertificates(profile: Profile) {
+        val earned = Player(this, profile).certificates().entries.sortedBy { it.value }
+        MaterialAlertDialogBuilder(this)
+            .setTitle("${profile.name}'s certificates")
+            .setItems(earned.map { (track, _) -> "${Certificates.medal(track)}  ${Certificates.achievement(track)}" }.toTypedArray()) { _, which ->
+                val (track, day) = earned[which]
+                shareCertificate(profile, track, day)
+            }
+            .setNegativeButton("Close", null)
+            .show()
+    }
+
+    private fun shareCertificate(profile: Profile, track: Track, day: Long) {
+        val bitmap = CertificateArt.bitmap(1240, 1754, profile.name, track, day)
+        val file = File(File(cacheDir, "reports").apply { mkdirs() }, "certificate.png")
+        file.outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
+        bitmap.recycle()
+        val uri = FileProvider.getUriForFile(this, "$packageName.files", file)
+        val send = Intent(Intent.ACTION_SEND).apply {
+            type = "image/png"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            putExtra(Intent.EXTRA_TEXT, "${profile.name} learned ${Certificates.achievement(track)} with Akshar Blocks!")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        startActivity(Intent.createChooser(send, "Share certificate"))
     }
 
     /** Add a child (profile == null) or change a child's name and picture. */

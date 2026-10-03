@@ -139,3 +139,27 @@ class RhymesAndNamesTest {
         assertTrue(NameLetters.of("A very long name indeed").size <= NameLetters.MAX)
     }
 }
+
+class CertificatesTest {
+
+    companion object {
+        @JvmStatic
+        @BeforeClass
+        fun loadContent() {
+            Content.loadFrom(File("src/main/assets"))
+        }
+    }
+
+    @Test
+    fun goalsAreReachableMilestones() {
+        assertEquals(21, Certificates.goal(Track.ENGLISH))
+        assertEquals(11, Certificates.goal(Track.SWAR))
+        assertEquals(20, Certificates.goal(Track.NUMBERS))
+        assertEquals(60, Certificates.goal(Track.BARAKHADI))
+        for (track in Track.entries) {
+            val goal = Certificates.goal(track)
+            assertTrue(track.name, goal in 1..track.letters.size)
+            assertTrue(track.name, Certificates.achievement(track).isNotBlank())
+        }
+    }
+}

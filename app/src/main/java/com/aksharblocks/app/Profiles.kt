@@ -189,6 +189,18 @@ class Player(context: Context, val profile: Profile) {
         prefs.edit().putInt(key, prefs.getInt(key, 0) or (1 shl step)).apply()
     }
 
+    /** Certificates earned, by track, with the day each was earned. */
+    fun certificates(): Map<Track, Long> =
+        Track.entries.mapNotNull { track -> prefs.getLong("$CERT|${track.name}", -1).takeIf { it >= 0 }?.let { track to it } }.toMap()
+
+    /** A track whose certificate this child has just earned, recorded as earned today; null if none. */
+    fun newCertificate(): Track? {
+        val earned = certificates()
+        val track = Track.entries.firstOrNull { it !in earned && report(it).known >= Certificates.goal(it) } ?: return null
+        prefs.edit().putLong("$CERT|${track.name}", todayNumber()).apply()
+        return track
+    }
+
     private fun bump(key: String) = prefs.edit().putInt(key, prefs.getInt(key, 0) + 1).apply()
 
     companion object {
@@ -201,6 +213,7 @@ class Player(context: Context, val profile: Profile) {
         private const val PLAY = "play"
         private const val PATH_PLAN = "path_plan"
         private const val PATH_DONE = "path_done"
+        private const val CERT = "cert"
         private const val KEEP_DAYS = 31
 
         private fun fileFor(id: Int) = "progress_$id"

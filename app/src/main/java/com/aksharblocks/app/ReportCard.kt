@@ -48,6 +48,10 @@ object ReportCard {
             },
             16f, top = 10,
         ))
+        val certificates = player.certificates().keys
+        if (certificates.isNotEmpty()) {
+            page.addView(text(context, "🏆 Certificates: ${certificates.joinToString(", ") { Certificates.achievement(it) }}", 15f, top = 6))
+        }
 
         page.addView(card(context) {
             addView(text(context, "This week", 17f, bold = true))
@@ -70,6 +74,7 @@ object ReportCard {
                 val unit = when {
                     track == Track.BARAKHADI -> "syllables"
                     track.isNumbers -> "numbers"
+                    track.isPictures -> "pictures"
                     else -> "letters"
                 }
                 addView(text(context, "${Report.level(share)}  ·  ${report.known} of ${report.total} $unit known", 15f, top = 2))

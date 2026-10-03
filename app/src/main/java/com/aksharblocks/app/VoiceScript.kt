@@ -45,7 +45,7 @@ object VoiceScript {
                 GameMode.entries.forEach { add(lang, EVERYDAY, "*", lang.modeLabel(it)) }
             }
             with(CommonWords) {
-                add(English, EVERYDAY, "*", LETS_PLAY, YOUR_STICKERS, WIN_MORE_STARS, REST, PATH_START, PATH_NEXT, PATH_DONE, NAME_START, NAME_DONE, RHYMES_ASK)
+                add(English, EVERYDAY, "*", LETS_PLAY, YOUR_STICKERS, WIN_MORE_STARS, REST, PATH_START, PATH_NEXT, PATH_DONE, NAME_START, NAME_DONE, RHYMES_ASK, CERTIFICATE_EARNED)
             }
             for (rhyme in Rhymes.all) {
                 rhyme.lines.forEach { add(rhyme.language, "Rhymes", rhyme.title, it) }
