@@ -3,6 +3,7 @@ package com.aksharblocks.app
 import android.app.Activity
 import android.text.InputFilter
 import android.text.InputType
+import android.view.KeyEvent
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -52,11 +53,15 @@ object ParentGate {
             }
             .setNegativeButton("Cancel", null)
             .create()
-        // The keyboard's Done key works like OK.
-        input.setOnEditorActionListener { _, action, _ ->
-            if (action != EditorInfo.IME_ACTION_DONE) return@setOnEditorActionListener false
-            dialog.dismiss()
-            if (input.text.toString().trim().toIntOrNull() == answer) onPass()
+        // The keyboard's Done key works like OK. A hardware Enter key arrives as IME_NULL,
+        // once for key down and once for key up; submit on the up.
+        input.setOnEditorActionListener { _, action, event ->
+            val enter = action == EditorInfo.IME_NULL && event?.keyCode == KeyEvent.KEYCODE_ENTER
+            if (action != EditorInfo.IME_ACTION_DONE && !enter) return@setOnEditorActionListener false
+            if (event == null || event.action == KeyEvent.ACTION_UP) {
+                dialog.dismiss()
+                if (input.text.toString().trim().toIntOrNull() == answer) onPass()
+            }
             true
         }
         dialog.setOnDismissListener { open = null }
