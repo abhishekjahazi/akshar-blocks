@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
   <img src="https://img.shields.io/badge/offline-100%25-2E7BFF" alt="Works offline">
   <a href="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml"><img src="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-  <img src="https://img.shields.io/badge/unit%20tests-71-22B35E" alt="71 unit tests">
+  <img src="https://img.shields.io/badge/unit%20tests-81-22B35E" alt="81 unit tests">
 </p>
 
 ---
@@ -25,6 +25,8 @@
 | <img src="docs/screenshots/1-home.png" alt="Home screen with seven learning tracks" width="230"> | <img src="docs/screenshots/2-games.png" alt="English track with its game modes" width="230"> | <img src="docs/screenshots/3-trace.png" alt="Tracing the letter A with numbered strokes" width="230"> |
 | **First words: build s-u-n** | **Memory: find the pairs** | **बारहखड़ी: add the vowel sign** |
 | <img src="docs/screenshots/4-words.png" alt="Building the word sun from letter blocks" width="230"> | <img src="docs/screenshots/5-memory.png" alt="Memory game with two cards turned over" width="230"> | <img src="docs/screenshots/6-barakhadi.png" alt="Barakhadi game: ष plus which vowel sign makes षू" width="230"> |
+| **Today's games: a daily path** | **Report card for parents** | **Daily play-time limit** |
+| <img src="docs/screenshots/7-todays-games.png" alt="Today's games: four steps, one ticked" width="230"> | <img src="docs/screenshots/8-report-card.png" alt="Report card with weekly play chart and letter map" width="230"> | <img src="docs/screenshots/9-rest.png" alt="Time to rest screen with a moon" width="230"> |
 
 ## Features
 
@@ -43,6 +45,8 @@
 **Nine game modes**: Learn, Trace (follow the strokes with a finger), Find it, Balloon pop, Match the picture, Memory pairs, First words (build c-a-t or ज-ल from letter blocks), Count, and Build a syllable (बारहखड़ी).
 
 **Voice in English and Hindi.** Every instruction and letter name is spoken. 1,100+ pre-recorded clips ship with the app, and text-to-speech covers anything else, so it works with no internet.
+
+**Today's games.** One big button on Home starts a short daily path of four games picked from the child's progress: Learn while letters are new, then Trace, plus a practice game that changes every day. English, Hindi and numbers take turns, and the next section opens once the first is half learned.
 
 **Learns with the child.** Adaptive practice brings back letters a child gets wrong, and tracks which letters get mixed up (b ↔ d, ब ↔ व).
 
@@ -67,7 +71,7 @@
 | Audio | `MediaPlayer` for bundled voice clips, Android `TextToSpeech` as fallback, `AudioTrack` for sound effects generated in code |
 | Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
 | Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
-| Testing | JUnit: 71 unit tests covering content, tracing, rewards, reports, play-time limits and voice clips |
+| Testing | JUnit: 81 unit tests covering content, tracing, rewards, reports, the daily path, play-time limits and voice clips |
 | Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
 
 ## Project structure

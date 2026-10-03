@@ -83,8 +83,13 @@ object ReportCard {
                 })
                 // The letter map shows every letter; the बारहखड़ी has too many (408) to be readable.
                 if (track != Track.BARAKHADI) {
-                    val tiles = track.letters.map { it.symbol to Report.mastery(it.symbol, stats) }
+                    val all = track.letters.map { it.symbol to Report.mastery(it.symbol, stats) }
+                    // 100 numbers would make a very long card: show up to the highest one tried.
+                    val tiles = if (track.isNumbers) all.take(numbersShown(all.map { it.second })) else all
                     addView(LetterMap(context, tiles).apply { layoutParams = full(context, top = 12) })
+                    if (tiles.size < all.size) {
+                        addView(text(context, "Showing ${tiles.first().first}–${tiles.last().first} of ${all.size}", 13f, color = MUTED, top = 6))
+                    }
                 }
                 if (report.practice.isNotEmpty()) {
                     addView(text(context, "Needs practice:  ${report.practice.joinToString("  ")}", 15f, bold = true, top = 10))
@@ -103,6 +108,13 @@ object ReportCard {
         page.addView(legend(context))
         page.addView(text(context, "Made with Akshar Blocks", 12f, color = MUTED, top = 16).apply { gravity = Gravity.CENTER })
         return page
+    }
+
+    /** How many numbers the map shows: up to the last one tried, in whole rows of ten, at least 20. */
+    internal fun numbersShown(mastery: List<Mastery>): Int {
+        val last = mastery.indexOfLast { it != Mastery.NOT_YET }
+        val rounded = (last / 10 + 1) * 10
+        return rounded.coerceIn(minOf(20, mastery.size), mastery.size)
     }
 
     private fun legend(context: Context) = text(

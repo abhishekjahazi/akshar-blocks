@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.KeyEvent
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
@@ -44,14 +45,19 @@ object ParentGate {
             addView(input)
         }
 
+        // Closed before the dialog goes, while the answer box still has a window; otherwise the
+        // keyboard stays up over whatever opens next.
+        fun closeKeyboard() = activity.getSystemService(InputMethodManager::class.java)?.hideSoftInputFromWindow(input.windowToken, 0)
+
         val dialog = MaterialAlertDialogBuilder(activity)
             .setTitle("For grown-ups")
             .setMessage("To continue, type the answer to  $a × $b")
             .setView(box)
             .setPositiveButton("OK") { _, _ ->
+                closeKeyboard()
                 if (input.text.toString().trim().toIntOrNull() == answer) onPass()
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton("Cancel") { _, _ -> closeKeyboard() }
             .create()
         // The keyboard's Done key works like OK. A hardware Enter key arrives as IME_NULL,
         // once for key down and once for key up; submit on the up.
@@ -59,6 +65,7 @@ object ParentGate {
             val enter = action == EditorInfo.IME_NULL && event?.keyCode == KeyEvent.KEYCODE_ENTER
             if (action != EditorInfo.IME_ACTION_DONE && !enter) return@setOnEditorActionListener false
             if (event == null || event.action == KeyEvent.ACTION_UP) {
+                closeKeyboard()
                 dialog.dismiss()
                 if (input.text.toString().trim().toIntOrNull() == answer) onPass()
             }

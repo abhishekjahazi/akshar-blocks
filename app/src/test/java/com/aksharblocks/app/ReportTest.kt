@@ -65,3 +65,16 @@ class MasteryTest {
         assertTrue(Report.level(1f).contains("Star learner"))
     }
 }
+
+class NumbersShownTest {
+
+    private fun tried(vararg indexes: Int) = List(100) { if (it in indexes) Mastery.LEARNING else Mastery.NOT_YET }
+
+    @Test
+    fun showsUpToTheLastNumberTriedInRowsOfTen() {
+        assertEquals(20, ReportCard.numbersShown(tried()))
+        assertEquals(20, ReportCard.numbersShown(tried(2, 9)))
+        assertEquals(40, ReportCard.numbersShown(tried(0, 34)))
+        assertEquals(100, ReportCard.numbersShown(tried(99)))
+    }
+}
