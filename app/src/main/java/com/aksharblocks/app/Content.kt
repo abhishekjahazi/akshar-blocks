@@ -63,8 +63,8 @@ object Content {
     private fun parseFor(track: Track, text: String) = if (track.isPictures) parsePictures(text) else parse(text)
 
     /**
-     * One letter per line: symbol, word and picture separated by tabs. Word and picture may be
-     * empty. Blank lines and lines starting with `#` are ignored.
+     * One letter per line: symbol, word, picture and (English) phonics sound separated by tabs.
+     * All but the symbol may be empty. Blank lines and lines starting with `#` are ignored.
      */
     fun parse(text: String): List<Letter> =
         rows(text).map { columns ->
@@ -72,6 +72,7 @@ object Content {
                 symbol = columns[0],
                 word = columns.getOrNull(1)?.ifEmpty { null },
                 emoji = columns.getOrNull(2)?.ifEmpty { null },
+                sound = columns.getOrNull(3)?.ifEmpty { null },
             )
         }
 

@@ -40,6 +40,7 @@ en_ded8dae5	Find	Everyday phrases
 en_e9d71f5e	B!	Everyday phrases
 en_77d3a013	Trace the letter	Everyday phrases
 en_887640fa	You wrote	Everyday phrases
+en_06f02a1d	Which letter says	Everyday phrases
 en_7238aedf	Pop the balloons from ay to Z!	Everyday phrases
 en_5eac1411	Let's go again!	Everyday phrases
 en_d0be2dc4	Apple.	Everyday phrases
@@ -47,6 +48,7 @@ en_758bd36c	Try again!	Everyday phrases
 en_84a51684	C!	Everyday phrases
 en_8bec0406	Ball.	Everyday phrases
 en_3c363836	D!	Everyday phrases
+en_348a3f15	kuh?	Everyday phrases
 en_9d989e8d	Cat.	Everyday phrases
 en_58e6b3a4	E!	Everyday phrases
 en_e4951252	Dog.	Everyday phrases
@@ -132,95 +134,145 @@ en_7dd91d1d	Gently down the stream.	Rhymes
 en_8693bedf	Merrily, merrily, merrily, merrily,	Rhymes
 en_b865ec81	Life is but a dream.	Rhymes
 en_0a8e40f1	ay is for Apple.	English
+en_348e7dc8	ay says ah!	English
+en_fd0aa934	ah?	English
 en_46a00bdc	Which letter does Apple start with?	English
 en_d05205a5	Apple starts with ay!	English
 en_17ce6c99	B is for Ball.	English
+en_438a1bef	B says buh!	English
+en_a44b3377	buh?	English
 en_986c1d1b	Which letter does Ball start with?	English
 en_777aca7a	Ball starts with B!	English
 en_d9653b48	C is for Cat.	English
+en_22bc18e8	C says kuh!	English
 en_3f30cfaa	Which letter does Cat start with?	English
 en_2be8b999	Cat starts with C!	English
 en_5eb0fa69	D is for Dog.	English
+en_f615dbe9	D says duh!	English
+en_1107c345	duh?	English
 en_96984528	Which letter does Dog start with?	English
 en_4cb8f970	Dog starts with D!	English
 en_e897cc5a	E is for Elephant.	English
+en_48dcd7b8	E says eh!	English
+en_706a483d	eh?	English
 en_f2d9bf3e	Which letter does Elephant start with?	English
 en_87ac7395	Elephant starts with E!	English
 en_9eecb844	F is for Fish.	English
+en_758033bf	F says fuh!	English
+en_a25ca6c6	fuh?	English
 en_b9eca409	Which letter does Fish start with?	English
 en_38028cbc	Fish starts with F!	English
 en_1294bc54	G is for Grapes.	English
+en_9b3ff0b7	G says guh!	English
+en_ef7e6e51	guh?	English
 en_35c4cdb5	Grapes.	English
 en_d6c5d858	Which letter does Grapes start with?	English
 en_b906d743	Grapes starts with G!	English
 en_181a3f88	H is for House.	English
+en_ff1b8a6d	H says huh!	English
+en_5a9213b1	huh?	English
 en_5be93480	House.	English
 en_c01f58ad	Which letter does House start with?	English
 en_69c6554c	House starts with H!	English
 en_934a4ea3	I is for Ice cream.	English
+en_9176146d	I says ih!	English
+en_f2fc9e17	ih?	English
 en_7c16c818	Ice cream.	English
 en_8c0a3dfe	Which letter does Ice cream start with?	English
 en_039f2836	Ice cream starts with I!	English
 en_540d45a0	J is for Juice.	English
+en_0584c949	J says juh!	English
+en_482acf60	juh?	English
 en_07ef8791	Juice.	English
 en_8b194ea6	Which letter does Juice start with?	English
 en_19df5cdf	Juice starts with J!	English
 en_94d2464a	K is for Kite.	English
+en_968a2fbf	K says kuh!	English
 en_34e1c787	Kite.	English
 en_e24887bf	Which letter does Kite start with?	English
 en_0f2405ef	Kite starts with K!	English
 en_1f10d0f0	L is for Lion.	English
+en_a51cc390	L says luh!	English
+en_14e8a03e	luh?	English
 en_f24b6b5f	Which letter does Lion start with?	English
 en_50c85e6e	Lion starts with L!	English
 en_63c272ac	M is for Monkey.	English
+en_8ba7097f	M says muh!	English
+en_c5e9b893	muh?	English
 en_0e0eefda	Which letter does Monkey start with?	English
 en_f1eb002d	Monkey starts with M!	English
 en_34904484	N is for Nose.	English
+en_e0fb9bd7	N says nuh!	English
+en_81a5051f	nuh?	English
 en_1a1f58c9	Nose.	English
 en_03b73733	Which letter does Nose start with?	English
 en_b61cc0f6	Nose starts with N!	English
 en_30f3f7ce	O is for Orange.	English
+en_7e7cea84	O says aw!	English
+en_a7ce5b0c	aw?	English
 en_7be361c7	Which letter does Orange start with?	English
 en_40823403	Orange starts with O!	English
 en_aac64702	P is for Penguin.	English
+en_18f5fb67	P says puh!	English
+en_4acb05bf	puh?	English
 en_a32cdb89	Which letter does Penguin start with?	English
 en_2d83d7b0	Penguin starts with P!	English
 en_9ef715a8	Q is for Queen.	English
+en_d5615f27	Q says kwuh!	English
+en_17d24f6c	kwuh?	English
 en_41011410	Queen.	English
 en_f7617213	Which letter does Queen start with?	English
 en_b9c0d6e4	Queen starts with Q!	English
 en_7cacb7e4	R is for Rabbit.	English
+en_3fa9b437	R says ruh!	English
+en_d7b57068	ruh?	English
 en_6d0ebbbd	Rabbit.	English
 en_96dc6889	Which letter does Rabbit start with?	English
 en_34038461	Rabbit starts with R!	English
 en_3dbeefa9	S is for Sun.	English
+en_d553e84e	S says suh!	English
+en_4f352a15	suh?	English
 en_1c4b7201	Which letter does Sun start with?	English
 en_a2791b55	Sun starts with S!	English
 en_dd950a94	T is for Tree.	English
+en_7e4d9501	T says tuh!	English
+en_f96349da	tuh?	English
 en_80655da8	Tree.	English
 en_d4c4e1dc	Which letter does Tree start with?	English
 en_a34f13a3	Tree starts with T!	English
 en_5f6713ce	U is for Umbrella.	English
+en_43b3f3f8	U says uh!	English
+en_80c3d7b3	uh?	English
 en_3ff95ac9	Umbrella.	English
 en_2d59e81d	Which letter does Umbrella start with?	English
 en_9b45f474	Umbrella starts with U!	English
 en_3e56a432	V is for Violin.	English
+en_8aa7d427	V says vuh!	English
+en_cf992459	vuh?	English
 en_06384a70	Violin.	English
 en_fe752a60	Which letter does Violin start with?	English
 en_fe95aba6	Violin starts with V!	English
 en_87c51855	W is for Watch.	English
+en_562de817	W says wuh!	English
+en_52b5f606	wuh?	English
 en_292b0901	Watch.	English
 en_d1bca7b0	Which letter does Watch start with?	English
 en_dd44ac88	Watch starts with W!	English
 en_0f79441c	X is for Xmas tree.	English
+en_cba9922c	X says eks!	English
+en_16191338	eks?	English
 en_efc3a6f2	Xmas tree.	English
 en_3a045996	Which letter does Xmas tree start with?	English
 en_f352038c	Xmas tree starts with X!	English
 en_4bdb1d6e	Y is for Yo-yo.	English
+en_eaa39b9f	Y says yuh!	English
+en_8f16126d	yuh?	English
 en_a5254623	Yo-yo.	English
 en_80d136fa	Which letter does Yo-yo start with?	English
 en_5012179f	Yo-yo starts with Y!	English
 en_574acaac	Z is for Zebra.	English
+en_420815f6	Z says zuh!	English
+en_bf5eb4ef	zuh?	English
 en_38aa53de	Zebra.	English
 en_abe6dc93	Which letter does Zebra start with?	English
 en_e18adf0f	Zebra starts with Z!	English

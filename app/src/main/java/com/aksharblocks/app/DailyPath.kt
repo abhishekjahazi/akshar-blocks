@@ -53,7 +53,7 @@ object DailyPath {
 
     /** Practice games to rotate through, where the track has them. */
     private val PRACTICE = listOf(
-        GameMode.FIND, GameMode.BALLOONS, GameMode.MATCH, GameMode.MEMORY,
+        GameMode.FIND, GameMode.SOUNDS, GameMode.BALLOONS, GameMode.MATCH, GameMode.MEMORY,
         GameMode.COUNT, GameMode.BUILD, GameMode.WORDS,
     )
 

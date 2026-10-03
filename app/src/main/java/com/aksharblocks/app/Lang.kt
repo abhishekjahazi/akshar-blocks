@@ -46,6 +46,7 @@ interface Lang {
     fun soundAsk(target: Letter): String = find(target)
     fun soundRight(target: Letter, random: Random): String = found(target, random)
     fun soundWrong(tapped: Letter, target: Letter): String = notThis(tapped, target)
+    val soundsTitle: String get() = findTitle
 
     // On screen
     fun learnTitle(number: Int, total: Int): String
@@ -69,7 +70,17 @@ open class EnglishLang : Lang {
 
     override val praises = listOf("Great job!", "Well done!", "Super!", "Awesome!", "You got it!", "Yay!")
 
-    override fun learn(letter: Letter) = "${name(letter)}.|${name(letter)} is for ${letter.word}."
+    override fun learn(letter: Letter) = "${name(letter)}.|${name(letter)} is for ${letter.word}." + phonics(letter)
+
+    /** "B says buh!", for letters with a phonics sound. */
+    private fun phonics(letter: Letter) = letter.sound?.let { "|${name(letter)} says $it!" }.orEmpty()
+
+    override fun soundAsk(target: Letter) = target.sound?.let { "Which letter says|$it?" } ?: find(target)
+    override fun soundRight(target: Letter, random: Random) =
+        target.sound?.let { "${praise(random)}|${name(target)} says $it!" } ?: found(target, random)
+    override fun soundWrong(tapped: Letter, target: Letter) =
+        target.sound?.let { "That is|${name(tapped)}.|Which letter says|$it?" } ?: notThis(tapped, target)
+    override val soundsTitle = "Letter sounds"
     override fun find(target: Letter) = "Find the letter|${name(target)}!"
     override fun notThis(tapped: Letter, target: Letter) = "That is|${name(tapped)}.|Find|${name(target)}!"
     override fun balloonsStart(first: Letter) = "Pop the balloons from ay to Z!|Find the letter|${name(first)}."
@@ -229,7 +240,7 @@ open class PictureLang(
 
     override fun learnTitle(number: Int, total: Int) = "$item $number of $total"
     override val findTitle = "Find it"
-    val soundsTitle = "Who says it?"
+    override val soundsTitle = "Who says it?"
 }
 
 object ColorWords : PictureLang("Find the color", "Color")

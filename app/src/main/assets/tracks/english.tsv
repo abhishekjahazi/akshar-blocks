@@ -1,28 +1,28 @@
-# english letters, in teaching order. One letter per line: LETTER <tab> WORD <tab> PICTURE (emoji).
-# WORD and PICTURE may be left empty. Lines starting with # are ignored. Save as UTF-8.
-A	Apple	🍎
-B	Ball	⚽
-C	Cat	🐱
-D	Dog	🐶
-E	Elephant	🐘
-F	Fish	🐟
-G	Grapes	🍇
-H	House	🏠
-I	Ice cream	🍦
-J	Juice	🧃
-K	Kite	🪁
-L	Lion	🦁
-M	Monkey	🐒
-N	Nose	👃
-O	Orange	🍊
-P	Penguin	🐧
-Q	Queen	👸
-R	Rabbit	🐰
-S	Sun	☀️
-T	Tree	🌳
-U	Umbrella	☂️
-V	Violin	🎻
-W	Watch	⌚
-X	Xmas tree	🎄
-Y	Yo-yo	🪀
-Z	Zebra	🦓
+# English letters, in teaching order. One letter per line: LETTER <tab> WORD <tab> PICTURE (emoji) <tab> SOUND.
+# SOUND is the letter's phonics sound, spelled the way the voice should say it (buh, ah). WORD, PICTURE and SOUND may be left empty. Lines starting with # are ignored. Save as UTF-8.
+A	Apple	🍎	ah
+B	Ball	⚽	buh
+C	Cat	🐱	kuh
+D	Dog	🐶	duh
+E	Elephant	🐘	eh
+F	Fish	🐟	fuh
+G	Grapes	🍇	guh
+H	House	🏠	huh
+I	Ice cream	🍦	ih
+J	Juice	🧃	juh
+K	Kite	🪁	kuh
+L	Lion	🦁	luh
+M	Monkey	🐒	muh
+N	Nose	👃	nuh
+O	Orange	🍊	aw
+P	Penguin	🐧	puh
+Q	Queen	👸	kwuh
+R	Rabbit	🐰	ruh
+S	Sun	☀️	suh
+T	Tree	🌳	tuh
+U	Umbrella	☂️	uh
+V	Violin	🎻	vuh
+W	Watch	⌚	wuh
+X	Xmas tree	🎄	eks
+Y	Yo-yo	🪀	yuh
+Z	Zebra	🦓	zuh

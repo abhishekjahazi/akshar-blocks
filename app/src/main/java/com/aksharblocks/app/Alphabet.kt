@@ -11,7 +11,7 @@ data class Letter(
     val group: String? = null,
     /** Picture tracks: the thing's name in Hindi (the English one is [word]). */
     val hindi: String? = null,
-    /** Animals: the sound it makes ("moo"). */
+    /** Animals: the sound it makes ("moo"). English letters: the phonics sound ("buh"). */
     val sound: String? = null,
 ) {
 
@@ -55,8 +55,8 @@ enum class Track(
     /** The games offered for this track, in menu order. */
     val modes: List<GameMode> = ALPHABET_GAMES,
 ) {
-    ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true, modes = ALPHABET_GAMES + GameMode.WORDS),
-    LOWER("Small letters", "a b c d", Palette.TEAL, EnglishSmall, "english-small.tsv", showsCase = false),
+    ENGLISH("English", "A B C D", Palette.OCEAN, English, "english.tsv", showsCase = true, modes = ALPHABET_GAMES + GameMode.SOUNDS + GameMode.WORDS),
+    LOWER("Small letters", "a b c d", Palette.TEAL, EnglishSmall, "english-small.tsv", showsCase = false, modes = ALPHABET_GAMES + GameMode.SOUNDS),
     SWAR("हिंदी स्वर", "Hindi vowels", Palette.TOMATO, Hindi, "swar.tsv", showsCase = false),
     VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false, modes = ALPHABET_GAMES + GameMode.WORDS),
     BARAKHADI(

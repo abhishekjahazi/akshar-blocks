@@ -7,14 +7,14 @@ import kotlin.math.min
 
 /**
  * "Find the letter B!" / "क ढूंढो!": tap the right one of four letter blocks. With [bySound]
- * (animals), the voice says the sound instead: "Who says moo?"
+ * the voice says a sound instead: "Who says moo?" (animals), "Which letter says buh?" (phonics)
  */
 class FindView(
     context: Context, speaker: Speaker, player: Player, private val track: Track,
     private val bySound: Boolean = false,
 ) : GameView(context, speaker, player) {
 
-    override val title = if (bySound) (track.lang as? PictureLang)?.soundsTitle ?: track.lang.findTitle else track.lang.findTitle
+    override val title = if (bySound) track.lang.soundsTitle else track.lang.findTitle
     override val skyColor = Palette.MINT
 
     private val lang = track.lang
@@ -43,7 +43,9 @@ class FindView(
         val pool = if (bySound) track.letters.filter { it.sound != null } else track.letters
         val next = Coach.pickTarget(pool, stats, random, except = target)
         target = next
-        options = Coach.choices(next, track.choicePool(next), stats, OPTION_COUNT, random)
+        // By sound, two letters that sound the same (C and K: "kuh") can't both be offered.
+        val choicePool = if (bySound) track.choicePool(next).filter { it == next || it.sound != next.sound } else track.choicePool(next)
+        options = Coach.choices(next, choicePool, stats, OPTION_COUNT, random)
         shakeTime.fill(1f)
         solvedIndex = -1
         roundTime = 0f
@@ -68,7 +70,8 @@ class FindView(
         val promptY = contentTop + side / 2f
         val cx = width / 2f
         squareAt(targetBlock, cx - dp(4f) - side / 2f, promptY, side / 2f)
-        drawLetterBlock(canvas, targetBlock, Palette.INK, track.prompt(target), Palette.WHITE)
+        // By sound, showing the letter would give the answer away: the voice says the sound instead.
+        drawLetterBlock(canvas, targetBlock, Palette.INK, if (bySound) "?" else track.prompt(target), Palette.WHITE)
         squareAt(speakerButton, cx + dp(12f) + side * 0.4f, promptY, side * 0.34f)
         val sink = drawBlock(canvas, speakerButton, Palette.WHITE, depth = dp(5f))
         drawEmoji(canvas, "🔊", speakerButton.centerX(), speakerButton.centerY() + sink, side * 0.36f)
