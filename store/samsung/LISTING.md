@@ -8,7 +8,7 @@ ready to copy and paste. After the app is live on Galaxy Store, link it in AdMob
 
 | What | File | Notes |
 |---|---|---|
-| App binary | `AksharBlocks-1.3.apk` (GitHub release v1.3, or `app/build/outputs/apk/release/app-release.apk`) | Signed with the Akshar Blocks key. Package `com.aksharblocks.app`, version 1.3 (code 4). |
+| App binary | `AksharBlocks-1.4.apk` (GitHub release v1.4, or `app/build/outputs/apk/release/app-release.apk`) | Signed with the Akshar Blocks key. Package `com.aksharblocks.app`, version 1.4 (code 5). |
 | Icon | `store/icon-512.png` | 512 × 512 PNG |
 | Screenshots | `store/samsung/screenshot-1-home.png` … `screenshot-8-certificate.png` | 8 portrait images, 1080 × 1920 |
 | Cover / promotional image (if asked) | `store/feature-graphic-1024x500.png` | 1024 × 500 |
@@ -78,7 +78,7 @@ SAFE FOR CHILDREN
 
 **What's new in this version**
 ```
-Version 1.3: Colors, shapes and animals, Marathi letters, rhymes, "My name" tracing, matra words, certificates, background music and a daily path of games.
+Version 1.4: Phonics (letter sounds), colors, shapes and animals, Marathi letters, rhymes, "My name" tracing, matra words, certificates, progress backup and a daily path of games.
 ```
 
 **Keywords / tags** (if asked)
