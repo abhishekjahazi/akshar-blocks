@@ -20,14 +20,14 @@ android {
         applicationId = "com.aksharblocks.app"
         minSdk = 24
         targetSdk = 37
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         // Google AdMob: the app and its Home banner ad unit (see Ads.kt).
         manifestPlaceholders["admobAppId"] = "ca-app-pub-6475166224550831~8358277177"
-        resValue("string", "banner_ad_unit", "ca-app-pub-6475166224550831/1125645250")
+        resValue("string", "banner_ad_unit", "ca-app-pub-6475166224550831/1073760088")
     }
 
     signingConfigs {
