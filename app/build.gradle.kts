@@ -80,3 +80,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 }
+// Unit tests read the content and voice files straight from src/main/assets; tell Gradle,
+// so changing a file re-runs them instead of reusing old results.
+tasks.withType<Test>().configureEach {
+    inputs.dir("src/main/assets")
+}
