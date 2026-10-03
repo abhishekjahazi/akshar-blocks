@@ -7,6 +7,7 @@ every phone sounds the same, even without a Hindi voice installed.
 **Remaking it** (after the games change what they say – the unit test VoiceFilesTest fails
 and lists the missing lines): connect a phone, then run
 `gradlew connectedDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.aksharblocks.app.VoiceMaker -Pandroid.injected.androidTest.leaveApksInstalledAfterRun=true`
+(only lines missing from the app are made; add `-Pandroid.testInstrumentationRunnerArguments.remakeAll=true` to remake every clip)
 and `store/voice/make-voice.sh` (needs ffmpeg). Then uninstall com.aksharblocks.app.debug
 and com.aksharblocks.app.debug.test from the phone.
 

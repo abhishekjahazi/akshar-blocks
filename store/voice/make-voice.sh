@@ -9,6 +9,7 @@
 #    It pulls the WAVs, trims silence, compresses them to small AAC (.m4a) files and puts
 #    them in app/src/main/assets/voice/<en|hi>/.
 set -euo pipefail
+shopt -s nullglob  # a run may have new lines in only one language
 
 FFMPEG="${FFMPEG:-ffmpeg}"
 ADB="${ADB:-adb}"

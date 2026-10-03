@@ -67,9 +67,13 @@ class VoiceMaker {
                 tts.voice = voice
             }
             val dir = File(out, language).apply { mkdirs() }
+            // Clips already in the app are skipped unless -e remakeAll true.
+            val remakeAll = arguments.getString("remakeAll") == "true"
+            val inApp = context.assets.list("voice/$language").orEmpty().map { it.substringBeforeLast('.') }.toSet()
             for (line in lines) {
                 val file = File(dir, "${line.file}.wav")
                 if (file.length() > MIN_BYTES) continue // made on an earlier run
+                if (!remakeAll && line.file in inApp) continue
                 val latch = CountDownLatch(1)
                 finished[line.file] = latch
                 assertEquals(TextToSpeech.SUCCESS, tts.synthesizeToFile(line.text, Bundle(), file, line.file))
