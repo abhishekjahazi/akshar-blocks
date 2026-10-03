@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit
 /**
  * Not a test of the app: says some trial spellings with the app's English voice into
  * files/voice-try/<n>.wav, to compare how the voice reads them (for example phonics sounds).
- * Run with -e words "ih_ihh_ex" (each is said as a question, "ih?", like the Sounds game) (and -e enVoice like VoiceMaker).
+ * Run with -e words "ih?_ex?_ay+for+Apple." ("_" between texts, "+" for spaces: the adb shell splits
+ * on spaces, commas and semicolons) and -e enVoice like VoiceMaker.
  */
 @RunWith(AndroidJUnit4::class)
 class VoiceTry {
@@ -24,7 +25,7 @@ class VoiceTry {
     fun sayWords() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val context = instrumentation.targetContext
-        val words = InstrumentationRegistry.getArguments().getString("words").orEmpty().split('_').filter { it.isNotBlank() }
+        val words = InstrumentationRegistry.getArguments().getString("words").orEmpty().split('_').filter { it.isNotBlank() }.map { it.replace('+', ' ') }
         val out = requireNotNull(context.getExternalFilesDir("voice-try")).apply { deleteRecursively(); mkdirs() }
 
         val started = CountDownLatch(1)
@@ -48,7 +49,7 @@ class VoiceTry {
             val id = "w$i"
             val latch = CountDownLatch(1)
             done[id] = latch
-            tts.synthesizeToFile("$word?", Bundle(), File(out, "$i.wav"), id)
+            tts.synthesizeToFile(word, Bundle(), File(out, "$i.wav"), id)
             latch.await(30, TimeUnit.SECONDS)
         }
         File(out, "words.txt").writeText(words.mapIndexed { i, w -> "$i\t$w" }.joinToString("\n"))

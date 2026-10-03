@@ -65,12 +65,13 @@ open class EnglishLang : Lang {
     // Indian English: the built-in voice is Google's en-IN "enc" voice, and live speech should match it.
     override val locale: Locale = Locale.forLanguageTag("en-IN")
 
-    // A lone "A" is often read as the word "a" ("uh"), so it is spelled the way it sounds.
-    override fun name(letter: Letter) = if (letter.symbol.equals("A", ignoreCase = true)) "ay" else letter.symbol
+    // Written as a capital "A": the voice reads it as the letter. (Spelled "ay", the Indian English
+    // voice said something like "aae"; a small "a" would be read as the word "a".)
+    override fun name(letter: Letter) = if (letter.symbol.equals("A", ignoreCase = true)) "A" else letter.symbol
 
     override val praises = listOf("Great job!", "Well done!", "Super!", "Awesome!", "You got it!", "Yay!")
 
-    override fun learn(letter: Letter) = "${name(letter)}.|${name(letter)} is for ${letter.word}." + phonics(letter)
+    override fun learn(letter: Letter) = "${name(letter)}.|${name(letter)} for ${letter.word}." + phonics(letter)
 
     /** "B says buh!", for letters with a phonics sound. */
     private fun phonics(letter: Letter) = letter.sound?.let { "|${name(letter)} says $it!" }.orEmpty()
@@ -83,8 +84,8 @@ open class EnglishLang : Lang {
     override val soundsTitle = "Letter sounds"
     override fun find(target: Letter) = "Find the letter|${name(target)}!"
     override fun notThis(tapped: Letter, target: Letter) = "That is|${name(tapped)}.|Find|${name(target)}!"
-    override fun balloonsStart(first: Letter) = "Pop the balloons from ay to Z!|Find the letter|${name(first)}."
-    override fun balloonsDone() = "Hooray! You popped all the letters from ay to Z!"
+    override fun balloonsStart(first: Letter) = "Pop the balloons from A to Z!|Find the letter|${name(first)}."
+    override fun balloonsDone() = "Hooray! You popped all the letters from A to Z!"
     override fun balloonsAgain(first: Letter) = "Let's go again!|Find the letter|${name(first)}."
     override fun matchAsk(letter: Letter) = "${letter.word}.|Which letter does ${letter.word} start with?"
     override fun matchRight(letter: Letter, random: Random) =
@@ -128,10 +129,10 @@ object English : EnglishLang()
 
 /**
  * English wording for small letters. Most lines match the capital-letter ones word for word
- * ("b is for ball"), so they share voice clips; finding asks for the "small letter".
+ * ("b for ball"), so they share voice clips; finding asks for the "small letter".
  */
 object EnglishSmall : EnglishLang() {
-    override fun name(letter: Letter) = if (letter.symbol.equals("a", ignoreCase = true)) "ay" else letter.symbol
+    override fun name(letter: Letter) = if (letter.symbol.equals("a", ignoreCase = true)) "A" else letter.symbol
     override fun find(target: Letter) = "Find the small letter|${name(target)}!"
     override fun traceAsk(letter: Letter) = "Trace the small letter|${name(letter)}!"
     override fun learnTitle(number: Int, total: Int) = "Small letter $number of $total"

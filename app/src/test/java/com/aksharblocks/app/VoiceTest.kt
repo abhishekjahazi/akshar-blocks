@@ -53,7 +53,7 @@ class VoiceTest {
         val hiTexts = hi.map { Voice.key(it.text) }.toSet()
 
         assertTrue("find the letter" in enTexts)
-        assertTrue("b is for ball" in enTexts)
+        assertTrue("b for ball" in enTexts)
         assertTrue("seven" in enTexts)
         assertTrue("a puppy" in enTexts)
         assertTrue("ढूंढो" in hiTexts)

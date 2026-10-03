@@ -31,8 +31,11 @@ class PhonicsTest {
     @Test
     fun learningALetterSaysItsSound() {
         val b = Track.ENGLISH.letters[1]
-        assertEquals("B. B is for Ball. B says buh!", Voice.spokenText(English.learn(b)))
-        assertEquals("b. b is for ball. b says buh!", Voice.spokenText(EnglishSmall.learn(Track.LOWER.letters[1])))
+        assertEquals("B. B for Ball. B says buh!", Voice.spokenText(English.learn(b)))
+        assertEquals("b. b for ball. b says buh!", Voice.spokenText(EnglishSmall.learn(Track.LOWER.letters[1])))
+        // "A" is written as a capital so the voice says the letter (not "ay", which sounded like "aae").
+        assertEquals("A. A for Apple. A says ah!", Voice.spokenText(English.learn(Track.ENGLISH.letters[0])))
+        assertEquals("A. A for apple. A says ah!", Voice.spokenText(EnglishSmall.learn(Track.LOWER.letters[0])))
         // Numbers have no sound and say what they always said.
         assertEquals("one.", Voice.spokenText(EnglishNumbers.learn(Track.NUMBERS.letters[0])))
     }
