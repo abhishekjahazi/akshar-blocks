@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
         // Draw behind the (hidden) system bars; GameView keeps content clear of cutouts.
         WindowCompat.setDecorFitsSystemWindows(window, false)
         speaker = Speaker(this)
+        speaker.onSpeaking = Music::duck
         profiles = ProfileStore(this)
         player = Player(this, profiles.current())
         onBackPressedDispatcher.addCallback(this, goBack)
@@ -81,9 +82,11 @@ class MainActivity : AppCompatActivity() {
         Settings(this).let {
             speaker.slow = it.slowVoice
             Sounds.enabled = it.soundEffects
+            Music.enabled = it.music
         }
         lastTick = SystemClock.elapsedRealtime()
         ticker.post(tick)
+        if (screen != Screen.REST) Music.play()
         // A parent may have renamed, added or removed children in the parent area.
         val current = profiles.current()
         if (current != player.profile) {
@@ -117,6 +120,7 @@ class MainActivity : AppCompatActivity() {
         // Back simply leaves the app from here.
         goBack.isEnabled = false
         speaker.stop()
+        Music.pause()
         setContentView(RestView(this, speaker, player).apply { onParent = ::restGate })
     }
 
@@ -143,6 +147,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun showHome() {
         if (certificateFirst(::showHome)) return
+        // Back from the rest screen (a new day or a parent's extra time): music again.
+        if (screen == Screen.REST) Music.play()
         screen = Screen.HOME
         track = null
         pathStep = null
@@ -316,11 +322,15 @@ class MainActivity : AppCompatActivity() {
         lastTick = 0L
         ticker.removeCallbacks(tick)
         speaker.stop()
+        Music.pause()
     }
 
     override fun onDestroy() {
         speaker.shutdown()
-        if (isFinishing) Sounds.release()
+        if (isFinishing) {
+            Sounds.release()
+            Music.release()
+        }
         super.onDestroy()
     }
 

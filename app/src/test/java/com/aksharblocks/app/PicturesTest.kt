@@ -163,3 +163,18 @@ class CertificatesTest {
         }
     }
 }
+
+class MusicTest {
+
+    @Test
+    fun theTuneLoopsWithoutClipping() {
+        val loop = MusicBox.loop()
+        // Eight bars of eight eighth notes at about 96 beats a minute: 20 seconds.
+        assertEquals(20.0, loop.size / MusicBox.RATE.toDouble(), 0.1)
+        val peak = loop.maxOf { kotlin.math.abs(it.toInt()) }
+        assertTrue("peak $peak", peak in 20000..Short.MAX_VALUE.toInt())
+        // The loop wraps smoothly: no bigger jump from the last sample to the first than anywhere inside.
+        val biggestStep = (1 until loop.size).maxOf { kotlin.math.abs(loop[it] - loop[it - 1]) }
+        assertTrue(kotlin.math.abs(loop.last() - loop.first()) <= biggestStep)
+    }
+}

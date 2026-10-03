@@ -114,6 +114,16 @@ class ParentActivity : AppCompatActivity() {
             }
             layoutParams = spaced(top = 4)
         })
+        content.addView(SwitchMaterial(this).apply {
+            text = "Soft background music"
+            textSize = 16f
+            isChecked = Settings(this@ParentActivity).music
+            setOnCheckedChangeListener { _, on ->
+                Settings(this@ParentActivity).music = on
+                Music.enabled = on
+            }
+            layoutParams = spaced(top = 4)
+        })
 
         section("Daily play time")
         content.addView(playLimit())
@@ -445,6 +455,10 @@ class Settings(context: Context) {
     var soundEffects: Boolean
         get() = prefs.getBoolean("sound_effects", true)
         set(value) = prefs.edit().putBoolean("sound_effects", value).apply()
+
+    var music: Boolean
+        get() = prefs.getBoolean("music", true)
+        set(value) = prefs.edit().putBoolean("music", value).apply()
 
     /** 0 means no limit. */
     var dailyLimitMinutes: Int
