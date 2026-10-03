@@ -8,7 +8,7 @@ ready to copy and paste. After the app is live on Galaxy Store, link it in AdMob
 
 | What | File | Notes |
 |---|---|---|
-| App binary | `AksharBlocks-1.4.1.apk` (GitHub release v1.4.1, or `app/build/outputs/apk/release/app-release.apk`) | Signed with the Akshar Blocks key. Package `com.aksharblocks.app`, version 1.4.1 (code 6). |
+| App binary | `AksharBlocks-1.4.2.apk` (GitHub release v1.4.2, or `app/build/outputs/apk/release/app-release.apk`) | Signed with the Akshar Blocks key. Package `com.aksharblocks.app`, version 1.4.2 (code 7). |
 | Icon | `store/icon-512.png` | 512 × 512 PNG |
 | Screenshots | `store/samsung/screenshot-1-home.png` … `screenshot-8-certificate.png` | 8 portrait images, 1080 × 1920 |
 | Cover / promotional image (if asked) | `store/feature-graphic-1024x500.png` | 1024 × 500 |
