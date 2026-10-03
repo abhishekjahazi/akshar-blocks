@@ -10,5 +10,6 @@ class AbcdApp : Application() {
         Content.load(assets)
         Art.load(assets)
         Voice.load(assets)
+        Ads.start(this)
     }
 }

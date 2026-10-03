@@ -11,7 +11,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin">
   <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
-  <img src="https://img.shields.io/badge/offline-100%25-2E7BFF" alt="Works offline">
+  <img src="https://img.shields.io/badge/games-work%20offline-2E7BFF" alt="Games work offline">
   <a href="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml"><img src="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
   <img src="https://img.shields.io/badge/unit%20tests-94-22B35E" alt="94 unit tests">
 </p>
@@ -74,7 +74,7 @@
 - A **report card** for each child: level per track, a colour-coded letter map, a weekly play-time chart, letters that need practice, and a Share button.
 - Certificates to share, and switches for game sounds and music.
 
-**Private by design.** No ads, no accounts, no internet permission, no analytics. All progress stays on the device and backups are turned off. The app follows Google Play's Families policy.
+**Private by design.** No accounts and no analytics; all progress stays on the device and backups are turned off. The only ad is a small banner on the home screen (Google AdMob), requested as child-directed with "G"-rated, non-personalized ads and no advertising ID: nothing appears inside the games. The app follows Google Play's Families policy.
 
 **Phones and tablets**, in portrait and landscape.
 
@@ -88,6 +88,7 @@
 | Audio | `MediaPlayer` for bundled voice clips, Android `TextToSpeech` as fallback, `AudioTrack` for sound effects and background music generated in code |
 | Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
 | Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
+| Ads | Google Mobile Ads SDK (AdMob): one banner on Home, child-directed, max rating G, advertising ID and ad-services permissions removed; debug builds use Google's test ads |
 | Testing | JUnit: 94 unit tests covering content, tracing, rewards, reports, the daily path, rhymes, names, certificates, music, play-time limits and voice clips |
 | Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
 

@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.android.gms.ads.AdView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 /**
@@ -32,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     /** The step of today's path being played, or null outside the path. */
     private var pathStep: Int? = null
+
+    /** The banner under Home, made once and moved back in each time Home is shown. */
+    private var banner: AdView? = null
 
     /** True while a rhyme is playing, so Back returns to the list of rhymes. */
     private var inRhyme = false
@@ -86,6 +92,7 @@ class MainActivity : AppCompatActivity() {
         }
         lastTick = SystemClock.elapsedRealtime()
         ticker.post(tick)
+        banner?.resume()
         if (screen != Screen.REST) Music.play()
         // A parent may have renamed, added or removed children in the parent area.
         val current = profiles.current()
@@ -154,7 +161,7 @@ class MainActivity : AppCompatActivity() {
         pathStep = null
         goBack.isEnabled = false
         speaker.stop()
-        setContentView(HomeView(this, speaker, player).apply {
+        val home = HomeView(this, speaker, player).apply {
             onPick = ::showTrack
             onParent = { ParentGate.show(this@MainActivity) { startActivity(Intent(this@MainActivity, ParentActivity::class.java)) } }
             onChild = ::showChildren
@@ -163,7 +170,24 @@ class MainActivity : AppCompatActivity() {
             onName = ::showName
             onRhymes = ::showRhymes
             pathDone = player.pathDone
-        })
+        }
+        setContentView(withBanner(home))
+    }
+
+    /** Home with the ad banner under it (only Home has an ad; games never do). */
+    private fun withBanner(home: HomeView): android.view.View {
+        val ad = banner ?: Ads.banner(this)?.also { made ->
+            banner = made
+            // The first ad holds up the screen for a moment: ask once Home's welcome is over.
+            ticker.postDelayed({ Ads.load(made) }, FIRST_AD_DELAY_MS)
+        } ?: return home
+        (ad.parent as? ViewGroup)?.removeView(ad)
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Palette.SKY)
+            addView(home, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+            addView(ad)
+        }
     }
 
     private fun showAlbum() {
@@ -321,11 +345,13 @@ class MainActivity : AppCompatActivity() {
         countPlayTime()
         lastTick = 0L
         ticker.removeCallbacks(tick)
+        banner?.pause()
         speaker.stop()
         Music.pause()
     }
 
     override fun onDestroy() {
+        banner?.destroy()
         speaker.shutdown()
         if (isFinishing) {
             Sounds.release()
@@ -351,5 +377,6 @@ class MainActivity : AppCompatActivity() {
     private companion object {
         const val TICK_MS = 5_000L
         const val STEP_DONE_DELAY_MS = 2_800L
+        const val FIRST_AD_DELAY_MS = 4_000L
     }
 }
