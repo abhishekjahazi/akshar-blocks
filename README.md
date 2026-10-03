@@ -13,7 +13,7 @@
   <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
   <img src="https://img.shields.io/badge/games-work%20offline-2E7BFF" alt="Games work offline">
   <a href="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml"><img src="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-  <img src="https://img.shields.io/badge/unit%20tests-94-22B35E" alt="94 unit tests">
+  <img src="https://img.shields.io/badge/unit%20tests-101-22B35E" alt="101 unit tests">
 </p>
 
 <p align="center">
@@ -52,7 +52,9 @@
 | Shapes | 7 shapes (Circle – गोला, Triangle – त्रिकोण…) |
 | Animals | 18 animals and the sounds they make (Cow – गाय – "moo") |
 
-**Ten game modes**: Learn, Trace (follow the strokes with a finger), Find it, Balloon pop, Match the picture, Memory pairs, First words (build c-a-t, ज-ल, or with matras कि-ता-ब), Count, Build a syllable (बारहखड़ी), and Sounds ("Who says moo?").
+**Ten game modes**: Learn, Trace (follow the strokes with a finger), Find it, Balloon pop, Match the picture, Memory pairs, First words (build c-a-t, ज-ल, or with matras कि-ता-ब), Count, Build a syllable (बारहखड़ी), and Sounds ("Who says moo?" for animals, "Which letter says buh?" for English phonics).
+
+**Phonics.** Every English letter has its sound as well as its name: "B is for Ball. B says buh!"
 
 **Voice in English, Hindi and Marathi.** Every instruction and letter name is spoken. 1,400+ pre-recorded clips ship with the app, and text-to-speech covers anything else, so it works with no internet.
 
@@ -73,6 +75,7 @@
 - A daily play-time limit (15–60 minutes), with a friendly "time to rest" screen.
 - A **report card** for each child: level per track, a colour-coded letter map, a weekly play-time chart, letters that need practice, and a Share button.
 - Certificates to share, and switches for game sounds and music.
+- Save a backup file of the children and their progress, and restore it on a new phone.
 
 **Private by design.** No accounts and no analytics; all progress stays on the device and backups are turned off. The only ad is a small banner on the home screen (Google AdMob), requested as child-directed with "G"-rated, non-personalized ads and no advertising ID: nothing appears inside the games. The app follows Google Play's Families policy.
 
@@ -89,7 +92,7 @@
 | Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
 | Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
 | Ads | Google Mobile Ads SDK (AdMob): one banner on Home, child-directed, max rating G, advertising ID and ad-services permissions removed; debug builds use Google's test ads |
-| Testing | JUnit: 94 unit tests covering content, tracing, rewards, reports, the daily path, rhymes, names, certificates, music, play-time limits and voice clips |
+| Testing | JUnit: 101 unit tests (content, tracing, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
 | Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
 
 ## Project structure
