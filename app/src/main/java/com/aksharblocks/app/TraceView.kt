@@ -16,7 +16,7 @@ import kotlin.math.min
  * are traced over the letter's own shape.
  */
 class TraceView(
-    context: Context, speaker: Speaker, player: Player, private val track: Track,
+    context: Context, speaker: Speaker, player: Player, private val track: Track, start: Int = 0,
 ) : GameView(context, speaker, player) {
 
     private val lang = track.lang
@@ -67,7 +67,7 @@ class TraceView(
     override val skyColor = Palette.PEACH
 
     init {
-        showLetter(0)
+        showLetter(start)
     }
 
     private fun showLetter(i: Int) {

@@ -157,6 +157,38 @@ class Player(context: Context, val profile: Profile) {
         return (days - 1 downTo 0).map { back -> (prefs.getLong("$PLAY|${today - back}", 0) / 60).toInt() }
     }
 
+    /** Share of [track]'s letters this child knows, 0 to 1. */
+    fun knownShare(track: Track): Float = report(track).let { if (it.total == 0) 0f else it.known / it.total.toFloat() }
+
+    /** Where Learn and Trace start: the first letter not known yet. */
+    fun firstUnknown(track: Track): Int {
+        val ok = stats(track).ok
+        return track.letters.indexOfFirst { (ok[it.symbol] ?: 0) < Report.KNOWN_AFTER }.coerceAtLeast(0)
+    }
+
+    /** Today's path, planned once a day so it doesn't change while the child plays it. */
+    fun todaysPath(): List<PathStep> {
+        val today = todayNumber()
+        val saved = prefs.getString("$PATH_PLAN|$today", null)
+            ?.split(',')?.mapNotNull(PathStep::decode)
+            ?.takeIf { it.size == DailyPath.STEPS }
+        if (saved != null) return saved
+        val plan = DailyPath.plan(today, ::knownShare)
+        val editor = prefs.edit()
+        // Only today's plan and progress are kept.
+        prefs.all.keys.filter { it.startsWith("$PATH_PLAN|") || it.startsWith("$PATH_DONE|") }.forEach { editor.remove(it) }
+        editor.putString("$PATH_PLAN|$today", plan.joinToString(",") { it.encode() }).apply()
+        return plan
+    }
+
+    /** Which of today's steps are finished, as bits (step 0 is bit 0). */
+    val pathDone: Int get() = prefs.getInt("$PATH_DONE|${todayNumber()}", 0)
+
+    fun finishPathStep(step: Int) {
+        val key = "$PATH_DONE|${todayNumber()}"
+        prefs.edit().putInt(key, prefs.getInt(key, 0) or (1 shl step)).apply()
+    }
+
     private fun bump(key: String) = prefs.edit().putInt(key, prefs.getInt(key, 0) + 1).apply()
 
     companion object {
@@ -167,6 +199,8 @@ class Player(context: Context, val profile: Profile) {
         private const val MISS = "miss"
         private const val MIX = "mix"
         private const val PLAY = "play"
+        private const val PATH_PLAN = "path_plan"
+        private const val PATH_DONE = "path_done"
         private const val KEEP_DAYS = 31
 
         private fun fileFor(id: Int) = "progress_$id"

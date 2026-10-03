@@ -19,7 +19,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 class MainActivity : AppCompatActivity() {
 
-    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, REST }
+    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, REST }
 
     private lateinit var speaker: Speaker
     private lateinit var profiles: ProfileStore
@@ -29,6 +29,12 @@ class MainActivity : AppCompatActivity() {
 
     /** The track whose menu or game is showing. */
     private var track: Track? = null
+
+    /** The step of today's path being played, or null outside the path. */
+    private var pathStep: Int? = null
+
+    /** Counts up for each game shown, so a late "step finished" timer can tell it's stale. */
+    private var gameToken = 0
 
     // Daily play-time limit: time is counted while the app is on screen, checked every few seconds.
     private val playTime by lazy { PlayTime(this) }
@@ -46,7 +52,11 @@ class MainActivity : AppCompatActivity() {
     private val goBack = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             val current = track
-            if (screen == Screen.GAME && current != null) showTrack(current) else showHome()
+            when {
+                screen == Screen.GAME && pathStep != null -> showPath()
+                screen == Screen.GAME && current != null -> showTrack(current)
+                else -> showHome()
+            }
         }
     }
 
@@ -99,6 +109,7 @@ class MainActivity : AppCompatActivity() {
     private fun showRest() {
         screen = Screen.REST
         track = null
+        pathStep = null
         // Back simply leaves the app from here.
         goBack.isEnabled = false
         speaker.stop()
@@ -129,6 +140,7 @@ class MainActivity : AppCompatActivity() {
     private fun showHome() {
         screen = Screen.HOME
         track = null
+        pathStep = null
         goBack.isEnabled = false
         speaker.stop()
         setContentView(HomeView(this, speaker, player).apply {
@@ -136,6 +148,8 @@ class MainActivity : AppCompatActivity() {
             onParent = { ParentGate.show(this@MainActivity) { startActivity(Intent(this@MainActivity, ParentActivity::class.java)) } }
             onChild = ::showChildren
             onAlbum = ::showAlbum
+            onPath = { showPath() }
+            pathDone = player.pathDone
         })
     }
 
@@ -168,6 +182,7 @@ class MainActivity : AppCompatActivity() {
     private fun showTrack(track: Track) {
         screen = Screen.TRACK
         this.track = track
+        pathStep = null
         goBack.isEnabled = true
         speaker.stop()
         setContentView(TrackMenuView(this, speaker, player, track).apply {
@@ -176,24 +191,65 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun makeGame(track: Track, mode: GameMode, start: Int = 0): GameView = when (mode) {
+        GameMode.LEARN ->
+            if (track == Track.BARAKHADI) BarakhadiView(this, speaker, player, track)
+            else LearnView(this, speaker, player, track, start)
+        GameMode.BUILD -> MatraGameView(this, speaker, player, track)
+        GameMode.COUNT -> CountView(this, speaker, player, track)
+        GameMode.MEMORY -> MemoryView(this, speaker, player, track)
+        GameMode.WORDS -> WordsView(this, speaker, player, track)
+        GameMode.TRACE -> TraceView(this, speaker, player, track, start)
+        GameMode.FIND -> FindView(this, speaker, player, track)
+        GameMode.BALLOONS -> BalloonView(this, speaker, player, track)
+        GameMode.MATCH -> MatchView(this, speaker, player, track)
+    }
+
     private fun startGame(track: Track, mode: GameMode) {
-        val view = when (mode) {
-            GameMode.LEARN ->
-                if (track == Track.BARAKHADI) BarakhadiView(this, speaker, player, track)
-                else LearnView(this, speaker, player, track)
-            GameMode.BUILD -> MatraGameView(this, speaker, player, track)
-            GameMode.COUNT -> CountView(this, speaker, player, track)
-            GameMode.MEMORY -> MemoryView(this, speaker, player, track)
-            GameMode.WORDS -> WordsView(this, speaker, player, track)
-            GameMode.TRACE -> TraceView(this, speaker, player, track)
-            GameMode.FIND -> FindView(this, speaker, player, track)
-            GameMode.BALLOONS -> BalloonView(this, speaker, player, track)
-            GameMode.MATCH -> MatchView(this, speaker, player, track)
-        }
+        val view = makeGame(track, mode)
         view.onHome = { showTrack(track) }
+        showGame(view)
+    }
+
+    private fun showGame(view: GameView) {
+        gameToken++
         screen = Screen.GAME
         goBack.isEnabled = true
         setContentView(view)
+    }
+
+    /** Today's games: the list of steps, with the next one ready to tap. */
+    private fun showPath(justFinished: Boolean = false) {
+        screen = Screen.PATH
+        track = null
+        pathStep = null
+        goBack.isEnabled = true
+        speaker.stop()
+        setContentView(PathView(this, speaker, player, player.todaysPath(), player.pathDone, justFinished).apply {
+            onPick = ::startPathStep
+            onHome = ::showHome
+        })
+    }
+
+    /** Plays one step of today's path; enough stars finish it and lead back to the path. */
+    private fun startPathStep(index: Int) {
+        val step = player.todaysPath()[index]
+        // Learn and Trace pick up at the first letter this child doesn't know yet.
+        val view = makeGame(step.track, step.mode, start = player.firstUnknown(step.track))
+        var points = 0
+        view.onHome = { showPath() }
+        showGame(view)
+        track = step.track
+        pathStep = index
+        val token = gameToken
+        view.onPoint = {
+            points++
+            if (points == step.goal) {
+                player.finishPathStep(index)
+                // Let the game's own praise play first.
+                ticker.postDelayed({ if (gameToken == token && screen == Screen.GAME) showPath(justFinished = true) }, STEP_DONE_DELAY_MS)
+            }
+        }
     }
 
     override fun onPause() {
@@ -226,5 +282,6 @@ class MainActivity : AppCompatActivity() {
 
     private companion object {
         const val TICK_MS = 5_000L
+        const val STEP_DONE_DELAY_MS = 2_800L
     }
 }

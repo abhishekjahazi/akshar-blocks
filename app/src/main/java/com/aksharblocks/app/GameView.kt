@@ -82,6 +82,9 @@ abstract class GameView(
 
     var onHome: (() -> Unit)? = null
 
+    /** Called for each star, and in Learn for each new letter: progress in today's path. */
+    var onPoint: (() -> Unit)? = null
+
     protected val random = Random.Default
     protected val density = resources.displayMetrics.density
     protected fun dp(value: Float) = value * density
@@ -197,6 +200,12 @@ abstract class GameView(
             // Let the game's own praise finish first.
             after(1.6f) { if (reveal == sticker) speaker.say(CommonWords.newSticker(sticker)) }
         }
+        point()
+    }
+
+    /** One step of progress that earns no star (a new letter in Learn). */
+    protected fun point() {
+        onPoint?.invoke()
     }
 
     /** Bursts confetti out from ([x], [y]). */

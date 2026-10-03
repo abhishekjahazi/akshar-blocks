@@ -9,11 +9,11 @@ import kotlin.math.sin
 
 /** Flip through a track's letters: big letter, picture and word, read out loud. */
 class LearnView(
-    context: Context, speaker: Speaker, player: Player, private val track: Track,
+    context: Context, speaker: Speaker, player: Player, private val track: Track, start: Int = 0,
 ) : GameView(context, speaker, player) {
 
     private val letters = track.letters
-    private var index = 0
+    private var index = start.coerceIn(0, track.letters.lastIndex)
 
     /** Seconds since the card last bounced. */
     private var bounceTime = 0f
@@ -42,6 +42,7 @@ class LearnView(
 
     private fun go(step: Int) {
         index = (index + step + letters.size) % letters.size
+        if (step > 0) point()
         slide = step.toFloat()
         announce()
     }

@@ -3,7 +3,9 @@ package com.aksharblocks.app
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.RectF
+import kotlin.math.abs
 import kotlin.math.min
+import kotlin.math.sin
 
 /** First screen: pick English ABC, Hindi vowels or Hindi consonants. */
 class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(context, speaker, player) {
@@ -19,13 +21,20 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
     /** The star counter was tapped: open the sticker album. */
     var onAlbum: (() -> Unit)? = null
 
+    /** The "today's games" banner was tapped. */
+    var onPath: (() -> Unit)? = null
+
+    /** Which of today's steps are done, as bits (see [Player.pathDone]). */
+    var pathDone = 0
+
     override val starsTappable = true
 
     override val showHomeButton = false
 
     private val tracks = Track.entries
     private val cards = tracks.map { RectF() }
-    private val titleBlocks = List(TITLE.size) { RectF() }
+    private val pathBanner = RectF()
+    private val pathDot = RectF()
     private val miniBlock = RectF()
     private val parentButton = RectF()
     private val childTag = RectF()
@@ -36,7 +45,7 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val landscape = width > height
         val titleTop = contentTop - dp(16f)
         val titleBottom = titleTop + height * (if (landscape) 0.22f else 0.14f)
-        drawTitleBlocks(canvas, TITLE, TITLE_COLORS, titleTop, titleBottom, titleBlocks)
+        drawPathBanner(canvas, titleTop + dp(8f), titleBottom)
 
         // A grid of sections: two columns in portrait, three in landscape.
         val gap = dp(14f)
@@ -80,6 +89,59 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         }
     }
 
+    /** A wide yellow block: play today's games, with a dot for each step (green when done). */
+    private fun drawPathBanner(canvas: Canvas, top: Float, bottom: Float) {
+        val allDone = Integer.bitCount(pathDone) >= DailyPath.STEPS
+        val appear = popIn((time - 0.2f) / 0.4f)
+        if (appear <= 0.01f) return
+        pathBanner.set(contentLeft + dp(7f), top, contentRight - dp(7f), bottom - dp(10f))
+        // It bobs until today's games are done, to say "start here".
+        val bob = if (!allDone && motionEnabled) abs(sin(time * 2.6f)) * dp(4f) else 0f
+        canvas.save()
+        canvas.scale(appear, appear, pathBanner.centerX(), pathBanner.centerY())
+        canvas.translate(0f, -bob)
+        val face = if (allDone) Palette.GRASS else Palette.SUN
+        val ink = if (allDone) Palette.WHITE else Palette.INK
+        val sink = drawBlock(canvas, pathBanner, face, radius = dp(28f), depth = dp(10f))
+        val h = pathBanner.height()
+
+        // The play symbol (or a trophy) in a white circle on the left.
+        val circle = h * 0.62f
+        val cx = pathBanner.left + h * 0.2f + circle / 2f
+        val cy = pathBanner.centerY() + sink
+        fillPaint.color = Palette.WHITE
+        canvas.drawCircle(cx, cy, circle / 2f, fillPaint)
+        if (allDone) {
+            drawEmoji(canvas, "🏆", cx, cy, circle * 0.6f)
+        } else {
+            val s = circle * 0.22f
+            path.reset()
+            path.moveTo(cx + s * 1.1f, cy)
+            path.lineTo(cx - s * 0.7f, cy - s)
+            path.lineTo(cx - s * 0.7f, cy + s)
+            path.close()
+            fillPaint.color = Palette.INK
+            canvas.drawPath(path, fillPaint)
+        }
+
+        // "Today's games" and a row of dots under it.
+        val textLeft = cx + circle / 2f + dp(12f)
+        val textWidth = pathBanner.right - dp(16f) - textLeft
+        val textX = textLeft + textWidth / 2f
+        drawText(canvas, CommonWords.TODAYS_GAMES, textX, pathBanner.top + h * 0.38f + sink, min(h * 0.3f, dp(30f)), ink, textWidth)
+        val dot = min(h * 0.14f, dp(16f))
+        val dotGap = dot * 0.8f
+        var x = textX - (dot * DailyPath.STEPS + dotGap * (DailyPath.STEPS - 1)) / 2f
+        val dotY = pathBanner.top + h * 0.72f + sink
+        for (i in 0 until DailyPath.STEPS) {
+            pathDot.set(x, dotY - dot / 2f, x + dot, dotY + dot / 2f)
+            fillPaint.color = if (pathDone and (1 shl i) != 0) (if (allDone) Palette.WHITE else Palette.GRASS) else Palette.edgeOf(face)
+            canvas.drawOval(pathDot, fillPaint)
+            x += dot + dotGap
+        }
+        canvas.restore()
+    }
+
     /** Grown-ups lock on the left, then the playing child's picture and name. */
     private fun drawTopRow(canvas: Canvas) {
         val size = dp(52f)
@@ -110,10 +172,9 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
             onAlbum?.invoke()
             return
         }
-        val block = titleBlocks.indexOfFirst { it.contains(x, y) }
-        if (block >= 0) {
-            val track = TITLE_TRACKS[block]
-            speaker.say(track.lang.name(track.letters[0]), track.lang.locale)
+        if (pathBanner.contains(x, y)) {
+            Sounds.play(Sound.TAP)
+            onPath?.invoke()
             return
         }
         val index = cards.indexOfFirst { it.contains(x, y) }
@@ -125,8 +186,5 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
 
     private companion object {
         const val SAMPLE_SIZE = 4
-        val TITLE = listOf("A", "अ", "क")
-        val TITLE_TRACKS = listOf(Track.ENGLISH, Track.SWAR, Track.VYANJAN)
-        val TITLE_COLORS = listOf(Palette.OCEAN, Palette.TOMATO, Palette.GRASS)
     }
 }

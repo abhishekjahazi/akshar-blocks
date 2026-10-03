@@ -219,4 +219,8 @@ object CommonWords {
     fun streak(days: Int) = "$days days in a row! Wow!"
     fun newSticker(sticker: Sticker) = "New sticker!|A ${sticker.name}!"
     const val REST = "Great playing today!|Time to rest now. See you tomorrow!"
+    const val TODAYS_GAMES = "Today's games!"
+    const val PATH_START = "Today's games!|Tap the big block to play."
+    const val PATH_NEXT = "Well done!|Next game!"
+    const val PATH_DONE = "You finished today's games!|Come back tomorrow for more."
 }
