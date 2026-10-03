@@ -42,7 +42,10 @@ class PolishTest {
         val art = File("src/main/assets/art").list().orEmpty().toSet()
         val used = Track.entries.flatMap { it.letters }.mapNotNull { it.emoji } +
             Track.entries.flatMap { it.words }.map { it.emoji } +
-            Stickers.all.map { it.emoji } + Counting.things.map { it.emoji } + GameMode.entries.map { it.emoji }
+            Stickers.all.map { it.emoji } + Counting.things.map { it.emoji } + GameMode.entries.map { it.emoji } +
+            Rhymes.all.map { it.emoji } + Track.entries.map { Certificates.medal(it) } +
+            // Pictures drawn by the screens themselves.
+            listOf("✍️", "🎵", "⭐", "🐟", "👍", "▶️", "⏸️", "🔁", "🏆", "🔊", "🔄", "👆", "✅", "🔒", "🏠", "🌙", "👋")
         val missing = used.toSet().filter { Art.fileName(it) !in art }
         assertTrue("no artwork for $missing", missing.isEmpty())
     }
