@@ -20,14 +20,14 @@ android {
         applicationId = "com.aksharblocks.app"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Google AdMob. The banner is shown only when a banner ad unit is set (see Ads.kt).
+        // Google AdMob: the app and its Home banner ad unit (see Ads.kt).
         manifestPlaceholders["admobAppId"] = "ca-app-pub-6475166224550831~8358277177"
-        resValue("string", "banner_ad_unit", "")
+        resValue("string", "banner_ad_unit", "ca-app-pub-6475166224550831/1125645250")
     }
 
     signingConfigs {
