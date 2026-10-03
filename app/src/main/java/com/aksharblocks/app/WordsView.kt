@@ -52,7 +52,16 @@ class WordsView(
         word = if (first) pool.random(random) else Pick.anyExcept(pool, word, random)
         // The word's letters plus a couple of others to choose from.
         val alphabet = track.letters.map { tileLetter(it.symbol) }.distinct()
-        val extras = alphabet.filter { it !in word.letters }.shuffled(random).take(EXTRA_TILES)
+        // बारहखड़ी words: the wrong blocks are the same consonants with other matras (की for कि),
+        // so the child has to look at the matra, not just the letter.
+        val tricky = if (track == Track.BARAKHADI) {
+            val groups = word.letters.mapNotNull { block -> track.letters.firstOrNull { it.symbol == block }?.group }.toSet()
+            track.letters.filter { it.group in groups }.map { it.symbol }
+        } else {
+            emptyList()
+        }
+        val extras = (tricky.filter { it !in word.letters }.shuffled(random) + alphabet.filter { it !in word.letters }.shuffled(random))
+            .distinct().take(EXTRA_TILES)
         tiles = (word.letters + extras).shuffled(random).map { Tile(it) }
         placed = 0
         lit = -1

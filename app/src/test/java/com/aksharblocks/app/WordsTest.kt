@@ -28,6 +28,7 @@ class WordsTest {
     fun wordListsLoad() {
         assertEquals(20, Track.ENGLISH.words.size)
         assertEquals(12, Track.VYANJAN.words.size)
+        assertEquals(22, Track.BARAKHADI.words.size)
         assertTrue(Track.SWAR.words.isEmpty())
     }
 
@@ -43,11 +44,17 @@ class WordsTest {
             assertTrue(word.text, word.letters.all { it in hindi })
             assertTrue("${word.text} is short enough", word.letters.size in 2..6)
         }
+        // मात्रा words are built from बारहखड़ी syllables, and each one really uses a matra.
+        val syllables = Track.BARAKHADI.letters.map { it.symbol }.toSet()
+        for (word in Track.BARAKHADI.words) {
+            assertTrue(word.text, word.letters.all { it in syllables })
+            assertTrue("${word.text} has a matra", word.letters.any { it !in hindi })
+        }
     }
 
     @Test
     fun wordsAreUniqueAndHavePictures() {
-        for (track in listOf(Track.ENGLISH, Track.VYANJAN)) {
+        for (track in listOf(Track.ENGLISH, Track.VYANJAN, Track.BARAKHADI)) {
             val texts = track.words.map { it.text }
             assertEquals(texts.size, texts.toSet().size)
             assertTrue(track.words.all { it.emoji.isNotBlank() })

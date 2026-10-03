@@ -56,7 +56,7 @@ enum class Track(
     VYANJAN("हिंदी व्यंजन", "Hindi consonants", Palette.GRASS, Hindi, "vyanjan.tsv", showsCase = false, modes = ALPHABET_GAMES + GameMode.WORDS),
     BARAKHADI(
         "बारहखड़ी", "Hindi syllables", Palette.GRAPE, Hindi, file = null, showsCase = false,
-        modes = listOf(GameMode.LEARN, GameMode.BUILD, GameMode.FIND, GameMode.TRACE),
+        modes = listOf(GameMode.LEARN, GameMode.BUILD, GameMode.FIND, GameMode.TRACE, GameMode.WORDS),
     ),
     NUMBERS("Numbers", "1 to 100", Palette.ORANGE, EnglishNumbers, "numbers.tsv", showsCase = false, modes = NUMBER_GAMES),
     GINTI("हिंदी गिनती", "Hindi numbers", Palette.PINK, HindiNumbers, "ginti.tsv", showsCase = false, modes = NUMBER_GAMES);
@@ -76,6 +76,7 @@ enum class Track(
         get() = when (this) {
             ENGLISH -> "english.tsv"
             VYANJAN -> "hindi.tsv"
+            BARAKHADI -> "hindi-matra.tsv"
             else -> null
         }
 

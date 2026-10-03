@@ -54,6 +54,7 @@ object VoiceScript {
                 val letters = track.letters
                 if (track == Track.BARAKHADI) {
                     collectBarakhadi(track)
+                    collectWords(track)
                     continue
                 }
                 letters.forEachIndexed { i, letter ->
@@ -71,12 +72,7 @@ object VoiceScript {
                 }
                 add(lang, section, "*", lang.traceAgain())
                 if (GameMode.BALLOONS in track.modes) add(lang, section, "*", lang.balloonsDone())
-                if (GameMode.WORDS in track.modes) {
-                    for (word in track.words) {
-                        add(lang, section, word.text, lang.wordAsk(word), lang.wordDone(word, random), "${word.text}!")
-                        word.letters.forEach { add(lang, section, word.text, "${lang.name(Letter(it))}!") }
-                    }
-                }
+                collectWords(track)
                 if (GameMode.MEMORY in track.modes) {
                     add(lang, section, "*", lang.memoryAsk, lang.memoryDone())
                     letters.filter { it.hasPicture }.forEach { add(lang, section, it.symbol, "${it.word}!") }
@@ -91,6 +87,15 @@ object VoiceScript {
 
             for (sticker in Stickers.all) {
                 add(English, "Stickers", sticker.emoji, sticker.name, CommonWords.newSticker(sticker))
+            }
+        }
+
+        private fun collectWords(track: Track) {
+            if (GameMode.WORDS !in track.modes) return
+            val lang = track.lang
+            for (word in track.words) {
+                add(lang, track.label, word.text, lang.wordAsk(word), lang.wordDone(word, random), "${word.text}!")
+                word.letters.forEach { add(lang, track.label, word.text, "${lang.name(Letter(it))}!") }
             }
         }
 

@@ -1,0 +1,25 @@
+# मात्रा वाले हिंदी शब्द for the बारहखड़ी Words game: built block by block, e.g. कि + ता + ब = किताब.
+# Every block must be a बारहखड़ी syllable (a consonant with or without one matra).
+# One per line: WORD <tab> PICTURE (emoji). Lines starting with # are ignored.
+गाय	🐄
+नाक	👃
+कान	👂
+सेब	🍎
+मोर	🦚
+तारा	⭐
+केला	🍌
+पानी	💧
+रोटी	🫓
+चाबी	🔑
+तोता	🦜
+भालू	🐻
+जूता	👟
+टोपी	🧢
+हाथी	🐘
+बादल	☁️
+बकरी	🐐
+मछली	🐟
+किताब	📖
+कुरसी	🪑
+टमाटर	🍅
+नारियल	🥥
