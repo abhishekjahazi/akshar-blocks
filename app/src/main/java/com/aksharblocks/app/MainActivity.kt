@@ -201,6 +201,7 @@ class MainActivity : AppCompatActivity() {
         GameMode.WORDS -> WordsView(this, speaker, player, track)
         GameMode.TRACE -> TraceView(this, speaker, player, track, start)
         GameMode.FIND -> FindView(this, speaker, player, track)
+        GameMode.SOUNDS -> FindView(this, speaker, player, track, bySound = true)
         GameMode.BALLOONS -> BalloonView(this, speaker, player, track)
         GameMode.MATCH -> MatchView(this, speaker, player, track)
     }

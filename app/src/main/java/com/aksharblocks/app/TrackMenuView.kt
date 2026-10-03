@@ -15,6 +15,7 @@ enum class GameMode(val emoji: String, val color: Int, val textColor: Int) {
     FIND("🔍", Palette.GRASS, Palette.WHITE),
     BALLOONS("🎈", Palette.SUN, Palette.INK),
     MATCH("🍎", Palette.GRAPE, Palette.WHITE),
+    SOUNDS("👂", Palette.TEAL, Palette.WHITE),
 }
 
 /** The four games for one track, under that track's first letters dropping in as blocks. */

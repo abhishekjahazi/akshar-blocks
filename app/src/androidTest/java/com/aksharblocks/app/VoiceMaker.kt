@@ -58,8 +58,10 @@ class VoiceMaker {
         // Optional: pick exact voices (see VoiceSamples), e.g. -e enVoice en-in-x-ena-local -e hiVoice hi-in-x-hia-local
         val arguments = InstrumentationRegistry.getArguments()
         for ((language, lines) in VoiceScript.lines()) {
-            val locale = if (language == "hi") Hindi.locale else English.locale
-            val result = tts.setLanguage(locale)
+            if (lines.isEmpty()) continue
+            var result = tts.setLanguage(Voice.localeOf(language))
+            // Without a Marathi voice, Marathi is read by the Hindi one (same script).
+            if (result < TextToSpeech.LANG_AVAILABLE && language == "mr") result = tts.setLanguage(Hindi.locale)
             assertTrue("no $language voice on this phone", result >= TextToSpeech.LANG_AVAILABLE)
             arguments.getString("${language}Voice")?.let { name ->
                 val voice = tts.voices.orEmpty().firstOrNull { it.name == name }

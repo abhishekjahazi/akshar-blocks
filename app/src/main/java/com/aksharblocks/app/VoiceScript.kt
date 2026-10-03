@@ -14,7 +14,7 @@ object VoiceScript {
 
     const val EVERYDAY = "Everyday phrases"
 
-    /** Lines per language ("en", "hi"), in recording order. */
+    /** Lines per language ("en", "hi", "mr"), in recording order. */
     fun lines(): Map<String, List<Line>> {
         val collector = Collector()
         collector.collect()
@@ -24,13 +24,13 @@ object VoiceScript {
     private class Collector {
         private class Entry(val text: String, val section: String, val subjects: MutableSet<String> = HashSet())
 
-        private val entries = mapOf("en" to LinkedHashMap<String, Entry>(), "hi" to LinkedHashMap())
+        private val entries = Voice.LANGUAGES.associateWith { LinkedHashMap<String, Entry>() }
         private val random = Random(0)
 
         fun add(language: String, section: String, subject: String, text: String) {
-            for (part in Voice.parts(text)) {
-                val id = Voice.clipId(language, part)
-                entries.getValue(language).getOrPut(id) { Entry(part, section) }.subjects += subject
+            for (segment in Voice.segments(text, language)) {
+                val id = Voice.clipId(segment.language, segment.text)
+                entries.getValue(segment.language).getOrPut(id) { Entry(segment.text, section) }.subjects += subject
             }
         }
 
@@ -40,7 +40,7 @@ object VoiceScript {
 
         fun collect() {
             // Things said everywhere.
-            for (lang in listOf(English, Hindi)) {
+            for (lang in listOf(English, Hindi, Marathi)) {
                 lang.praises.forEach { add(lang, EVERYDAY, "*", it) }
                 GameMode.entries.forEach { add(lang, EVERYDAY, "*", lang.modeLabel(it)) }
             }
@@ -63,14 +63,18 @@ object VoiceScript {
                     add(
                         lang, section, s,
                         lang.name(letter), lang.learn(letter), lang.find(letter), lang.found(letter, random),
-                        lang.notThis(letter, other), lang.traceAsk(letter), lang.traceDone(letter, random),
+                        lang.notThis(letter, other),
                     )
+                    if (GameMode.TRACE in track.modes) add(lang, section, s, lang.traceAsk(letter), lang.traceDone(letter, random))
+                    if (GameMode.SOUNDS in track.modes && letter.sound != null) {
+                        add(lang, section, s, lang.soundAsk(letter), lang.soundRight(letter, random), lang.soundWrong(other, letter))
+                    }
                     if (GameMode.BALLOONS in track.modes) add(lang, section, s, lang.balloonsStart(letter), lang.balloonsAgain(letter))
                     if (GameMode.MATCH in track.modes && letter.hasPicture) {
                         add(lang, section, s, lang.matchAsk(letter), lang.matchRight(letter, random), lang.matchWrong(letter))
                     }
                 }
-                add(lang, section, "*", lang.traceAgain())
+                if (GameMode.TRACE in track.modes) add(lang, section, "*", lang.traceAgain())
                 if (GameMode.BALLOONS in track.modes) add(lang, section, "*", lang.balloonsDone())
                 collectWords(track)
                 if (GameMode.MEMORY in track.modes) {

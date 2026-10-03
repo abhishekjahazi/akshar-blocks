@@ -34,6 +34,12 @@ object Palette {
     const val ORANGE = 0xFFFF8A1F.toInt()
     const val PINK = 0xFFFF4FA3.toInt()
     const val TEAL = 0xFF12B5A6.toInt()
+    const val INDIGO = 0xFF6A4BE8.toInt()
+    const val CYAN = 0xFF1098AD.toInt()
+    const val OLIVE = 0xFF5C940D.toInt()
+    const val EARTH = 0xFFB0602A.toInt()
+    const val ROYAL = 0xFF364FC7.toInt()
+    const val RUST = 0xFFD9480F.toInt()
 
     // Light screen backgrounds, one per game so each has its own feel.
     const val SKY = 0xFFCFE8FF.toInt()
@@ -295,6 +301,11 @@ abstract class GameView(
         canvas: Canvas, text: String, cx: Float, cy: Float, size: Float, color: Int,
         maxWidth: Float = Float.MAX_VALUE,
     ) {
+        // Picture tracks put a picture where letters go (on blocks, cards and menus).
+        if (Art.has(text)) {
+            drawEmoji(canvas, text, cx, cy, min(size, maxWidth))
+            return
+        }
         textPaint.textSize = size
         textPaint.color = color
         val measured = textPaint.measureText(text)

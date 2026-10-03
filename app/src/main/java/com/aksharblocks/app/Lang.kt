@@ -42,6 +42,11 @@ interface Lang {
     fun wordAsk(word: Word): String
     fun wordDone(word: Word, random: Random): String = "${praise(random)}|${word.text}!"
 
+    // Animals' sounds game ("Who says moo?"); only picture tracks with sounds use these.
+    fun soundAsk(target: Letter): String = find(target)
+    fun soundRight(target: Letter, random: Random): String = found(target, random)
+    fun soundWrong(tapped: Letter, target: Letter): String = notThis(tapped, target)
+
     // On screen
     fun learnTitle(number: Int, total: Int): String
     val findTitle: String
@@ -104,6 +109,7 @@ open class EnglishLang : Lang {
         GameMode.FIND -> "Find it"
         GameMode.BALLOONS -> "Balloons"
         GameMode.MATCH -> "Pictures"
+        GameMode.SOUNDS -> "Sounds"
     }
 }
 
@@ -181,6 +187,7 @@ open class HindiLang : Lang {
         GameMode.FIND -> "ढूंढो"
         GameMode.BALLOONS -> "गुब्बारे"
         GameMode.MATCH -> "चित्र"
+        GameMode.SOUNDS -> "आवाज़"
     }
 }
 
@@ -193,6 +200,86 @@ object HindiNumbers : HindiLang() {
     override fun traceAgain() = "फिर से कोशिश करो। संख्या के ऊपर बनाओ।"
     override fun learnTitle(number: Int, total: Int) = "संख्या $number / $total"
     override val findTitle = "संख्या ढूंढो"
+}
+
+/**
+ * Picture tracks (colors, shapes, animals) are spoken in English with the Hindi name after it:
+ * "Red!|@hi लाल!". Animals also say what sound they make.
+ */
+open class PictureLang(
+    /** Says what to look for: "Find the color" (red), "Find the" (cow). */
+    private val findPrefix: String,
+    /** One item, for screen titles: "Color 3 of 9". */
+    private val item: String,
+) : EnglishLang() {
+    override fun name(letter: Letter) = letter.word ?: letter.symbol
+
+    private fun hindi(letter: Letter) = letter.hindi?.let { "|@hi $it!" }.orEmpty()
+
+    private fun says(letter: Letter) = letter.sound?.let { "The ${name(letter).lowercase()} says $it!" }
+
+    override fun learn(letter: Letter) = "${name(letter)}!${hindi(letter)}" + says(letter)?.let { "|$it" }.orEmpty()
+    override fun find(target: Letter) = "$findPrefix|${name(target)}!${hindi(target)}"
+    override fun found(target: Letter, random: Random) = "${praise(random)}|${name(target)}!${hindi(target)}"
+    override fun notThis(tapped: Letter, target: Letter) = "That is|${name(tapped)}!|Find|${name(target)}!"
+
+    override fun soundAsk(target: Letter) = "Who says|${target.sound}?"
+    override fun soundRight(target: Letter, random: Random) = "${praise(random)}|${says(target) ?: "${name(target)}!"}"
+    override fun soundWrong(tapped: Letter, target: Letter) = "That is|${name(tapped)}!|Who says|${target.sound}?"
+
+    override fun learnTitle(number: Int, total: Int) = "$item $number of $total"
+    override val findTitle = "Find it"
+    val soundsTitle = "Who says it?"
+}
+
+object ColorWords : PictureLang("Find the color", "Color")
+object ShapeWords : PictureLang("Find the", "Shape")
+object AnimalWords : PictureLang("Find the", "Animal")
+
+/** मराठी: the same games as Hindi, in Marathi words, with its own voice. */
+object Marathi : HindiLang() {
+    override val locale: Locale = Locale.forLanguageTag("mr-IN")
+
+    override val praises = listOf("शाबास!", "खूप छान!", "व्वा!", "छान!")
+
+    override fun learn(letter: Letter) =
+        if (letter.word != null) "${letter.symbol}.|${letter.symbol},|${letter.word}." else "${letter.symbol}."
+    override fun find(target: Letter) = "${name(target)}|शोधा!"
+    override fun notThis(tapped: Letter, target: Letter) = "हे|${name(tapped)}|आहे.|${name(target)}|शोधा!"
+    override fun balloonsStart(first: Letter) = "फुगे फोडा!|${first.symbol}|पासून सुरू करा."
+    override fun balloonsDone() = "शाबास! तू सगळी अक्षरे फोडलीस!"
+    override fun balloonsAgain(first: Letter) = "पुन्हा खेळूया!|${first.symbol}|शोधा."
+    override fun matchAsk(letter: Letter) = "${letter.word}.|${letter.word} कोणत्या अक्षराने सुरू होते?"
+    override fun matchRight(letter: Letter, random: Random) =
+        "${praise(random)}|${letter.word},|${letter.symbol}|ने सुरू होते!"
+    override fun matchWrong(letter: Letter) = "पुन्हा प्रयत्न कर!|${letter.word}."
+    override fun traceAsk(letter: Letter) = "${name(letter)}|लिहा!"
+    override fun traceDone(letter: Letter, random: Random) = "${praise(random)}|तू|${name(letter)}|लिहिलेस!"
+    override fun traceAgain() = "पुन्हा प्रयत्न कर. अक्षरावर गिरव."
+    override val memoryAsk = "जोड्या जुळवा!"
+    override fun memoryDone() = "शाबास! सगळ्या जोड्या जुळल्या!"
+    override fun wordAsk(word: Word) = "${word.text}|बनवा!"
+
+    override fun learnTitle(number: Int, total: Int) = "अक्षर $number / $total"
+    override val findTitle = "अक्षर शोधा"
+    override fun popTitle(next: Letter) = "${next.symbol} फोडा"
+    override val doneTitle = "शाबास!"
+    override val matchTitle = "कोणते अक्षर?"
+    override fun traceTitle(number: Int, total: Int) = "लिहा $number / $total"
+    override val memoryTitle = "जोड्या जुळवा"
+    override val wordsTitle = "शब्द बनवा"
+    override fun modeLabel(mode: GameMode) = when (mode) {
+        GameMode.LEARN -> "शिका"
+        GameMode.TRACE -> "लिहा"
+        GameMode.BUILD -> "जोडा"
+        GameMode.COUNT -> "मोजा"
+        GameMode.MEMORY -> "जोड्या"
+        GameMode.WORDS -> "शब्द"
+        GameMode.FIND -> "शोधा"
+        GameMode.BALLOONS -> "फुगे"
+        GameMode.MATCH -> "चित्रे"
+        GameMode.SOUNDS -> "आवाज"
+    }
 }
 
 /** Words for the बारहखड़ी games, which exist only in Hindi. */

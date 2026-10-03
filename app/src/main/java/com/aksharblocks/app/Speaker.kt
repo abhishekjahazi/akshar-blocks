@@ -64,15 +64,21 @@ class Speaker(context: Context) : TextToSpeech.OnInitListener {
             pending = text to locale
             return
         }
-        if (locale != currentLocale) {
-            val result = tts.setLanguage(locale)
-            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                Log.w(TAG, "No voice installed for $locale")
-            }
-            currentLocale = locale
+        // A sentence can switch language part way ("Cow!|@hi गाय!"): each run is queued in its own voice.
+        Voice.spokenRuns(text, locale).forEachIndexed { i, (runLocale, spoken) ->
+            setLanguage(runLocale)
+            val mode = if (i == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD
+            tts.speak(spoken, mode, null, spoken.hashCode().toString())
         }
-        val spoken = Voice.spokenText(text)
-        tts.speak(spoken, TextToSpeech.QUEUE_FLUSH, null, spoken.hashCode().toString())
+    }
+
+    private fun setLanguage(locale: Locale) {
+        if (locale == currentLocale) return
+        var result = tts.setLanguage(locale)
+        // Phones without a Marathi voice read Marathi with the Hindi one: same script, close sounds.
+        if (result < TextToSpeech.LANG_AVAILABLE && locale.language == "mr") result = tts.setLanguage(Hindi.locale)
+        if (result < TextToSpeech.LANG_AVAILABLE) Log.w(TAG, "No voice installed for $locale")
+        currentLocale = locale
     }
 
     /** Plays recordings one after another; a newer sentence cancels the rest. */

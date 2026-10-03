@@ -1,0 +1,21 @@
+# Animals and the sounds they make. One per line: PICTURE (emoji) <tab> ENGLISH <tab> HINDI <tab> SOUND.
+# SOUND finishes "The cow says …" and is used by the Sounds game; leave it empty for animals
+# without a well-known sound. Lines starting with # are ignored. Save as UTF-8.
+🐄	Cow	गाय	moo
+🐶	Dog	कुत्ता	woof woof
+🐱	Cat	बिल्ली	meow
+🦆	Duck	बतख	quack quack
+🦁	Lion	शेर	roar
+🐑	Sheep	भेड़	baa
+🐐	Goat	बकरी	meh
+🐴	Horse	घोड़ा	neigh
+🐓	Rooster	मुर्गा	cock-a-doodle-doo
+🐸	Frog	मेंढक	ribbit
+🐝	Bee	मधुमक्खी	buzz
+🦉	Owl	उल्लू	hoo hoo
+🐒	Monkey	बंदर	ooh ooh aah aah
+🐍	Snake	साँप	hiss
+🐭	Mouse	चूहा	squeak
+🐷	Pig	सूअर	oink
+🐘	Elephant	हाथी
+🦒	Giraffe	जिराफ़

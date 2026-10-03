@@ -83,6 +83,14 @@ class LearnView(
         val sink = drawBlock(canvas, card, Palette.WHITE, radius = dp(36f), depth = dp(10f))
         canvas.translate(0f, sink)
 
+        if (track.isPictures) {
+            drawPicture(canvas, letter, color, w, h)
+            canvas.restore()
+            drawArrowBlock(canvas, prevButton, Palette.SUN, pointsRight = false)
+            drawArrowBlock(canvas, nextButton, Palette.SUN, pointsRight = true)
+            return
+        }
+
         // The letter sits on its own colored block; letters without a word get the whole card.
         val word = letter.word
         val side = if (word == null) min(h * 0.6f, w * 0.7f) else min(h * 0.36f, w * 0.62f)
@@ -116,6 +124,13 @@ class LearnView(
 
         drawArrowBlock(canvas, prevButton, Palette.SUN, pointsRight = false)
         drawArrowBlock(canvas, nextButton, Palette.SUN, pointsRight = true)
+    }
+
+    /** Picture tracks: a big picture with its English name, and the Hindi name under it. */
+    private fun drawPicture(canvas: Canvas, item: Letter, color: Int, w: Float, h: Float) {
+        drawEmoji(canvas, item.symbol, card.centerX(), card.top + h * 0.36f, min(h * 0.5f, w * 0.7f))
+        drawText(canvas, item.word.orEmpty(), card.centerX(), card.top + h * 0.74f, min(h * 0.11f, w * 0.16f), Palette.INK, w * 0.86f)
+        item.hindi?.let { drawText(canvas, it, card.centerX(), card.top + h * 0.87f, min(h * 0.08f, w * 0.12f), color, w * 0.86f) }
     }
 
     override fun onTap(x: Float, y: Float) {

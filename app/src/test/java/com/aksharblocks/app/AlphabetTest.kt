@@ -43,7 +43,7 @@ class AlphabetTest {
 
     @Test
     fun everyWordStartsWithItsLetter() {
-        for (track in Track.entries.filter { !it.isNumbers }) {
+        for (track in Track.entries.filter { !it.isNumbers && !it.isPictures }) {
             for (letter in track.letters) {
                 val word = letter.word ?: continue
                 assertTrue("${letter.symbol} / $word", word.startsWith(letter.symbol, ignoreCase = true))

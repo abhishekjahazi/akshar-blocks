@@ -9,6 +9,10 @@ data class Letter(
     val emoji: String? = null,
     /** Letters that belong together, like the syllables of one consonant in the बारहखड़ी. */
     val group: String? = null,
+    /** Picture tracks: the thing's name in Hindi (the English one is [word]). */
+    val hindi: String? = null,
+    /** Animals: the sound it makes ("moo"). */
+    val sound: String? = null,
 ) {
 
     val hasPicture get() = word != null && emoji != null
@@ -36,6 +40,7 @@ internal fun isCombiningMark(c: Char): Boolean {
 
 internal val ALPHABET_GAMES = listOf(GameMode.LEARN, GameMode.TRACE, GameMode.FIND, GameMode.BALLOONS, GameMode.MATCH, GameMode.MEMORY)
 internal val NUMBER_GAMES = listOf(GameMode.LEARN, GameMode.COUNT, GameMode.FIND, GameMode.TRACE, GameMode.MEMORY)
+internal val PICTURE_GAMES = listOf(GameMode.LEARN, GameMode.FIND, GameMode.MEMORY)
 
 /** A set of letters to learn, with its own voice and on-screen language. */
 enum class Track(
@@ -59,17 +64,32 @@ enum class Track(
         modes = listOf(GameMode.LEARN, GameMode.BUILD, GameMode.FIND, GameMode.TRACE, GameMode.WORDS),
     ),
     NUMBERS("Numbers", "1 to 100", Palette.ORANGE, EnglishNumbers, "numbers.tsv", showsCase = false, modes = NUMBER_GAMES),
-    GINTI("हिंदी गिनती", "Hindi numbers", Palette.PINK, HindiNumbers, "ginti.tsv", showsCase = false, modes = NUMBER_GAMES);
+    GINTI("हिंदी गिनती", "Hindi numbers", Palette.PINK, HindiNumbers, "ginti.tsv", showsCase = false, modes = NUMBER_GAMES),
+    MARATHI("मराठी", "Marathi letters", Palette.INDIGO, Marathi, "marathi.tsv", showsCase = false),
+    COLORS("Colors", "रंग", Palette.CYAN, ColorWords, "colors.tsv", showsCase = false, modes = PICTURE_GAMES),
+    SHAPES("Shapes", "आकार", Palette.OLIVE, ShapeWords, "shapes.tsv", showsCase = false, modes = PICTURE_GAMES),
+    ANIMALS(
+        "Animals", "जानवर", Palette.EARTH, AnimalWords, "animals.tsv", showsCase = false,
+        modes = listOf(GameMode.LEARN, GameMode.FIND, GameMode.SOUNDS, GameMode.MEMORY),
+    );
 
     val letters: List<Letter> get() = Content.letters(this)
 
     val isNumbers get() = this == NUMBERS || this == GINTI
 
+    /** Tracks of pictures with names (colors, shapes, animals) rather than letters. */
+    val isPictures get() = this == COLORS || this == SHAPES || this == ANIMALS
+
     /**
      * What the Find game shows as the letter to look for. Small letters show the capital, so the
      * child matches B with b.
      */
-    fun prompt(letter: Letter): String = if (this == LOWER) letter.symbol.uppercase() else letter.symbol
+    fun prompt(letter: Letter): String = when {
+        this == LOWER -> letter.symbol.uppercase()
+        // Showing the picture would give the answer away; the voice names it.
+        isPictures -> "?"
+        else -> letter.symbol
+    }
 
     /** First words to build, in assets/words/, for tracks with the Words game. */
     val wordsFile: String?

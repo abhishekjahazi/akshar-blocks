@@ -5,12 +5,16 @@ import android.graphics.Canvas
 import android.graphics.RectF
 import kotlin.math.min
 
-/** "Find the letter B!" / "क ढूंढो!": tap the right one of four letter blocks. */
+/**
+ * "Find the letter B!" / "क ढूंढो!": tap the right one of four letter blocks. With [bySound]
+ * (animals), the voice says the sound instead: "Who says moo?"
+ */
 class FindView(
     context: Context, speaker: Speaker, player: Player, private val track: Track,
+    private val bySound: Boolean = false,
 ) : GameView(context, speaker, player) {
 
-    override val title = track.lang.findTitle
+    override val title = if (bySound) (track.lang as? PictureLang)?.soundsTitle ?: track.lang.findTitle else track.lang.findTitle
     override val skyColor = Palette.MINT
 
     private val lang = track.lang
@@ -35,7 +39,9 @@ class FindView(
     private fun newRound() {
         // Smart practice: letters this child gets wrong come up more often, with their usual mix-ups.
         val stats = player.stats(track)
-        val next = Coach.pickTarget(track.letters, stats, random, except = target)
+        // The sounds game only asks about animals that have a sound.
+        val pool = if (bySound) track.letters.filter { it.sound != null } else track.letters
+        val next = Coach.pickTarget(pool, stats, random, except = target)
         target = next
         options = Coach.choices(next, track.choicePool(next), stats, OPTION_COUNT, random)
         shakeTime.fill(1f)
@@ -45,7 +51,7 @@ class FindView(
     }
 
     private fun askForTarget() {
-        target?.let { speaker.say(lang.find(it), lang.locale) }
+        target?.let { speaker.say(if (bySound) lang.soundAsk(it) else lang.find(it), lang.locale) }
     }
 
     override fun update(dt: Float) {
@@ -108,13 +114,13 @@ class FindView(
             solvedAt = roundTime
             addStar()
             celebrate(tiles[i].centerX(), tiles[i].centerY())
-            speaker.say(lang.found(target, random), lang.locale)
+            speaker.say(if (bySound) lang.soundRight(target, random) else lang.found(target, random), lang.locale)
             after(2f) { newRound() }
         } else {
             player.wrong(track, target, options[i])
             Sounds.play(Sound.WRONG)
             shakeTime[i] = 0f
-            speaker.say(lang.notThis(options[i], target), lang.locale)
+            speaker.say(if (bySound) lang.soundWrong(options[i], target) else lang.notThis(options[i], target), lang.locale)
         }
     }
 

@@ -29,7 +29,7 @@ object Content {
                 words[track] = assets.open("words/$file").bufferedReader().use { Words.parse(it.readText()) }
             }
             if (track.file == null) continue
-            letters[track] = assets.open("tracks/${track.file}").bufferedReader().use { parse(it.readText()) }
+            letters[track] = assets.open("tracks/${track.file}").bufferedReader().use { parseFor(track, it.readText()) }
             // Stroke files are optional: letters without one are traced over their shape.
             strokes[track] = if (assets.list("tracing").orEmpty().contains(track.file)) {
                 assets.open("tracing/${track.file}").bufferedReader().use { Tracing.parse(it.readText()) }
@@ -45,7 +45,7 @@ object Content {
         for (track in Track.entries) {
             track.wordsFile?.let { file -> words[track] = Words.parse(File(folder, "words/$file").readText()) }
             if (track.file == null) continue
-            letters[track] = parse(File(folder, "tracks/${track.file}").readText())
+            letters[track] = parseFor(track, File(folder, "tracks/${track.file}").readText())
             val strokeFile = File(folder, "tracing/${track.file}")
             strokes[track] = if (strokeFile.exists()) Tracing.parse(strokeFile.readText()) else emptyMap()
         }
@@ -58,21 +58,41 @@ object Content {
         strokes[Track.BARAKHADI] = emptyMap()
     }
 
+    private fun parseFor(track: Track, text: String) = if (track.isPictures) parsePictures(text) else parse(text)
+
     /**
      * One letter per line: symbol, word and picture separated by tabs. Word and picture may be
      * empty. Blank lines and lines starting with `#` are ignored.
      */
     fun parse(text: String): List<Letter> =
+        rows(text).map { columns ->
+            Letter(
+                symbol = columns[0],
+                word = columns.getOrNull(1)?.ifEmpty { null },
+                emoji = columns.getOrNull(2)?.ifEmpty { null },
+            )
+        }
+
+    /**
+     * Picture tracks, one per line: picture, English name, Hindi name and (animals) the sound it
+     * makes. The picture is also the item's symbol.
+     */
+    fun parsePictures(text: String): List<Letter> =
+        rows(text).map { columns ->
+            Letter(
+                symbol = columns[0],
+                word = columns.getOrNull(1)?.ifEmpty { null },
+                emoji = columns[0],
+                hindi = columns.getOrNull(2)?.ifEmpty { null },
+                sound = columns.getOrNull(3)?.ifEmpty { null },
+            )
+        }
+
+    /** The tab-separated columns of each line, skipping blank lines and `#` comments. */
+    private fun rows(text: String): List<List<String>> =
         text.lineSequence()
             .map { it.trimEnd('\r') }
             .filter { it.isNotBlank() && !it.startsWith("#") }
-            .map { line ->
-                val columns = line.split('\t').map { it.trim() }
-                Letter(
-                    symbol = columns[0],
-                    word = columns.getOrNull(1)?.ifEmpty { null },
-                    emoji = columns.getOrNull(2)?.ifEmpty { null },
-                )
-            }
+            .map { line -> line.split('\t').map { it.trim() } }
             .toList()
 }
