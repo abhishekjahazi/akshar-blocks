@@ -18,13 +18,14 @@ OUT="app/src/main/assets/voice"
 
 rm -rf "$WORK" && mkdir -p "$WORK"
 MSYS_NO_PATHCONV=1 "$ADB" pull /sdcard/Android/data/com.aksharblocks.app.debug/files/voice-wav/. "$WORK" >/dev/null
+mkdir -p "$WORK/en" "$WORK/hi" "$WORK/mr"
 
 # Trim silence at both ends (keeping a hair of it so words aren't clipped), mono, 24 kHz,
 # 40 kbps AAC: small, and clear enough for speech.
 FILTER="silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.03,areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.06,areverse"
 
 count=0
-for language in en hi; do
+for language in en hi mr; do
   mkdir -p "$OUT/$language"
   for wav in "$WORK/$language"/*.wav; do
     name=$(basename "$wav" .wav)

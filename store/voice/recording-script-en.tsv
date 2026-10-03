@@ -16,6 +16,7 @@ en_efb89361	Words	Everyday phrases
 en_f554dd29	Find it	Everyday phrases
 en_1a9be7ff	Balloons	Everyday phrases
 en_0a3c1579	Pictures	Everyday phrases
+en_51c24c5d	Sounds	Everyday phrases
 en_65090bb1	Let's play!	Everyday phrases
 en_c7c75c4f	Your stickers!	Everyday phrases
 en_9d4b64dc	Win more stars to get this sticker!	Everyday phrases
@@ -26,6 +27,12 @@ en_31c5db80	Tap the big block to play.	Everyday phrases
 en_65ade632	Next game!	Everyday phrases
 en_9bc44f4e	You finished today's games!	Everyday phrases
 en_7819ccf3	Come back tomorrow for more.	Everyday phrases
+en_471400c4	Let's write your name!	Everyday phrases
+en_51f90c38	Wonderful!	Everyday phrases
+en_931ec3de	You wrote your name!	Everyday phrases
+en_1a04407e	Pick a rhyme!	Everyday phrases
+en_bada59fe	Congratulations!	Everyday phrases
+en_c078b272	You earned a certificate!	Everyday phrases
 en_f9407667	ay	Everyday phrases
 en_ff1eb0fd	Find the letter	Everyday phrases
 en_f1576e18	That is	Everyday phrases
@@ -58,6 +65,7 @@ en_d1854cae	N!	Everyday phrases
 en_ab87d24b	Monkey.	Everyday phrases
 en_7a81af3e	O!	Everyday phrases
 en_516b9783	P!	Everyday phrases
+en_ef0ebbb7	Orange.	Everyday phrases
 en_22ea1c64	Q!	Everyday phrases
 en_73335c22	Penguin.	Everyday phrases
 en_4dc7c9ec	R!	Everyday phrases
@@ -73,6 +81,10 @@ en_395df8f7	Z!	Everyday phrases
 en_19232bfb	Try again. Draw over the letter.	Everyday phrases
 en_7d79adc6	Hooray! You popped all the letters from ay to Z!	Everyday phrases
 en_483157aa	Make the word	Everyday phrases
+en_2cd4ba93	pig!	Everyday phrases
+en_8bbddb4a	cow!	Everyday phrases
+en_917ee46d	bee!	Everyday phrases
+en_2c730e3a	owl!	Everyday phrases
 en_90d8f411	Find the pairs!	Everyday phrases
 en_8f53f629	You found all the pairs!	Everyday phrases
 en_1159f188	Find the small letter	Everyday phrases
@@ -83,11 +95,42 @@ en_d66d8e7d	Try again. Draw over the number.	Everyday phrases
 en_a317f805	Let's count again.	Everyday phrases
 en_76c2436b	apples!	Everyday phrases
 en_99e4f5b9	balls!	Everyday phrases
+en_4e3e01b9	star!	Everyday phrases
 en_76147edd	stars!	Everyday phrases
 en_de57efa1	flowers!	Everyday phrases
 en_e1952705	cars!	Everyday phrases
 en_337432e4	chicks!	Everyday phrases
+en_c0e1200c	Find the color	Everyday phrases
+en_ae44f4b1	Find the	Everyday phrases
+en_1ea4150a	Who says	Everyday phrases
 en_e7bcfab0	New sticker!	Everyday phrases
+en_59e188ef	Twinkle, twinkle, little star,	Rhymes
+en_1da4f3ff	How I wonder what you are!	Rhymes
+en_1a2d28e5	Up above the world so high,	Rhymes
+en_9a1685ca	Like a diamond in the sky.	Rhymes
+en_d7375cba	Baa, baa, black sheep, have you any wool?	Rhymes
+en_89c47d46	Yes sir, yes sir, three bags full!	Rhymes
+en_be854c28	One for the master, one for the dame,	Rhymes
+en_ce4603e4	And one for the little boy who lives down the lane.	Rhymes
+en_c8dfab84	Humpty Dumpty sat on a wall,	Rhymes
+en_23024cde	Humpty Dumpty had a great fall.	Rhymes
+en_fe1be6a8	All the king's horses and all the king's men	Rhymes
+en_2ca414b2	Couldn't put Humpty together again.	Rhymes
+en_b473ee14	Jack and Jill went up the hill	Rhymes
+en_c147a1dd	To fetch a pail of water.	Rhymes
+en_c1fba1f7	Jack fell down and broke his crown,	Rhymes
+en_ad2fb775	And Jill came tumbling after.	Rhymes
+en_692f5ab8	Hickory, dickory, dock,	Rhymes
+en_b3d4ee16	The mouse ran up the clock.	Rhymes
+en_77f64eb7	The clock struck one,	Rhymes
+en_9f971d13	The mouse ran down,	Rhymes
+en_b2ff98ac	Rain, rain, go away,	Rhymes
+en_670320c7	Come again another day.	Rhymes
+en_8c4bded8	Little children want to play,	Rhymes
+en_0325d87b	Row, row, row your boat,	Rhymes
+en_7dd91d1d	Gently down the stream.	Rhymes
+en_8693bedf	Merrily, merrily, merrily, merrily,	Rhymes
+en_b865ec81	Life is but a dream.	Rhymes
 en_0a8e40f1	ay is for Apple.	English
 en_46a00bdc	Which letter does Apple start with?	English
 en_d05205a5	Apple starts with ay!	English
@@ -137,7 +180,6 @@ en_1a1f58c9	Nose.	English
 en_03b73733	Which letter does Nose start with?	English
 en_b61cc0f6	Nose starts with N!	English
 en_30f3f7ce	O is for Orange.	English
-en_ef0ebbb7	Orange.	English
 en_7be361c7	Which letter does Orange start with?	English
 en_40823403	Orange starts with O!	English
 en_aac64702	P is for Penguin.	English
@@ -183,7 +225,6 @@ en_38aa53de	Zebra.	English
 en_abe6dc93	Which letter does Zebra start with?	English
 en_e18adf0f	Zebra starts with Z!	English
 en_32c70ceb	bus!	English
-en_2cd4ba93	pig!	English
 en_d8110861	hen!	English
 en_ff0f0a8b	fox!	English
 en_9b64d4ad	bat!	English
@@ -195,10 +236,7 @@ en_10e58660	hat!	English
 en_efa44987	van!	English
 en_4fa6024f	egg!	English
 en_64bd05d8	ant!	English
-en_8bbddb4a	cow!	English
-en_917ee46d	bee!	English
 en_9e32521d	car!	English
-en_2c730e3a	owl!	English
 en_fe05bcdc	one	Numbers
 en_ad782ecd	two!	Numbers
 en_b802f384	three!	Numbers
@@ -303,7 +341,6 @@ en_c5034916	How many apples?	Numbers
 en_f1b58e7a	How many balls?	Numbers
 en_d0b8389a	How many fish?	Numbers
 en_9bf91b25	How many stars?	Numbers
-en_4e3e01b9	star!	Numbers
 en_f93049c4	How many balloons?	Numbers
 en_326de722	balloon!	Numbers
 en_8dc72e62	How many flowers?	Numbers
@@ -311,6 +348,61 @@ en_5a46b825	flower!	Numbers
 en_8c52ce89	How many cars?	Numbers
 en_33ec68cb	How many chicks?	Numbers
 en_ed10eb98	chick!	Numbers
+en_78988010	Red	Colors
+en_4c9a82ce	Blue!	Colors
+en_96de5543	Yellow!	Colors
+en_bc74f4f0	Green!	Colors
+en_afaed754	Purple!	Colors
+en_9166eeff	Brown!	Colors
+en_466bc8ce	Black!	Colors
+en_528cef87	White!	Colors
+en_00b7b811	Circle	Shapes
+en_bfed89e8	Square!	Shapes
+en_b7d045ce	Triangle!	Shapes
+en_ef8201e1	Heart!	Shapes
+en_f872caad	Diamond!	Shapes
+en_46dcd4dd	Moon!	Shapes
+en_8580252b	The cow says moo!	Animals
+en_24a56b37	moo?	Animals
+en_476b2870	The dog says woof woof!	Animals
+en_ab2df53e	woof woof?	Animals
+en_1a5c651b	The cat says meow!	Animals
+en_5ece2400	Duck!	Animals
+en_7d5c2a2d	meow?	Animals
+en_d80c44c5	The duck says quack quack!	Animals
+en_bb8470b4	quack quack?	Animals
+en_da00a126	The lion says roar!	Animals
+en_6525f2e6	Sheep!	Animals
+en_e0623489	roar?	Animals
+en_18cce392	The sheep says baa!	Animals
+en_162d15a0	Goat!	Animals
+en_4c9e34ef	baa?	Animals
+en_47578350	The goat says meh!	Animals
+en_091b5035	Horse!	Animals
+en_26c4202e	meh?	Animals
+en_3049224c	The horse says neigh!	Animals
+en_4fec96ae	Rooster!	Animals
+en_23ca5107	neigh?	Animals
+en_aa5bf537	The rooster says cock-a-doodle-doo!	Animals
+en_b3e0f62f	Frog!	Animals
+en_1f4d2075	cock-a-doodle-doo?	Animals
+en_efe6acf6	The frog says ribbit!	Animals
+en_4f1977fc	ribbit?	Animals
+en_42ac3352	The bee says buzz!	Animals
+en_626f48d2	buzz?	Animals
+en_f2bbbde4	The owl says hoo hoo!	Animals
+en_076c1bb3	hoo hoo?	Animals
+en_74518726	The monkey says ooh ooh aah aah!	Animals
+en_14862708	Snake!	Animals
+en_55d0ea58	ooh ooh aah aah?	Animals
+en_90595a8a	The snake says hiss!	Animals
+en_9e05e683	Mouse!	Animals
+en_eec293de	hiss?	Animals
+en_6f361984	The mouse says squeak!	Animals
+en_5373e5cc	squeak?	Animals
+en_a82dcb88	The pig says oink!	Animals
+en_3de4877e	oink?	Animals
+en_fac8f1a3	Giraffe!	Animals
 en_26d33687	puppy	Stickers
 en_564a9a76	A puppy!	Stickers
 en_44060752	kitten	Stickers
@@ -319,7 +411,6 @@ en_8bb4ebd4	bunny	Stickers
 en_68df13e9	A bunny!	Stickers
 en_f91a8ee6	panda	Stickers
 en_ea255bc6	A panda!	Stickers
-en_b3e0f62f	frog	Stickers
 en_c79b0a4b	A frog!	Stickers
 en_8b1dd15c	A monkey!	Stickers
 en_14e60d90	A chick!	Stickers
@@ -339,7 +430,6 @@ en_d7e7d0fc	A cow!	Stickers
 en_e57ebff8	piggy	Stickers
 en_03ff0c68	A piggy!	Stickers
 en_ccba5add	A hen!	Stickers
-en_9e05e683	mouse	Stickers
 en_46f5de03	A mouse!	Stickers
 en_460b8dde	octopus	Stickers
 en_32965fac	A octopus!	Stickers
@@ -352,7 +442,6 @@ en_a08c1c32	A whale!	Stickers
 en_5c53e982	A elephant!	Stickers
 en_45b72498	camel	Stickers
 en_98171f97	A camel!	Stickers
-en_091b5035	horse	Stickers
 en_d4208391	A horse!	Stickers
 en_2660eff2	A lion!	Stickers
 en_84de6753	unicorn	Stickers

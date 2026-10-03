@@ -14,6 +14,7 @@ hi_f4b5168a	शब्द	Everyday phrases
 hi_9a14f02d	ढूंढो	Everyday phrases
 hi_6c0dee44	गुब्बारे	Everyday phrases
 hi_cfe0ce56	चित्र	Everyday phrases
+hi_8ff54d1c	आवाज़	Everyday phrases
 hi_ea5a10db	अ	Everyday phrases
 hi_32e8c5d2	यह	Everyday phrases
 hi_59b35aa1	है।	Everyday phrases
@@ -44,6 +45,7 @@ hi_0469f42d	क	Everyday phrases
 hi_57294b4c	ख	Everyday phrases
 hi_d073d90f	ग	Everyday phrases
 hi_c39603c9	घ	Everyday phrases
+hi_7e7e5ab0	गाय.	Everyday phrases
 hi_4e21371d	च	Everyday phrases
 hi_88c479f0	छ	Everyday phrases
 hi_94294cd4	ज	Everyday phrases
@@ -63,6 +65,7 @@ hi_960703eb	फ	Everyday phrases
 hi_40159154	ब	Everyday phrases
 hi_ce2fcf72	फूल.	Everyday phrases
 hi_87ac42a8	भ	Everyday phrases
+hi_7f4aa637	बतख.	Everyday phrases
 hi_73b7dfb1	म	Everyday phrases
 hi_90b8ec38	य	Everyday phrases
 hi_1ce520c7	र	Everyday phrases
@@ -74,6 +77,7 @@ hi_bcb4e297	स	Everyday phrases
 hi_601b68ba	ह	Everyday phrases
 hi_9b64e1fd	सेब.	Everyday phrases
 hi_7a8e33ae	क्ष	Everyday phrases
+hi_06ae194c	हाथी.	Everyday phrases
 hi_211d0f75	त्र	Everyday phrases
 hi_d558d5f9	ज्ञ	Everyday phrases
 hi_c073b840	की बारहखड़ी। छूकर सुनो!	Everyday phrases
@@ -91,7 +95,9 @@ hi_ef4c3c86	ओ की मात्रा,	Everyday phrases
 hi_c74c386e	औ की मात्रा,	Everyday phrases
 hi_2ebcf5ef	अं की मात्रा,	Everyday phrases
 hi_14f4343d	अः की मात्रा,	Everyday phrases
+hi_d92de297	ता	Everyday phrases
 hi_adf872fd	दो	Everyday phrases
+hi_4d81b70f	ना	Everyday phrases
 hi_9041798d	नौ	Everyday phrases
 hi_bccd1afc	सौ	Everyday phrases
 hi_d2ccfcd3	फिर से कोशिश करो। संख्या के ऊपर बनाओ।	Everyday phrases
@@ -101,6 +107,24 @@ hi_5a412ed0	मछलियाँ!	Everyday phrases
 hi_d2f2beb6	तारे!	Everyday phrases
 hi_199f12b7	गाड़ियाँ!	Everyday phrases
 hi_f66e3568	चूज़े!	Everyday phrases
+hi_ac754cce	मछली जल की रानी है,	Rhymes
+hi_3240021c	जीवन उसका पानी है।	Rhymes
+hi_bfe86101	हाथ लगाओ डर जाएगी,	Rhymes
+hi_b7493ad4	बाहर निकालो मर जाएगी।	Rhymes
+hi_079cc019	आलू कचालू बेटा कहाँ गए थे,	Rhymes
+hi_5b9aa5c8	बंदर की टोकरी में सो रहे थे।	Rhymes
+hi_6d988b04	बंदर ने लात मारी रो रहे थे,	Rhymes
+hi_622194a3	मम्मी ने प्यार किया हँस रहे थे।	Rhymes
+hi_df3ba5ea	अ से अनार, आ से आम,	Rhymes
+hi_e3e101d6	पढ़ना-लिखना अच्छा काम।	Rhymes
+hi_ac9bd5fe	इ से इमली, ई से ईख,	Rhymes
+hi_7619fa48	रोज़ नई-नई बातें सीख।	Rhymes
+hi_14d5a4ff	एक, दो, तीन, चार,	Rhymes
+hi_9e92f485	चलो चलें बाज़ार।	Rhymes
+hi_0d9bfa7a	पाँच, छह, सात, आठ,	Rhymes
+hi_c89be3e3	याद करें गिनती का पाठ।	Rhymes
+hi_ff92e1bb	नौ और दस,	Rhymes
+hi_09b39025	अब बस, अब बस!	Rhymes
 hi_7d6dac80	अ से अनानास.	हिंदी स्वर
 hi_1c0d9b96	अनानास.	हिंदी स्वर
 hi_d66c920d	अनानास किस अक्षर से शुरू होता है?	हिंदी स्वर
@@ -158,7 +182,6 @@ hi_e9f2b514	खरगोश.	हिंदी व्यंजन
 hi_86e04db8	खरगोश किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_011f1dcf	खरगोश, ख से शुरू होता है!	हिंदी व्यंजन
 hi_b18efb06	ग से गाय.	हिंदी व्यंजन
-hi_7e7e5ab0	गाय.	हिंदी व्यंजन
 hi_fdf94b68	गाय किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_4a6207b5	गाय, ग से शुरू होता है!	हिंदी व्यंजन
 hi_226ad4a8	घ से घड़ी.	हिंदी व्यंजन
@@ -227,7 +250,6 @@ hi_808d44e2	फ से फूल.	हिंदी व्यंजन
 hi_6bc50dba	फूल किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_d8992e3c	फूल, फ से शुरू होता है!	हिंदी व्यंजन
 hi_9c0d61f0	ब से बतख.	हिंदी व्यंजन
-hi_7f4aa637	बतख.	हिंदी व्यंजन
 hi_3046333e	बतख किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_797d40f6	बतख, ब से शुरू होता है!	हिंदी व्यंजन
 hi_f9e6fe20	भ से भालू.	हिंदी व्यंजन
@@ -263,7 +285,6 @@ hi_e0e4175c	स से सेब.	हिंदी व्यंजन
 hi_6021b422	सेब किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_c0848968	सेब, स से शुरू होता है!	हिंदी व्यंजन
 hi_f7423460	ह से हाथी.	हिंदी व्यंजन
-hi_06ae194c	हाथी.	हिंदी व्यंजन
 hi_b47a2ea5	हाथी किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_a91881e5	हाथी, ह से शुरू होता है!	हिंदी व्यंजन
 hi_b9187a8c	क्ष से क्षत्रिय.	हिंदी व्यंजन
@@ -425,7 +446,6 @@ hi_f1e0807f	णो	बारहखड़ी
 hi_aaf460b8	णौ	बारहखड़ी
 hi_c5b8ae2f	णं	बारहखड़ी
 hi_82149f93	णः	बारहखड़ी
-hi_d92de297	ता	बारहखड़ी
 hi_4d12f46b	ति	बारहखड़ी
 hi_95a68e6e	ती	बारहखड़ी
 hi_da0ac82b	तु	बारहखड़ी
@@ -468,7 +488,6 @@ hi_166682ef	धो	बारहखड़ी
 hi_06e2485a	धौ	बारहखड़ी
 hi_300b62d1	धं	बारहखड़ी
 hi_943c7642	धः	बारहखड़ी
-hi_4d81b70f	ना	बारहखड़ी
 hi_a7c85fd6	नि	बारहखड़ी
 hi_215d15b4	नी	बारहखड़ी
 hi_65201e47	नु	बारहखड़ी
@@ -652,6 +671,22 @@ hi_70dc0193	ज्ञो	बारहखड़ी
 hi_5c2a5108	ज्ञौ	बारहखड़ी
 hi_3e8eb8ff	ज्ञं	बारहखड़ी
 hi_79d3c322	ज्ञः	बारहखड़ी
+hi_6cb28885	नाक	बारहखड़ी
+hi_4def4a9b	कान	बारहखड़ी
+hi_d818688a	मोर	बारहखड़ी
+hi_4f4ee2e7	तारा	बारहखड़ी
+hi_3179dc12	केला	बारहखड़ी
+hi_558d3ded	पानी	बारहखड़ी
+hi_fa4eb09f	रोटी	बारहखड़ी
+hi_7afc42be	चाबी	बारहखड़ी
+hi_b2456bef	तोता	बारहखड़ी
+hi_d36815fc	जूता	बारहखड़ी
+hi_d8ef57d7	टोपी	बारहखड़ी
+hi_34a29ce9	बादल	बारहखड़ी
+hi_78baef89	बकरी	बारहखड़ी
+hi_9a50201e	किताब	बारहखड़ी
+hi_e07e39a4	कुरसी	बारहखड़ी
+hi_800438dd	नारियल	बारहखड़ी
 hi_317b4f1c	तीन	हिंदी गिनती
 hi_664bafa3	चार	हिंदी गिनती
 hi_b851d873	पाँच	हिंदी गिनती
@@ -764,3 +799,30 @@ hi_e88cedd7	गाड़ियाँ गिनो! कितनी हैं?	�
 hi_19a6f6ba	कितनी गाड़ियाँ हैं?	हिंदी गिनती
 hi_a96c45c4	चूज़े गिनो! कितने हैं?	हिंदी गिनती
 hi_368db06e	कितने चूज़े हैं?	हिंदी गिनती
+hi_1cacba57	लाल!	Colors
+hi_b0166d5d	नीला!	Colors
+hi_1e31e913	पीला!	Colors
+hi_e021b631	हरा!	Colors
+hi_d84bb697	नारंगी!	Colors
+hi_31705c47	बैंगनी!	Colors
+hi_37785fcd	भूरा!	Colors
+hi_a7c3824f	काला!	Colors
+hi_81b1eacf	सफ़ेद!	Colors
+hi_e03da1ca	गोला!	Shapes
+hi_00056db0	चौकोर!	Shapes
+hi_222a1367	त्रिकोण!	Shapes
+hi_57b7d102	दिल!	Shapes
+hi_60da9148	हीरा!	Shapes
+hi_ca979e00	चाँद!	Shapes
+hi_960b1e28	कुत्ता!	Animals
+hi_2ae3703d	बिल्ली!	Animals
+hi_5fa06fbf	भेड़!	Animals
+hi_5a470fe7	घोड़ा!	Animals
+hi_664b25da	मुर्गा!	Animals
+hi_94d74b57	मेंढक!	Animals
+hi_10410dc8	मधुमक्खी!	Animals
+hi_562a7303	बंदर!	Animals
+hi_c24ed3d5	साँप!	Animals
+hi_7ea60b8a	चूहा!	Animals
+hi_16ca4db5	सूअर!	Animals
+hi_ae5a4beb	जिराफ़!	Animals
