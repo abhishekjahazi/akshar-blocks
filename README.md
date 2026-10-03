@@ -16,6 +16,10 @@
   <img src="https://img.shields.io/badge/unit%20tests-94-22B35E" alt="94 unit tests">
 </p>
 
+<p align="center">
+  <a href="https://github.com/abhishekjahazi/akshar-blocks/releases/latest"><b>⬇️ Download the app (APK)</b></a>
+</p>
+
 ---
 
 ## Screenshots
@@ -126,7 +130,7 @@ Release builds need a signing key in `keystore.properties`, which is not part of
 
 ## Status
 
-Version 1.0, being prepared for release on Google Play.
+Version 1.0 is out: download the APK from [Releases](https://github.com/abhishekjahazi/akshar-blocks/releases/latest) (Android 7.0+). A Google Play release is planned.
 
 ## Credits
 
