@@ -276,7 +276,8 @@ abstract class GameView(
         canvas: Canvas, rect: RectF, face: Int, text: String, textColor: Int,
         textScale: Float = 0.66f, depth: Float = dp(7f),
     ) {
-        val sink = drawBlock(canvas, rect, face, depth = depth)
+        // Pictures sit on white: a red square on a green block would muddle a lesson on colors.
+        val sink = drawBlock(canvas, rect, if (Art.has(text)) Palette.WHITE else face, depth = depth)
         drawText(canvas, text, rect.centerX(), rect.centerY() + sink, rect.height() * textScale, textColor, rect.width() * 0.86f)
     }
 

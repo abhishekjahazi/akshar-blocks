@@ -158,11 +158,14 @@ class TraceView(
         val color = track.colorFor(index)
         if (strokes != null) drawStrokeGuide(canvas, if (solved) color else GUIDE_FILL) else drawShapeGuide(canvas, if (solved) color else GUIDE_FILL)
 
-        // The child's crayon.
+        // The child's crayon, kept on the card even when a finger strays off it.
         strokePaint.color = color
         strokePaint.strokeWidth = Tracing.CRAYON_RADIUS * 2f * box.width()
         strokePaint.strokeJoin = Paint.Join.ROUND
+        canvas.save()
+        canvas.clipRect(card)
         for (line in drawn) drawLine(canvas, line, strokePaint)
+        canvas.restore()
 
         drawDemo(canvas, color)
 

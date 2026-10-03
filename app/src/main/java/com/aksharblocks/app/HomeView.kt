@@ -66,7 +66,8 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
 
         val landscape = width > height
         val titleTop = contentTop - dp(16f)
-        val titleBottom = titleTop + height * (if (landscape) 0.22f else 0.14f)
+        // Landscape is short: a slimmer banner leaves the cards room to be read.
+        val titleBottom = titleTop + height * (if (landscape) 0.15f else 0.14f)
         drawPathBanner(canvas, titleTop + dp(8f), titleBottom)
 
         // A grid of sections: three columns in portrait, five in landscape.
