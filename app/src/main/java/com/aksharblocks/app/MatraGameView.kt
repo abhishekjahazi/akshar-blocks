@@ -86,7 +86,7 @@ class MatraGameView(
         x += side + signGap
         resultBlock.set(x, top, x + side, top + side)
 
-        drawLetterBlock(canvas, consonantBlock, Palette.INK, consonant, Palette.WHITE, textScale = 0.55f)
+        drawLetterBlock(canvas, consonantBlock, Theme.prompt, consonant, Palette.WHITE, textScale = 0.55f)
         drawText(canvas, "+", (consonantBlock.right + slotBlock.left) / 2f, slotBlock.centerY(), side * 0.5f, Palette.INK)
         drawText(canvas, "=", (slotBlock.right + resultBlock.left) / 2f, slotBlock.centerY(), side * 0.5f, Palette.INK)
 

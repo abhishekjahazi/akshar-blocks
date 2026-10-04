@@ -71,7 +71,7 @@ class FindView(
         val cx = width / 2f
         squareAt(targetBlock, cx - dp(4f) - side / 2f, promptY, side / 2f)
         // By sound, showing the letter would give the answer away: the voice says the sound instead.
-        drawLetterBlock(canvas, targetBlock, Palette.INK, if (bySound) "?" else track.prompt(target), Palette.WHITE)
+        drawLetterBlock(canvas, targetBlock, Theme.prompt, if (bySound) "?" else track.prompt(target), Palette.WHITE)
         squareAt(speakerButton, cx + dp(12f) + side * 0.4f, promptY, side * 0.34f)
         val sink = drawBlock(canvas, speakerButton, Palette.WHITE, depth = dp(5f))
         drawEmoji(canvas, "🔊", speakerButton.centerX(), speakerButton.centerY() + sink, side * 0.36f)

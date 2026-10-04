@@ -87,7 +87,7 @@ class BarakhadiView(
         nextButton.set(consonantBlock.right + dp(28f), arrowY, consonantBlock.right + dp(28f) + arrow, arrowY + arrow)
         drawArrowBlock(canvas, prevButton, Palette.SUN, pointsRight = false)
         drawArrowBlock(canvas, nextButton, Palette.SUN, pointsRight = true)
-        drawLetterBlock(canvas, consonantBlock, Palette.INK, consonant, Palette.WHITE, textScale = 0.6f)
+        drawLetterBlock(canvas, consonantBlock, Theme.prompt, consonant, Palette.WHITE, textScale = 0.6f)
 
         // Row 2: how the chosen syllable is made, and the play-all button.
         val equationY = if (landscape) consonantBlock.centerY() else consonantBlock.bottom + dp(52f)
@@ -121,7 +121,7 @@ class BarakhadiView(
                 scale += 0.12f * exp(-5f * t) * sin(t * 16f)
             }
             squareAt(drawRect, cx, cy, half * scale)
-            val face = if (i == selected) Palette.INK else track.colorFor(i)
+            val face = if (i == selected) Theme.prompt else track.colorFor(i)
             drawLetterBlock(canvas, drawRect, face, syllable.symbol, Palette.WHITE, textScale = 0.5f)
         }
     }

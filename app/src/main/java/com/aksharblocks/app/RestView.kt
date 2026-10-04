@@ -15,6 +15,7 @@ class RestView(context: Context, speaker: Speaker, player: Player) : GameView(co
     override val showHomeButton = false
     override val showStars = false
     override val skyColor = 0xFF1D2B53.toInt()
+    override val plainBackground = true
 
     private val parentButton = RectF()
 

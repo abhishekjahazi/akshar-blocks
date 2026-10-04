@@ -192,7 +192,7 @@ class BalloonView(
         const val MAX_BALLOONS = 7
 
         // Yellow is too light for white letters.
-        fun textColorOn(color: Int) = if (color == Palette.SUN) Palette.INK else Palette.WHITE
+        fun textColorOn(color: Int) = if (color == Palette.SUN) Palette.NAVY else Palette.WHITE
         val BALLOON_COLORS = intArrayOf(
             Palette.TOMATO, Palette.SUN, Palette.GRASS, Palette.OCEAN,
             Palette.GRAPE, Palette.PINK, Palette.TEAL, Palette.ORANGE,

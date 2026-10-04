@@ -82,11 +82,7 @@ class ShopView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val isWorn = item in wearing
         drawRect.set(tile)
         drawRect.offset(shakeOffset(shakeTime[i]), 0f)
-        val face = when {
-            isWorn -> Palette.SUN
-            isOwned -> Palette.WHITE
-            else -> 0xFFF1F3F9.toInt()
-        }
+        val face = if (isWorn) Palette.SUN else Palette.WHITE
         val sink = drawBlock(canvas, drawRect, face, radius = dp(20f), depth = dp(6f))
         val h = drawRect.height()
         drawEmoji(canvas, item.emoji, drawRect.centerX(), drawRect.top + h * 0.4f + sink, h * 0.42f)
@@ -104,7 +100,7 @@ class ShopView(context: Context, speaker: Speaker, player: Player) : GameView(co
             val gap = starSize * 0.35f
             val left = drawRect.centerX() - (starSize + gap + priceWidth) / 2f
             drawEmoji(canvas, "⭐", left + starSize / 2f, labelY, starSize)
-            drawText(canvas, price, left + starSize + gap + priceWidth / 2f, labelY, h * 0.17f, if (canBuy) Palette.INK else 0xFF8A94B0.toInt())
+            drawText(canvas, price, left + starSize + gap + priceWidth / 2f, labelY, h * 0.17f, if (canBuy) Palette.INK else Theme.subtext)
         }
     }
 

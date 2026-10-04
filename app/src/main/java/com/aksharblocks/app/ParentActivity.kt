@@ -60,7 +60,7 @@ class ParentActivity : AppCompatActivity() {
             ))
         }
         scroll = ScrollView(this).apply {
-            setBackgroundColor(Palette.ICE)
+            setBackgroundColor(Theme.background)
             addView(column)
         }
         ViewCompat.setOnApplyWindowInsetsListener(scroll) { view, insets ->
@@ -124,6 +124,9 @@ class ParentActivity : AppCompatActivity() {
             }
             layoutParams = spaced(top = 4)
         })
+
+        section("Look")
+        content.addView(themeChoice())
 
         section("Daily play time")
         content.addView(playLimit())
@@ -247,7 +250,8 @@ class ParentActivity : AppCompatActivity() {
             radius = dp(16).toFloat()
             cardElevation = 0f
             strokeWidth = dp(1)
-            strokeColor = 0xFFD6E0F5.toInt()
+            strokeColor = Theme.muted
+            setCardBackgroundColor(Theme.card)
             addView(body)
             layoutParams = spaced(top = 10)
         }
@@ -406,6 +410,30 @@ class ParentActivity : AppCompatActivity() {
         }
     }
 
+    /** Light, dark, or the same as the phone. Children can also switch with the sun / moon on Home. */
+    private fun themeChoice(): View {
+        val settings = Settings(this)
+        return RadioGroup(this).apply {
+            orientation = RadioGroup.VERTICAL
+            layoutParams = spaced(top = 4)
+            val buttons = ThemeMode.entries.associateWith { mode ->
+                RadioButton(this@ParentActivity).apply {
+                    id = View.generateViewId()
+                    text = mode.label
+                    textSize = 16f
+                }
+            }
+            buttons.values.forEach(::addView)
+            check(buttons.getValue(settings.themeMode).id)
+            setOnCheckedChangeListener { _, checked ->
+                val mode = buttons.entries.first { it.value.id == checked }.key
+                settings.themeMode = mode
+                // Redraws this screen in the new colors.
+                Theme.apply(this@ParentActivity, mode)
+            }
+        }
+    }
+
     /** Daily limit (all children together): off or 15–60 minutes, and today's play so far. */
     private fun playLimit(): View {
         val settings = Settings(this)
@@ -456,7 +484,7 @@ class ParentActivity : AppCompatActivity() {
         TextView(this).apply {
             text = value
             setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp)
-            setTextColor(if (muted) 0xFF55638C.toInt() else Palette.INK)
+            setTextColor(if (muted) Theme.subtext else Palette.INK)
             if (bold) setTypeface(typeface, Typeface.BOLD)
             setLineSpacing(0f, 1.15f)
             layoutParams = spaced(top = top)
@@ -493,6 +521,10 @@ class Settings(context: Context) {
     var music: Boolean
         get() = prefs.getBoolean("music", true)
         set(value) = prefs.edit().putBoolean("music", value).apply()
+
+    var themeMode: ThemeMode
+        get() = ThemeMode.entries.firstOrNull { it.name == prefs.getString("theme", null) } ?: ThemeMode.SYSTEM
+        set(value) = prefs.edit().putString("theme", value.name).apply()
 
     /** 0 means no limit. */
     var dailyLimitMinutes: Int

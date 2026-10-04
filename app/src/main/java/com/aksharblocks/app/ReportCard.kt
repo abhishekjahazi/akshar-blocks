@@ -144,7 +144,7 @@ object ReportCard {
         }
     }
 
-    private fun text(context: Context, value: String, sizeSp: Float, bold: Boolean = false, color: Int = Palette.INK, top: Int = 0) =
+    private fun text(context: Context, value: String, sizeSp: Float, bold: Boolean = false, color: Int = Palette.NAVY, top: Int = 0) =
         TextView(context).apply {
             text = value
             setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp)
@@ -198,7 +198,7 @@ object ReportCard {
                 }
                 canvas.drawRoundRect(rect, side * 0.22f, side * 0.22f, fill)
                 label.color = when (mastery) {
-                    Mastery.LEARNING -> Palette.INK
+                    Mastery.LEARNING -> Palette.NAVY
                     Mastery.NOT_YET -> 0xFF9AAAD0.toInt()
                     else -> Palette.WHITE
                 }
@@ -222,7 +222,7 @@ object ReportCard {
         }
         private val value = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             textAlign = Paint.Align.CENTER
-            color = Palette.INK
+            color = Palette.NAVY
             textSize = 12 * density
             typeface = Typeface.DEFAULT_BOLD
         }

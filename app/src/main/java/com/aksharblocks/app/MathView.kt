@@ -195,7 +195,7 @@ class MathView(
             if (item == "?") {
                 squareAt(drawRect, cx, cy, cell * 0.4f)
                 if (solved) drawEmoji(canvas, pattern.answer, cx, cy, cell * 0.66f)
-                else drawLetterBlock(canvas, drawRect, Palette.SUN, "?", Palette.INK, depth = dp(4f))
+                else drawLetterBlock(canvas, drawRect, Palette.SUN, "?", Palette.NAVY, depth = dp(4f))
             } else {
                 drawEmoji(canvas, item, cx, cy, cell * 0.66f)
             }
@@ -267,7 +267,7 @@ class MathView(
             canvas.save()
             canvas.translate(shakeOffset(shakeTime[i]), 0f)
             canvas.scale(scale, scale, box.centerX(), box.centerY())
-            val face = if (solved && i == rightSide) 0xFFE6FCF5.toInt() else Palette.WHITE
+            val face = if (solved && i == rightSide) 0xFF8CE99A.toInt() else Palette.WHITE
             val sink = drawBlock(canvas, box, face, radius = dp(30f), depth = dp(9f))
             area.set(box.left + dp(12f), box.top + dp(12f) + sink, box.right - dp(12f), box.bottom - dp(12f) + sink)
             drawThings(canvas, area, counts[i])

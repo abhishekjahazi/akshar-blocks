@@ -1,19 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Full-screen, always-light theme: the game draws its own UI. -->
-    <style name="Theme.ABCDGame" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <!-- Full-screen; light or dark with the app's look (the game screens draw their own UI). -->
+    <style name="Theme.ABCDGame" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/ocean</item>
         <item name="colorPrimaryVariant">@color/ocean_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/ocean</item>
         <item name="colorSecondaryVariant">@color/ocean_dark</item>
         <item name="colorOnSecondary">@color/black</item>
-        <item name="android:windowBackground">@color/sky</item>
+        <item name="android:windowBackground">@color/window</item>
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="28">shortEdges</item>
         <!-- Screens draw behind the system bars, so the bars are see-through with dark icons. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:windowLightStatusBar">@bool/light_bars</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">@bool/light_bars</item>
         <!-- Sentence-case buttons (Material's default is all caps). -->
         <item name="textAppearanceButton">@style/TextAppearance.ABCD.Button</item>
     </style>

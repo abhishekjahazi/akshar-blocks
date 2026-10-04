@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The dark look's background, and light icons on the system bars. -->
+    <color name="window">#FF0D1230</color>
+    <bool name="light_bars">false</bool>
+</resources>

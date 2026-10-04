@@ -101,7 +101,7 @@ class RhymeView(
             rect.set(textArea.left, top + rowH * i + dp(3f), textArea.right, top + rowH * (i + 1) - dp(3f))
             val lit = i == current
             if (lit) drawBlock(canvas, rect, Palette.SUN, radius = dp(14f), depth = dp(4f), pressable = false)
-            drawText(canvas, line, rect.centerX(), rect.centerY(), min(rowH * 0.42f, dp(24f)), if (lit) Palette.INK else 0xFF55638C.toInt(), rect.width() * 0.94f)
+            drawText(canvas, line, rect.centerX(), rect.centerY(), min(rowH * 0.42f, dp(24f)), if (lit) Palette.NAVY else Theme.subtext, rect.width() * 0.94f)
         }
 
         // Play / pause, and start again.

@@ -85,12 +85,16 @@ class MainActivity : AppCompatActivity() {
         profiles = ProfileStore(this)
         player = Player(this, profiles.current())
         onBackPressedDispatcher.addCallback(this, goBack)
+        applyTheme()
         showHome()
         if (screen == Screen.HOME) greet()
     }
 
     override fun onResume() {
         super.onResume()
+        // The parent may have changed the look in the parent area.
+        Theme.apply(this)
+        applyTheme()
         Settings(this).let {
             speaker.slow = it.slowVoice
             Sounds.enabled = it.soundEffects
@@ -177,9 +181,35 @@ class MainActivity : AppCompatActivity() {
             onRhymes = ::showRhymes
             onWorld = ::showWorld
             onMaths = ::showMaths
+            onTheme = ::toggleTheme
             pathDone = player.pathDone
         }
         setContentView(withBanner(home))
+    }
+
+    /** The sun / moon button on Home: light becomes dark and dark becomes light (no longer following the phone). */
+    private fun toggleTheme() {
+        val mode = if (Theme.dark) ThemeMode.LIGHT else ThemeMode.DARK
+        Settings(this).themeMode = mode
+        Theme.apply(this, mode)
+        applyTheme()
+    }
+
+    /** Colors outside the game screens: the window behind them and the system bars' icons. */
+    private fun applyTheme() {
+        window.decorView.setBackgroundColor(Theme.background)
+        banner?.let { (it.parent as? android.view.View)?.setBackgroundColor(Theme.background) }
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = !Theme.dark
+            isAppearanceLightNavigationBars = !Theme.dark
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // The phone switched between light and dark: follow it when the parent chose "same as the phone".
+        Theme.apply(this)
+        applyTheme()
     }
 
     /** Home with the ad banner under it (only Home has an ad; games never do). */
@@ -192,7 +222,7 @@ class MainActivity : AppCompatActivity() {
         (ad.parent as? ViewGroup)?.removeView(ad)
         return LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(Palette.SKY)
+            setBackgroundColor(Theme.background)
             addView(home, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
             addView(ad)
         }

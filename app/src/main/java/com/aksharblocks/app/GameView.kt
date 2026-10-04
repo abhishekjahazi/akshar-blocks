@@ -4,6 +4,10 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Matrix
+import android.graphics.RadialGradient
+import android.graphics.Shader
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
@@ -22,9 +26,13 @@ import kotlin.math.min
 import kotlin.math.sin
 import kotlin.random.Random
 
-/** The game's colors. Everything is drawn as flat toy blocks in these. */
+/** The game's colors: bright blocks on soft glass. Text and glass colors follow the light or dark [Theme]. */
 object Palette {
-    const val INK = 0xFF1D2B53.toInt()
+    /** Text and lines on glass: dark navy in the light look, near-white in the dark one. */
+    val INK: Int get() = Theme.text
+
+    /** Dark navy that never changes: on yellow, and in pictures and printouts that leave the app. */
+    const val NAVY = 0xFF1D2B53.toInt()
     const val WHITE = 0xFFFFFFFF.toInt()
     const val TOMATO = 0xFFFF5A4E.toInt()
     const val SUN = 0xFFFFC53D.toInt()
@@ -46,7 +54,7 @@ object Palette {
     const val JADE = 0xFF0C8599.toInt()
     const val AMBER = 0xFFE67700.toInt()
 
-    // Light screen backgrounds, one per game so each has its own feel.
+    // Each screen tints the background with one of these (light look), so each has its own feel.
     const val SKY = 0xFFCFE8FF.toInt()
     const val MINT = 0xFFD2F4E1.toInt()
     const val LILAC = 0xFFE6DCFF.toInt()
@@ -58,9 +66,9 @@ object Palette {
 
     val CONFETTI = intArrayOf(TOMATO, SUN, GRASS, OCEAN, GRAPE, PINK)
 
-    /** The darker "side" of a block. */
+    /** A darker shade of [face]; for white (glass), a quiet "not yet" color. */
     fun edgeOf(face: Int): Int {
-        if (face == WHITE) return 0xFFB5C4E3.toInt()
+        if (face == WHITE) return Theme.muted
         return Color.rgb(
             (Color.red(face) * 0.72f).toInt(),
             (Color.green(face) * 0.72f).toInt(),
@@ -77,6 +85,9 @@ private const val ART_SCALE = 1.1f
 
 /** Widest the game content gets (dp); wider screens center it. */
 private const val MAX_CONTENT_DP = 960f
+
+/** Where the background blobs sit, as fractions of the screen's width and height. */
+private val BLOB_SPOTS = listOf(0.05f to 0.06f, 0.98f to 0.36f, 0.04f to 0.74f, 0.92f to 1.0f)
 
 /**
  * Base class for every screen. Runs the animation loop and draws the
@@ -106,7 +117,11 @@ abstract class GameView(
 
     /** Home makes the star counter a button that opens the sticker album. */
     protected open val starsTappable = false
+    /** The tint for this screen's background (light look). */
     protected open val skyColor = Palette.SKY
+
+    /** True for screens that keep a flat [skyColor] in both looks (the night-time rest screen). */
+    protected open val plainBackground = false
 
     /** Seconds since this screen appeared. */
     protected var time = 0f
@@ -137,9 +152,23 @@ abstract class GameView(
 
     protected val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textAlign = Paint.Align.CENTER
-        typeface = if (Build.VERSION.SDK_INT >= 28) Typeface.create(Typeface.DEFAULT, 900, false)
-        else Typeface.create("sans-serif-black", Typeface.NORMAL)
+        typeface = Fonts.heavy
+        isFakeBoldText = Fonts.needsFakeBold
     }
+
+    /** The phone's own heaviest font: tracing guides were measured against its letter shapes. */
+    protected val systemTypeface: Typeface =
+        if (Build.VERSION.SDK_INT >= 28) Typeface.create(Typeface.DEFAULT, 900, false)
+        else Typeface.create("sans-serif-black", Typeface.NORMAL)
+
+    /** Glass cards and colored blocks; their soft shadows come from a shadow layer. */
+    private val blockPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val rimPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
+    private val blockMatrix = Matrix()
+    private val blockShaders = HashMap<Int, LinearGradient>()
+    private val gradientShaders = HashMap<Long, LinearGradient>()
+    private val blobPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val blobShaders = HashMap<Int, RadialGradient>()
     protected val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     protected val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
@@ -254,9 +283,10 @@ abstract class GameView(
     protected fun isPressed(rect: RectF) = touching && rect.contains(touchX, touchY)
 
     /**
-     * Draws a toy block whose top face is [rect], with its darker side showing
-     * below. Pressed blocks sink down onto their side. Returns how far the face
-     * sank, so callers can move what they draw on top by the same amount.
+     * Draws a card whose face is [rect], floating on a soft shadow ([depth] sets how high).
+     * [Palette.WHITE] means glass: see-through, with a bright rim. Any other color is a glossy
+     * block, lighter at the top-left. Pressed cards dip a little and shrink. Returns how far the
+     * face moved down, so callers can move what they draw on top by the same amount.
      */
     protected fun drawBlock(
         canvas: Canvas, rect: RectF, face: Int,
@@ -264,16 +294,126 @@ abstract class GameView(
         depth: Float = dp(7f),
         pressable: Boolean = true,
     ): Float {
-        val sink = if (pressable && isPressed(rect)) depth * 0.75f else 0f
-        fillPaint.color = Palette.edgeOf(face)
+        val pressed = pressable && isPressed(rect)
+        val sink = if (pressed) depth * 0.3f else 0f
+        val lift = if (pressed) depth * 0.4f else depth
         blockRect.set(rect)
-        blockRect.offset(0f, depth)
-        canvas.drawRoundRect(blockRect, radius, radius, fillPaint)
-        fillPaint.color = face
-        blockRect.set(rect)
+        if (pressed) {
+            val inset = min(rect.width(), rect.height()) * 0.03f
+            blockRect.inset(inset, inset)
+        }
         blockRect.offset(0f, sink)
-        canvas.drawRoundRect(blockRect, radius, radius, fillPaint)
+        rimPaint.strokeWidth = dp(1.2f)
+        if (face == Palette.WHITE) {
+            blockPaint.shader = null
+            blockPaint.color = Theme.glass
+            blockPaint.setShadowLayer(lift * 1.8f, 0f, lift * 0.7f, Theme.shadow)
+            canvas.drawRoundRect(blockRect, radius, radius, blockPaint)
+            rimPaint.color = Theme.glassRim
+        } else {
+            blockPaint.color = Palette.WHITE
+            blockPaint.shader = glossFor(face, blockRect)
+            blockPaint.setShadowLayer(lift * 1.6f, 0f, lift * 0.75f, (face and 0x00FFFFFF) or if (Theme.dark) 0x80000000.toInt() else 0x66000000)
+            canvas.drawRoundRect(blockRect, radius, radius, blockPaint)
+            rimPaint.color = 0x4DFFFFFF
+        }
+        blockPaint.clearShadowLayer()
+        blockPaint.shader = null
+        val half = rimPaint.strokeWidth / 2f
+        blockRect.inset(half, half)
+        canvas.drawRoundRect(blockRect, radius - half, radius - half, rimPaint)
         return sink
+    }
+
+    /** Like [drawBlock] with a colored face, but shading diagonally from [from] to [to] (the big "Today's games" card). */
+    protected fun drawGradientBlock(
+        canvas: Canvas, rect: RectF, from: Int, to: Int, radius: Float, depth: Float = dp(8f),
+    ): Float {
+        val pressed = isPressed(rect)
+        val sink = if (pressed) depth * 0.3f else 0f
+        val lift = if (pressed) depth * 0.4f else depth
+        blockRect.set(rect)
+        if (pressed) blockRect.inset(rect.height() * 0.03f, rect.height() * 0.03f)
+        blockRect.offset(0f, sink)
+        val shader = gradientShaders.getOrPut(from.toLong() shl 32 or (to.toLong() and 0xFFFFFFFFL)) {
+            LinearGradient(0f, 0f, 1f, 1f, from, to, Shader.TileMode.CLAMP)
+        }
+        blockMatrix.setScale(blockRect.width(), blockRect.height())
+        blockMatrix.postTranslate(blockRect.left, blockRect.top)
+        shader.setLocalMatrix(blockMatrix)
+        blockPaint.color = Palette.WHITE
+        blockPaint.shader = shader
+        blockPaint.setShadowLayer(lift * 1.8f, 0f, lift * 0.8f, (to and 0x00FFFFFF) or 0x66000000)
+        canvas.drawRoundRect(blockRect, radius, radius, blockPaint)
+        blockPaint.clearShadowLayer()
+        blockPaint.shader = null
+        rimPaint.strokeWidth = dp(1.2f)
+        rimPaint.color = 0x59FFFFFF
+        val half = rimPaint.strokeWidth / 2f
+        blockRect.inset(half, half)
+        canvas.drawRoundRect(blockRect, radius - half, radius - half, rimPaint)
+        return sink
+    }
+
+    /** Draws [text] starting at [x] (not centered), vertically centered on [cy], shrunk to fit [maxWidth]. */
+    protected fun drawTextLeft(canvas: Canvas, text: String, x: Float, cy: Float, size: Float, color: Int, maxWidth: Float) {
+        textPaint.textAlign = Paint.Align.LEFT
+        textPaint.textSize = size
+        textPaint.color = color
+        val measured = textPaint.measureText(text)
+        if (measured > maxWidth) textPaint.textSize = size * maxWidth / measured
+        val metrics = textPaint.fontMetrics
+        canvas.drawText(text, x, cy - (metrics.ascent + metrics.descent) / 2f, textPaint)
+        textPaint.textAlign = Paint.Align.CENTER
+    }
+
+    /** A diagonal shine for a colored block: a lighter tint at the top-left, [face] at the bottom-right. */
+    private fun glossFor(face: Int, rect: RectF): Shader {
+        val shader = blockShaders.getOrPut(face) {
+            val light = Color.rgb(
+                Color.red(face) + (255 - Color.red(face)) * 30 / 100,
+                Color.green(face) + (255 - Color.green(face)) * 30 / 100,
+                Color.blue(face) + (255 - Color.blue(face)) * 30 / 100,
+            )
+            LinearGradient(0f, 0f, 1f, 1f, light, face, Shader.TileMode.CLAMP)
+        }
+        blockMatrix.setScale(rect.width(), rect.height())
+        blockMatrix.postTranslate(rect.left, rect.top)
+        shader.setLocalMatrix(blockMatrix)
+        return shader
+    }
+
+    /**
+     * The background: the theme's base color with four big soft color blobs that drift
+     * slowly, which is what makes the glass cards look like glass.
+     */
+    private fun drawBackground(canvas: Canvas) {
+        canvas.drawColor(if (plainBackground) skyColor else Theme.background)
+        if (plainBackground) return
+        val colors = Theme.blobs(skyColor)
+        val w = width.toFloat()
+        val h = height.toFloat()
+        val base = maxOf(w, h) * 0.42f
+        for (i in colors.indices) {
+            val (fx, fy) = BLOB_SPOTS[i]
+            val drift = if (motionEnabled) 1f else 0f
+            val cx = w * fx + sin(time * 0.35f + i * 1.7f) * dp(26f) * drift
+            val cy = h * fy + cos(time * 0.28f + i * 2.3f) * dp(30f) * drift
+            val r = base * (if (i % 2 == 0) 1f else 0.85f)
+            val shader = blobShaders.getOrPut(colors[i]) {
+                val c = colors[i]
+                RadialGradient(
+                    0f, 0f, 1f,
+                    intArrayOf(c, (c and 0x00FFFFFF) or ((Color.alpha(c) / 2) shl 24), c and 0x00FFFFFF),
+                    floatArrayOf(0f, 0.45f, 1f), Shader.TileMode.CLAMP,
+                )
+            }
+            blockMatrix.setScale(r, r)
+            blockMatrix.postTranslate(cx, cy)
+            shader.setLocalMatrix(blockMatrix)
+            blobPaint.shader = shader
+            canvas.drawCircle(cx, cy, r, blobPaint)
+        }
     }
 
     /** A block with one letter (or short text) centered on it. */
@@ -298,7 +438,7 @@ abstract class GameView(
         path.lineTo(cx - d * s * 0.7f, cy - s)
         path.lineTo(cx - d * s * 0.7f, cy + s)
         path.close()
-        fillPaint.color = Palette.INK
+        fillPaint.color = Palette.NAVY
         canvas.drawPath(path, fillPaint)
     }
 
@@ -410,7 +550,7 @@ abstract class GameView(
             if (i < counted) {
                 val r = cell * 0.17f
                 val by = cy + cell * 0.36f
-                fillPaint.color = Palette.INK
+                fillPaint.color = Theme.prompt
                 canvas.drawCircle(cx, by, r, fillPaint)
                 drawText(canvas, badge(i), cx, by, r * 1.3f, Palette.WHITE, r * 1.8f)
             }
@@ -462,7 +602,7 @@ abstract class GameView(
         update(dt)
         updateParticles(dt)
 
-        canvas.drawColor(skyColor)
+        drawBackground(canvas)
         drawGame(canvas)
         drawParticles(canvas)
         drawTopBar(canvas)
@@ -580,7 +720,7 @@ abstract class GameView(
         val scale = popIn(age / 0.5f)
         canvas.save()
         canvas.scale(scale, scale, revealCard.centerX(), revealCard.centerY())
-        drawBlock(canvas, revealCard, Palette.WHITE, radius = dp(36f), depth = dp(10f), pressable = false)
+        drawBlock(canvas, revealCard, Theme.card, radius = dp(36f), depth = dp(10f), pressable = false)
         drawText(canvas, "New sticker!", revealCard.centerX(), revealCard.top + revealCard.height() * 0.16f, side * 0.1f, Palette.INK, side * 0.9f)
         drawEmoji(canvas, sticker.emoji, revealCard.centerX(), revealCard.centerY() + side * 0.02f, side * 0.5f)
         drawText(canvas, sticker.name, revealCard.centerX(), revealCard.bottom - revealCard.height() * 0.14f, side * 0.09f, Palette.GRAPE, side * 0.9f)

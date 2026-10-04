@@ -81,7 +81,7 @@ object CertificateArt {
 
         val cx = page.centerX()
         var y = page.top + h * 0.14f
-        say(canvas, "CERTIFICATE", cx, y, unit * 7.5f, Palette.INK, bold = true, maxWidth = w * 0.8f)
+        say(canvas, "CERTIFICATE", cx, y, unit * 7.5f, Palette.NAVY, bold = true, maxWidth = w * 0.8f)
         y += unit * 7
         say(canvas, "Akshar Blocks", cx, y, unit * 4f, MUTED, maxWidth = w * 0.8f)
 
@@ -95,7 +95,7 @@ object CertificateArt {
         y += unit * 8
         say(canvas, "has learned", cx, y, unit * 4.2f, MUTED, maxWidth = w * 0.8f)
         y += unit * 7
-        say(canvas, Certificates.achievement(track), cx, y, unit * 6f, Palette.INK, bold = true, maxWidth = w * 0.84f)
+        say(canvas, Certificates.achievement(track), cx, y, unit * 6f, Palette.NAVY, bold = true, maxWidth = w * 0.84f)
 
         val date = DateFormat.getDateInstance(DateFormat.LONG).format(Date(earnedDay * DAY_MS + DAY_MS / 2))
         say(canvas, "⭐  $date  ⭐", cx, page.bottom - h * 0.08f, unit * 4f, MUTED, maxWidth = w * 0.8f)
@@ -123,7 +123,7 @@ object CertificateArt {
     private fun picture(canvas: Canvas, emoji: String, cx: Float, cy: Float, size: Float) {
         val bitmap = Art.bitmap(emoji, size)
         if (bitmap == null) {
-            say(canvas, emoji, cx, cy, size * 0.8f, Palette.INK, maxWidth = size * 2)
+            say(canvas, emoji, cx, cy, size * 0.8f, Palette.NAVY, maxWidth = size * 2)
             return
         }
         rect.set(cx - size / 2f, cy - size / 2f, cx + size / 2f, cy + size / 2f)

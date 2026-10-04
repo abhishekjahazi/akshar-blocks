@@ -114,7 +114,7 @@ class WordsView(
             slot.set(x, slotsTop, x + slotSide, slotsTop + slotSide)
             if (i < placed) {
                 val face = if (i == lit) Palette.SUN else track.colorFor(i)
-                val ink = if (i == lit) Palette.INK else Palette.WHITE
+                val ink = if (i == lit) Palette.NAVY else Palette.WHITE
                 drawLetterBlock(canvas, slot, face, word.letters[i], ink, textScale = 0.62f)
             } else {
                 // An empty slot: a pale outline where the next letter goes.

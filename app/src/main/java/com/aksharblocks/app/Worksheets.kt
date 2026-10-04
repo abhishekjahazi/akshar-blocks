@@ -56,7 +56,7 @@ object WorksheetPdf {
     }
 
     private val ink = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = Palette.INK
+        color = Palette.NAVY
         textAlign = Paint.Align.CENTER
         typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
     }

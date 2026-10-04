@@ -70,7 +70,12 @@ class TraceView(
         strokeCap = Paint.Cap.ROUND
         color = GUIDE_DASH
     }
-    private val glyphPaint = Paint(textPaint).apply { textAlign = Paint.Align.CENTER }
+    private val glyphPaint = Paint(textPaint).apply {
+        textAlign = Paint.Align.CENTER
+        // English stroke guides were measured on this font's letters.
+        typeface = systemTypeface
+        isFakeBoldText = false
+    }
 
     override val title get() = if (name != null) CommonWords.MY_NAME else lang.traceTitle(index + 1, letters.size)
     override val skyColor = Palette.PEACH
@@ -224,7 +229,7 @@ class TraceView(
             val shared = (0 until i).any { j -> strokeSamples[j].first().let { hypot(it.x - first.x, it.y - first.y) < 0.08f } }
             val at = if (shared) points[(points.lastIndex * 0.18f).toInt()] else first
             val start = toScreenX(at.x) to toScreenY(at.y)
-            fillPaint.color = Palette.INK
+            fillPaint.color = Theme.prompt
             canvas.drawCircle(start.first, start.second, dot, fillPaint)
             drawText(canvas, "${i + 1}", start.first, start.second, dot * 1.3f, Palette.WHITE)
         }

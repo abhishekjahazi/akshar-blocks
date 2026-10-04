@@ -117,7 +117,7 @@ class PathView(
                 path.lineTo(badge.centerX() - s * 0.7f, badge.centerY() - s)
                 path.lineTo(badge.centerX() - s * 0.7f, badge.centerY() + s)
                 path.close()
-                fillPaint.color = Palette.INK
+                fillPaint.color = Palette.NAVY
                 canvas.drawPath(path, fillPaint)
             }
             else -> drawText(canvas, "${i + 1}", badge.centerX(), badge.centerY(), badgeSide * 0.6f, Palette.edgeOf(Palette.WHITE))
