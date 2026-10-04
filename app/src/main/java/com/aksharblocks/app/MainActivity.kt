@@ -45,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     /** True while a maths game is playing, so Back returns to the maths menu. */
     private var inMaths = false
 
+    /** True while the opposites game is playing, so Back returns to the World. */
+    private var inOpposites = false
+
     /** Counts up for each game shown, so a late "step finished" timer can tell it's stale. */
     private var gameToken = 0
 
@@ -67,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             when {
                 screen == Screen.GAME && inRhyme -> showRhymes()
                 screen == Screen.GAME && inMaths -> showMaths()
+                screen == Screen.GAME && inOpposites -> showWorld()
                 screen == Screen.GAME && pathStep != null -> showPath()
                 screen == Screen.GAME && current != null -> showTrack(current)
                 screen == Screen.TRACK && current != null && current.isPictures -> showWorld()
@@ -290,10 +294,19 @@ class MainActivity : AppCompatActivity() {
         speaker.stop()
         val cards = Track.entries.filter { it.isPictures }.map { t ->
             MenuCard(t.label, t.subtitle, t.color, t.letters.first().symbol) { showTrack(t) }
-        }
+        } + MenuCard(OppositeWords.TITLE, OppositeWords.HINDI_TITLE, Palette.GRAPE, "🐘") { startOpposites() }
         setContentView(CardMenuView(this, speaker, player, CommonWords.WORLD, Palette.MINT, cards, CommonWords.WORLD_ASK).apply {
             onHome = ::showHome
         })
+    }
+
+    /** The opposites game (in the World). */
+    private fun startOpposites() {
+        speaker.stop()
+        val view = OppositesView(this, speaker, player)
+        view.onHome = ::showWorld
+        showGame(view)
+        inOpposites = true
     }
 
     /** The maths games. */
@@ -345,6 +358,7 @@ class MainActivity : AppCompatActivity() {
         gameToken++
         inRhyme = false
         inMaths = false
+        inOpposites = false
         screen = Screen.GAME
         goBack.isEnabled = true
         setContentView(view)

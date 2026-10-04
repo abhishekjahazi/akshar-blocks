@@ -98,6 +98,7 @@ object VoiceScript {
 
             add(English, EVERYDAY, "*", CommonWords.WORLD_ASK, Outfits.ASK, Outfits.NEED_MORE)
             for (outfit in Outfits.all) add(English, "Shop", outfit.id, Outfits.bought(outfit))
+            OppositeWords.all(random).forEachIndexed { i, line -> add(English, OppositeWords.TITLE, "$i", line) }
             // The maths games (one subject per line, so they are listed under Maths).
             MathWords.all().forEachIndexed { i, line -> add(English, CommonWords.MATHS, "$i", line) }
         }

@@ -39,6 +39,7 @@ object Content {
         }
         buildDerived()
         Rhymes.load(assets)
+        Opposites.load(assets)
     }
 
     /** Loads every track from an assets folder on disk (used by tests). */
@@ -52,6 +53,7 @@ object Content {
         }
         buildDerived()
         Rhymes.loadFrom(folder)
+        Opposites.loadFrom(folder)
     }
 
     /** Tracks made from other tracks: the बारहखड़ी comes from the consonants. */

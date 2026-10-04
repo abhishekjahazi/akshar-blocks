@@ -1,0 +1,12 @@
+# Opposites, one pair per line: PICTURE <tab> ENGLISH <tab> HINDI <tab> PICTURE <tab> ENGLISH <tab> HINDI.
+# Lines starting with # are ignored. Save as UTF-8.
+🐘	Big	बड़ा	🐭	Small	छोटा
+🔥	Hot	गरम	🧊	Cold	ठंडा
+☀️	Day	दिन	🌙	Night	रात
+😀	Happy	खुश	😢	Sad	दुखी
+⬆️	Up	ऊपर	⬇️	Down	नीचे
+🐇	Fast	तेज़	🐢	Slow	धीमा
+📖	Open	खुला	📕	Closed	बंद
+🍬	Sweet	मीठा	🍋	Sour	खट्टा
+😃	Awake	जागा	😴	Asleep	सोया
+⬅️	Left	बायाँ	➡️	Right	दायाँ
