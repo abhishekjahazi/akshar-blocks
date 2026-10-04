@@ -71,14 +71,17 @@ enum class Track(
     ANIMALS(
         "Animals", "जानवर", Palette.EARTH, AnimalWords, "animals.tsv", showsCase = false,
         modes = listOf(GameMode.LEARN, GameMode.FIND, GameMode.SOUNDS, GameMode.MEMORY),
-    );
+    ),
+    FRUITS("Fruits & veggies", "फल-सब्ज़ी", Palette.LEAF, FruitWords, "fruits.tsv", showsCase = false, modes = PICTURE_GAMES),
+    BODY("My body", "शरीर", Palette.ROSE, BodyWords, "body.tsv", showsCase = false, modes = PICTURE_GAMES),
+    FAMILY("Family", "परिवार", Palette.PLUM, FamilyWords, "family.tsv", showsCase = false, modes = PICTURE_GAMES);
 
     val letters: List<Letter> get() = Content.letters(this)
 
     val isNumbers get() = this == NUMBERS || this == GINTI
 
-    /** Tracks of pictures with names (colors, shapes, animals) rather than letters. */
-    val isPictures get() = this == COLORS || this == SHAPES || this == ANIMALS
+    /** Tracks of pictures with names (colors, animals, fruits…) rather than letters; Home groups them in the World. */
+    val isPictures get() = this == COLORS || this == SHAPES || this == ANIMALS || this == FRUITS || this == BODY || this == FAMILY
 
     /**
      * What the Find game shows as the letter to look for. Small letters show the capital, so the

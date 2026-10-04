@@ -52,6 +52,7 @@ hi_94294cd4	ज	Everyday phrases
 hi_7011c9c1	झ	Everyday phrases
 hi_bd21f0f6	ट	Everyday phrases
 hi_7d4f7609	ठ	Everyday phrases
+hi_8b859106	टमाटर.	Everyday phrases
 hi_3f651ec5	ड	Everyday phrases
 hi_c964e635	ढ	Everyday phrases
 hi_a2a1a7e1	ण	Everyday phrases
@@ -107,6 +108,9 @@ hi_5a412ed0	मछलियाँ!	Everyday phrases
 hi_d2f2beb6	तारे!	Everyday phrases
 hi_199f12b7	गाड़ियाँ!	Everyday phrases
 hi_f66e3568	चूज़े!	Everyday phrases
+hi_9530c6d8	किसके बारे में सीखें?	Everyday phrases
+hi_d76a7ea8	कितने बचे?	Everyday phrases
+hi_bb43cab2	कितनी बचीं?	Everyday phrases
 hi_ac754cce	मछली जल की रानी है,	Rhymes
 hi_3240021c	जीवन उसका पानी है।	Rhymes
 hi_bfe86101	हाथ लगाओ डर जाएगी,	Rhymes
@@ -207,7 +211,6 @@ hi_cd6c2ec5	झंडा.	हिंदी व्यंजन
 hi_dddd37f3	झंडा किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_a47e94bb	झंडा, झ से शुरू होता है!	हिंदी व्यंजन
 hi_928ff2a6	ट से टमाटर.	हिंदी व्यंजन
-hi_8b859106	टमाटर.	हिंदी व्यंजन
 hi_a01029c5	टमाटर किस अक्षर से शुरू होता है?	हिंदी व्यंजन
 hi_60ab042c	टमाटर, ट से शुरू होता है!	हिंदी व्यंजन
 hi_a3a6aed7	ठ से ठेला.	हिंदी व्यंजन
@@ -826,3 +829,181 @@ hi_c24ed3d5	साँप!	Animals
 hi_7ea60b8a	चूहा!	Animals
 hi_16ca4db5	सूअर!	Animals
 hi_ae5a4beb	जिराफ़!	Animals
+hi_75f3637e	संतरा!	Fruits & veggies
+hi_fe8ef57f	तरबूज़!	Fruits & veggies
+hi_cb7b1335	नाशपाती!	Fruits & veggies
+hi_7b7104bd	स्ट्रॉबेरी!	Fruits & veggies
+hi_14e46573	गाजर!	Fruits & veggies
+hi_6ec27d7c	आलू!	Fruits & veggies
+hi_397f4e46	प्याज़!	Fruits & veggies
+hi_209bf479	बैंगन!	Fruits & veggies
+hi_81fde04d	भुट्टा!	Fruits & veggies
+hi_26e88a31	खीरा!	Fruits & veggies
+hi_6d851701	मिर्च!	Fruits & veggies
+hi_fe67a0ed	आँख!	My body
+hi_0eb9463b	मुँह!	My body
+hi_d1da7266	दाँत!	My body
+hi_86e21a32	जीभ!	My body
+hi_87c09d4d	हाथ!	My body
+hi_e4a8846d	उँगली!	My body
+hi_c7c49d35	बाँह!	My body
+hi_06453a97	टाँग!	My body
+hi_32607c95	पैर!	My body
+hi_945ea24b	दिमाग़!	My body
+hi_3136b497	माँ!	Family
+hi_39ce29c0	पापा!	Family
+hi_8727bf38	दादी!	Family
+hi_d09bcdf9	दादा!	Family
+hi_42df3990	बहन!	Family
+hi_97bf9464	भाई!	Family
+hi_40c0e364	बच्चा!	Family
+hi_884bd978	टीचर!	Family
+hi_73772073	चलो, गिनती से खेलें!	Maths
+hi_29a971b7	सबको गिनो!	Maths
+hi_42b15359	जो बचे हैं, उन्हें गिनो!	Maths
+hi_da858f7a	किधर ज़्यादा हैं?	Maths
+hi_36fd4c12	किधर कम हैं?	Maths
+hi_3b70a935	फिर से देखो!	Maths
+hi_de2c4be5	आगे क्या आएगा?	Maths
+hi_3c49effe	सही पहचाना!	Maths
+hi_879cae9d	कुल कितने सेब?	Maths
+hi_0caf6dbc	कुल कितनी गेंदें?	Maths
+hi_42535db5	कुल कितनी मछलियाँ?	Maths
+hi_de050e76	कुल कितने तारे?	Maths
+hi_95d32494	कुल कितने गुब्बारे?	Maths
+hi_d1949c76	कुल कितने फूल?	Maths
+hi_3ceb77e0	कुल कितनी गाड़ियाँ?	Maths
+hi_754da03d	कुल कितने चूज़े?	Maths
+hi_381a57c3	एक और एक, दो!	Maths
+hi_69f5716b	एक और दो, तीन!	Maths
+hi_55b582e6	एक और तीन, चार!	Maths
+hi_fd21df47	एक और चार, पाँच!	Maths
+hi_7c1591d6	एक और पाँच, छह!	Maths
+hi_1aeb1fb9	दो और एक, तीन!	Maths
+hi_dd53aa94	दो और दो, चार!	Maths
+hi_0f2021d4	दो और तीन, पाँच!	Maths
+hi_2763e74d	दो और चार, छह!	Maths
+hi_1273e682	दो और पाँच, सात!	Maths
+hi_ef7363c0	तीन और एक, चार!	Maths
+hi_2e160f1b	तीन और दो, पाँच!	Maths
+hi_7c92b2d3	तीन और तीन, छह!	Maths
+hi_cb13a775	तीन और चार, सात!	Maths
+hi_88f09ccd	तीन और पाँच, आठ!	Maths
+hi_5ea3fd0a	चार और एक, पाँच!	Maths
+hi_ce9ae5fd	चार और दो, छह!	Maths
+hi_94631cab	चार और तीन, सात!	Maths
+hi_d76e38e9	चार और चार, आठ!	Maths
+hi_0e36665c	चार और पाँच, नौ!	Maths
+hi_10ecbe02	पाँच और एक, छह!	Maths
+hi_2bccd966	पाँच और दो, सात!	Maths
+hi_740173a5	पाँच और तीन, आठ!	Maths
+hi_14e03b14	पाँच और चार, नौ!	Maths
+hi_a259f3ae	पाँच और पाँच, दस!	Maths
+hi_7642048a	दो में से एक गए, एक बचे!	Maths
+hi_19b9d584	तीन में से एक गए, दो बचे!	Maths
+hi_1d5f53eb	तीन में से दो गए, एक बचे!	Maths
+hi_3bcb9de4	चार में से एक गए, तीन बचे!	Maths
+hi_0d55e977	चार में से दो गए, दो बचे!	Maths
+hi_2eb76216	चार में से तीन गए, एक बचे!	Maths
+hi_cb954e3f	पाँच में से एक गए, चार बचे!	Maths
+hi_a988551e	पाँच में से दो गए, तीन बचे!	Maths
+hi_6666df22	पाँच में से तीन गए, दो बचे!	Maths
+hi_6540b010	पाँच में से चार गए, एक बचे!	Maths
+hi_de21e946	छह में से एक गए, पाँच बचे!	Maths
+hi_6fa0f7ea	छह में से दो गए, चार बचे!	Maths
+hi_fa19c3b5	छह में से तीन गए, तीन बचे!	Maths
+hi_33641445	छह में से चार गए, दो बचे!	Maths
+hi_6d5e8559	छह में से पाँच गए, एक बचे!	Maths
+hi_6ed67384	सात में से एक गए, छह बचे!	Maths
+hi_831aaba4	सात में से दो गए, पाँच बचे!	Maths
+hi_4150eeba	सात में से तीन गए, चार बचे!	Maths
+hi_3eaae0c1	सात में से चार गए, तीन बचे!	Maths
+hi_f09f8389	सात में से पाँच गए, दो बचे!	Maths
+hi_1f095111	सात में से छह गए, एक बचे!	Maths
+hi_d05456a1	आठ में से एक गए, सात बचे!	Maths
+hi_e122b965	आठ में से दो गए, छह बचे!	Maths
+hi_cb6ef662	आठ में से तीन गए, पाँच बचे!	Maths
+hi_e86ed86d	आठ में से चार गए, चार बचे!	Maths
+hi_b37cc5e5	आठ में से पाँच गए, तीन बचे!	Maths
+hi_060a57bc	आठ में से छह गए, दो बचे!	Maths
+hi_a2a07a96	आठ में से सात गए, एक बचे!	Maths
+hi_732aaff3	नौ में से एक गए, आठ बचे!	Maths
+hi_9a0e9a47	नौ में से दो गए, सात बचे!	Maths
+hi_291acfc7	नौ में से तीन गए, छह बचे!	Maths
+hi_1557c4cf	नौ में से चार गए, पाँच बचे!	Maths
+hi_32d4514c	नौ में से पाँच गए, चार बचे!	Maths
+hi_1c9598f8	नौ में से छह गए, तीन बचे!	Maths
+hi_4a09219f	नौ में से सात गए, दो बचे!	Maths
+hi_c861c997	नौ में से आठ गए, एक बचे!	Maths
+hi_9cd9bf7c	दो, एक से ज़्यादा!	Maths
+hi_31e61d30	एक, दो से कम!	Maths
+hi_261f9a24	तीन, एक से ज़्यादा!	Maths
+hi_51692746	एक, तीन से कम!	Maths
+hi_ba9c4fca	चार, एक से ज़्यादा!	Maths
+hi_b93d52ed	एक, चार से कम!	Maths
+hi_80791298	पाँच, एक से ज़्यादा!	Maths
+hi_076ea454	एक, पाँच से कम!	Maths
+hi_d07c5a88	छह, एक से ज़्यादा!	Maths
+hi_aefe93c3	एक, छह से कम!	Maths
+hi_97deadc7	सात, एक से ज़्यादा!	Maths
+hi_06ba0b16	एक, सात से कम!	Maths
+hi_7e7e922c	आठ, एक से ज़्यादा!	Maths
+hi_2b3791d0	एक, आठ से कम!	Maths
+hi_a5701d0e	नौ, एक से ज़्यादा!	Maths
+hi_e46d1db2	एक, नौ से कम!	Maths
+hi_c6b50f96	तीन, दो से ज़्यादा!	Maths
+hi_f30a00a9	दो, तीन से कम!	Maths
+hi_ea72aa1f	चार, दो से ज़्यादा!	Maths
+hi_6fe65b43	दो, चार से कम!	Maths
+hi_476d1714	पाँच, दो से ज़्यादा!	Maths
+hi_e745ae30	दो, पाँच से कम!	Maths
+hi_94257232	छह, दो से ज़्यादा!	Maths
+hi_9d0decd5	दो, छह से कम!	Maths
+hi_62e926ce	सात, दो से ज़्यादा!	Maths
+hi_8a8a888b	दो, सात से कम!	Maths
+hi_8606c6a4	आठ, दो से ज़्यादा!	Maths
+hi_28e3ae0f	दो, आठ से कम!	Maths
+hi_3275b04a	नौ, दो से ज़्यादा!	Maths
+hi_86a4cfe9	दो, नौ से कम!	Maths
+hi_7640b447	चार, तीन से ज़्यादा!	Maths
+hi_42670d89	तीन, चार से कम!	Maths
+hi_5aee70fc	पाँच, तीन से ज़्यादा!	Maths
+hi_1a866a38	तीन, पाँच से कम!	Maths
+hi_c98b469b	छह, तीन से ज़्यादा!	Maths
+hi_7c6ac971	तीन, छह से कम!	Maths
+hi_b68d5075	सात, तीन से ज़्यादा!	Maths
+hi_2badb218	तीन, सात से कम!	Maths
+hi_f95f1340	आठ, तीन से ज़्यादा!	Maths
+hi_20b87432	तीन, आठ से कम!	Maths
+hi_38ad4752	नौ, तीन से ज़्यादा!	Maths
+hi_ba5742be	तीन, नौ से कम!	Maths
+hi_d52906e0	पाँच, चार से ज़्यादा!	Maths
+hi_1050a675	चार, पाँच से कम!	Maths
+hi_b53ee6e4	छह, चार से ज़्यादा!	Maths
+hi_4fa06c68	चार, छह से कम!	Maths
+hi_cb9b5aea	सात, चार से ज़्यादा!	Maths
+hi_ae64c295	चार, सात से कम!	Maths
+hi_3cb27fce	आठ, चार से ज़्यादा!	Maths
+hi_43e11482	चार, आठ से कम!	Maths
+hi_fa177f64	नौ, चार से ज़्यादा!	Maths
+hi_516dd091	चार, नौ से कम!	Maths
+hi_14a3e97f	छह, पाँच से ज़्यादा!	Maths
+hi_158af409	पाँच, छह से कम!	Maths
+hi_b8b1cf8d	सात, पाँच से ज़्यादा!	Maths
+hi_4adaa5f0	पाँच, सात से कम!	Maths
+hi_e0476292	आठ, पाँच से ज़्यादा!	Maths
+hi_4f4f1178	पाँच, आठ से कम!	Maths
+hi_266eadfb	नौ, पाँच से ज़्यादा!	Maths
+hi_a01e5a31	पाँच, नौ से कम!	Maths
+hi_945fa36c	सात, छह से ज़्यादा!	Maths
+hi_4f3954b8	छह, सात से कम!	Maths
+hi_e2dcea1b	आठ, छह से ज़्यादा!	Maths
+hi_b3fad227	छह, आठ से कम!	Maths
+hi_14137513	नौ, छह से ज़्यादा!	Maths
+hi_a35715c8	छह, नौ से कम!	Maths
+hi_efc40d26	आठ, सात से ज़्यादा!	Maths
+hi_d668e554	सात, आठ से कम!	Maths
+hi_4dc47819	नौ, सात से ज़्यादा!	Maths
+hi_d5ddbe94	सात, नौ से कम!	Maths
+hi_c087b628	नौ, आठ से ज़्यादा!	Maths
+hi_fdee06a4	आठ, नौ से कम!	Maths

@@ -55,6 +55,12 @@
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|fontScale|density|locale|layoutDirection"
             android:exported="false"
             android:theme="@style/Theme.ABCDGame.Invisible" />
+        <!-- Prints a tracing worksheet for the parent area (only started from there). -->
+        <activity
+            android:name=".WorksheetActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|fontScale|density|locale|layoutDirection"
+            android:exported="false"
+            android:theme="@style/Theme.ABCDGame.Invisible" />
         <!-- Google AdMob app ID (set per build type in build.gradle.kts). -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -95,6 +95,11 @@ object VoiceScript {
             for (sticker in Stickers.all) {
                 add(English, "Stickers", sticker.emoji, sticker.name, CommonWords.newSticker(sticker))
             }
+
+            add(English, EVERYDAY, "*", CommonWords.WORLD_ASK, Outfits.ASK, Outfits.NEED_MORE)
+            for (outfit in Outfits.all) add(English, "Shop", outfit.id, Outfits.bought(outfit))
+            // The maths games (one subject per line, so they are listed under Maths).
+            MathWords.all().forEachIndexed { i, line -> add(English, CommonWords.MATHS, "$i", line) }
         }
 
         private fun collectWords(track: Track) {

@@ -22,7 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 class MainActivity : AppCompatActivity() {
 
-    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, RHYMES, CERTIFICATE, REST }
+    private enum class Screen { HOME, CHILDREN, ALBUM, TRACK, GAME, PATH, RHYMES, CERTIFICATE, REST, WORLD, MATHS, SHOP }
 
     private lateinit var speaker: Speaker
     private lateinit var profiles: ProfileStore
@@ -41,6 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     /** True while a rhyme is playing, so Back returns to the list of rhymes. */
     private var inRhyme = false
+
+    /** True while a maths game is playing, so Back returns to the maths menu. */
+    private var inMaths = false
 
     /** Counts up for each game shown, so a late "step finished" timer can tell it's stale. */
     private var gameToken = 0
@@ -63,8 +66,11 @@ class MainActivity : AppCompatActivity() {
             val current = track
             when {
                 screen == Screen.GAME && inRhyme -> showRhymes()
+                screen == Screen.GAME && inMaths -> showMaths()
                 screen == Screen.GAME && pathStep != null -> showPath()
                 screen == Screen.GAME && current != null -> showTrack(current)
+                screen == Screen.TRACK && current != null && current.isPictures -> showWorld()
+                screen == Screen.ALBUM -> showShop()
                 else -> showHome()
             }
         }
@@ -165,10 +171,12 @@ class MainActivity : AppCompatActivity() {
             onPick = ::showTrack
             onParent = { ParentGate.show(this@MainActivity) { startActivity(Intent(this@MainActivity, ParentActivity::class.java)) } }
             onChild = ::showChildren
-            onAlbum = ::showAlbum
+            onAlbum = ::showShop
             onPath = { showPath() }
             onName = ::showName
             onRhymes = ::showRhymes
+            onWorld = ::showWorld
+            onMaths = ::showMaths
             pathDone = player.pathDone
         }
         setContentView(withBanner(home))
@@ -190,10 +198,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** The sticker album, reached from the shop. */
     private fun showAlbum() {
         screen = Screen.ALBUM
         goBack.isEnabled = true
-        setContentView(AlbumView(this, speaker, player).apply { onHome = ::showHome })
+        speaker.stop()
+        setContentView(AlbumView(this, speaker, player).apply { onHome = ::showShop })
+    }
+
+    /** The reward shop: dress up the child's animal with stars. */
+    private fun showShop() {
+        screen = Screen.SHOP
+        goBack.isEnabled = true
+        speaker.stop()
+        setContentView(ShopView(this, speaker, player).apply {
+            onHome = ::showHome
+            onAlbum = ::showAlbum
+        })
     }
 
     /** "Who is playing?" when there are several children; with one, just say hello. */
@@ -225,8 +246,48 @@ class MainActivity : AppCompatActivity() {
         speaker.stop()
         setContentView(TrackMenuView(this, speaker, player, track).apply {
             onPick = { mode -> startGame(track, mode) }
+            onHome = if (track.isPictures) ::showWorld else ::showHome
+        })
+    }
+
+    /** Colors, shapes, animals, fruits, body and family, as big picture cards. */
+    private fun showWorld() {
+        if (certificateFirst(::showWorld)) return
+        screen = Screen.WORLD
+        track = null
+        pathStep = null
+        goBack.isEnabled = true
+        speaker.stop()
+        val cards = Track.entries.filter { it.isPictures }.map { t ->
+            MenuCard(t.label, t.subtitle, t.color, t.letters.first().symbol) { showTrack(t) }
+        }
+        setContentView(CardMenuView(this, speaker, player, CommonWords.WORLD, Palette.MINT, cards, CommonWords.WORLD_ASK).apply {
             onHome = ::showHome
         })
+    }
+
+    /** The maths games. */
+    private fun showMaths() {
+        screen = Screen.MATHS
+        track = null
+        pathStep = null
+        inMaths = false
+        goBack.isEnabled = true
+        speaker.stop()
+        val cards = MathGame.entries.map { game ->
+            MenuCard(game.label, game.hindi, game.color, game.emoji) { startMaths(game) }
+        }
+        setContentView(CardMenuView(this, speaker, player, CommonWords.MATHS, Palette.PEACH, cards, MathWords.MENU_ASK).apply {
+            onHome = ::showHome
+        })
+    }
+
+    private fun startMaths(game: MathGame) {
+        speaker.stop()
+        val view = MathView(this, speaker, player, game)
+        view.onHome = ::showMaths
+        showGame(view)
+        inMaths = true
     }
 
     private fun makeGame(track: Track, mode: GameMode, start: Int = 0): GameView = when (mode) {
@@ -253,6 +314,7 @@ class MainActivity : AppCompatActivity() {
     private fun showGame(view: GameView) {
         gameToken++
         inRhyme = false
+        inMaths = false
         screen = Screen.GAME
         goBack.isEnabled = true
         setContentView(view)

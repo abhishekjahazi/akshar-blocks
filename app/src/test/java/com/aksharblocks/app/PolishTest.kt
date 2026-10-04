@@ -45,7 +45,10 @@ class PolishTest {
             Stickers.all.map { it.emoji } + Counting.things.map { it.emoji } + GameMode.entries.map { it.emoji } +
             Rhymes.all.map { it.emoji } + Track.entries.map { Certificates.medal(it) } +
             // Pictures drawn by the screens themselves.
-            listOf("✍️", "🎵", "⭐", "🐟", "👍", "▶️", "⏸️", "🔁", "🏆", "🔊", "🔄", "👆", "✅", "🔒", "🏠", "🌙", "👋")
+            listOf("✍️", "🎵", "⭐", "🐟", "👍", "▶️", "⏸️", "🔁", "🏆", "🔊", "🔄", "👆", "✅", "🔒", "🏠", "🌙", "👋") +
+            // The World and Maths cards on Home, the maths games and patterns, the shop and the children's animals.
+            listOf("🐄", "🥭", "🔺", "➕", "📒") + MathGame.entries.map { it.emoji } + Maths.PATTERN_PICTURES +
+            Outfits.all.map { it.emoji } + ProfileStore.AVATARS
         val missing = used.toSet().filter { Art.fileName(it) !in art }
         assertTrue("no artwork for $missing", missing.isEmpty())
     }

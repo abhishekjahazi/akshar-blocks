@@ -105,6 +105,30 @@ class Player(context: Context, val profile: Profile) {
 
     fun setStars(count: Int) = prefs.edit().putInt(KEY_STARS, count).apply()
 
+    /**
+     * Stars left to spend in the shop. [stars] stays the total ever earned, so spending never
+     * takes stickers away.
+     */
+    val spendableStars: Int get() = (stars - prefs.getInt(KEY_SPENT, 0)).coerceAtLeast(0)
+
+    val ownedOutfits: List<Outfit> get() = Outfits.decode(prefs.getString(KEY_OWNED, null))
+
+    var wearing: List<Outfit>
+        get() = Outfits.decode(prefs.getString(KEY_WEARING, null))
+        set(value) = prefs.edit().putString(KEY_WEARING, Outfits.encode(value)).apply()
+
+    /** Buys [outfit] and puts it on. False when it's already owned or there aren't enough stars. */
+    fun buy(outfit: Outfit): Boolean {
+        val owned = ownedOutfits
+        if (outfit in owned || spendableStars < outfit.price) return false
+        prefs.edit()
+            .putInt(KEY_SPENT, prefs.getInt(KEY_SPENT, 0) + outfit.price)
+            .putString(KEY_OWNED, Outfits.encode(owned + outfit))
+            .putString(KEY_WEARING, Outfits.encode(Outfits.toggle(wearing, outfit)))
+            .apply()
+        return true
+    }
+
     /** The child picked [letter] when asked for it. */
     fun correct(track: Track, letter: Letter) = bump("$OK|${track.name}|${letter.symbol}")
 
@@ -207,6 +231,9 @@ class Player(context: Context, val profile: Profile) {
         private const val KEY_STARS = "stars"
         private const val KEY_STREAK = "streak"
         private const val KEY_LAST_DAY = "last_day"
+        private const val KEY_SPENT = "shop_spent"
+        private const val KEY_OWNED = "shop_owned"
+        private const val KEY_WEARING = "shop_wearing"
         private const val OK = "ok"
         private const val MISS = "miss"
         private const val MIX = "mix"

@@ -18,7 +18,7 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
     /** The child name tag was tapped. */
     var onChild: (() -> Unit)? = null
 
-    /** The star counter was tapped: open the sticker album. */
+    /** The star counter was tapped: open the shop (which leads on to the sticker album). */
     var onAlbum: (() -> Unit)? = null
 
     /** The "today's games" banner was tapped. */
@@ -48,13 +48,22 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val open: () -> Unit,
     )
 
-    private val sections: List<Section> = Track.entries.map { track ->
+    /** The World (colors, animals, fruits…) was tapped. */
+    var onWorld: (() -> Unit)? = null
+
+    /** Maths was tapped. */
+    var onMaths: (() -> Unit)? = null
+
+    private val sections: List<Section> = Track.entries.filter { !it.isPictures }.map { track ->
         Section(track.label, track.subtitle, track.color, track.letters.take(SAMPLE_SIZE).map { it.symbol }, track::colorFor) { onPick?.invoke(track) }
     } + listOf(
+        Section(CommonWords.WORLD, "दुनिया", Palette.JADE, listOf("🐄", "🥭", "🔺"), { Palette.JADE }) { onWorld?.invoke() },
+        Section(CommonWords.MATHS, "गणित", Palette.AMBER, listOf("1", "➕", "2"), { Palette.AMBER }) { onMaths?.invoke() },
         Section("Rhymes", "कविताएँ", Palette.RUST, listOf("🎵", "⭐", "🐟"), { Palette.RUST }) { onRhymes?.invoke() },
         Section("My name", "मेरा नाम", Palette.ROYAL, NameLetters.sample(player.profile.name, SAMPLE_SIZE), Track.ENGLISH::colorFor) { onName?.invoke() },
     )
     private val cards = sections.map { RectF() }
+    private val wearing = player.wearing
     private val pathBanner = RectF()
     private val pathDot = RectF()
     private val miniBlock = RectF()
@@ -173,13 +182,19 @@ class HomeView(context: Context, speaker: Speaker, player: Player) : GameView(co
         val lockSink = drawBlock(canvas, parentButton, Palette.WHITE, depth = dp(5f))
         drawEmoji(canvas, "🔒", parentButton.centerX(), parentButton.centerY() + lockSink, size * 0.45f)
 
-        val label = "${player.profile.avatar} ${player.profile.name}"
+        // The child's animal, dressed in what they bought in the shop, then their name.
+        val name = player.profile.name
+        val face = dp(32f)
         textPaint.textSize = dp(22f)
         val maxWidth = width * 0.42f
-        val tagWidth = min(textPaint.measureText(label) + dp(32f), maxWidth)
+        val tagWidth = min(textPaint.measureText(name) + face + dp(40f), maxWidth)
         childTag.set(parentButton.right + dp(12f), barY - size / 2f, parentButton.right + dp(12f) + tagWidth, barY + size / 2f)
         val tagSink = drawBlock(canvas, childTag, Palette.WHITE, radius = size / 2f, depth = dp(5f))
-        drawText(canvas, label, childTag.centerX(), childTag.centerY() + tagSink, dp(22f), Palette.INK, tagWidth - dp(24f))
+        val faceX = childTag.left + dp(12f) + face / 2f
+        drawAvatar(canvas, player.profile.avatar, wearing, faceX, childTag.centerY() + tagSink, face)
+        val textLeft = faceX + face / 2f + dp(6f)
+        val textRight = childTag.right - dp(14f)
+        drawText(canvas, name, (textLeft + textRight) / 2f, childTag.centerY() + tagSink, dp(22f), Palette.INK, textRight - textLeft)
     }
 
     override fun onTap(x: Float, y: Float) {

@@ -145,6 +145,22 @@ class ParentActivity : AppCompatActivity() {
         })
         content.addView(backup)
 
+        section("Worksheets")
+        content.addView(text(
+            "Print tracing sheets for writing practice on paper, or save them as a PDF.",
+            15f, muted = true, top = 4,
+        ))
+        content.addView(textButton("🖨️ Print a worksheet") {
+            val sheets = Worksheet.entries
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Which worksheet?")
+                .setItems(sheets.map { "${it.label}  (${it.pages.size} ${if (it.pages.size == 1) "page" else "pages"})" }.toTypedArray()) { _, which ->
+                    WorksheetActivity.print(this, sheets[which])
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }.apply { layoutParams = spaced(top = 6) })
+
         section("About")
         content.addView(text(
             "Akshar Blocks ${versionName()}\nNo accounts. The games work without internet. " +

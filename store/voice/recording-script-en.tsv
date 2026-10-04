@@ -33,7 +33,7 @@ en_931ec3de	You wrote your name!	Everyday phrases
 en_1a04407e	Pick a rhyme!	Everyday phrases
 en_bada59fe	Congratulations!	Everyday phrases
 en_c078b272	You earned a certificate!	Everyday phrases
-en_f9407667	ay	Everyday phrases
+en_86f7e437	A	Everyday phrases
 en_ff1eb0fd	Find the letter	Everyday phrases
 en_f1576e18	That is	Everyday phrases
 en_ded8dae5	Find	Everyday phrases
@@ -41,7 +41,7 @@ en_e9d71f5e	B!	Everyday phrases
 en_77d3a013	Trace the letter	Everyday phrases
 en_887640fa	You wrote	Everyday phrases
 en_06f02a1d	Which letter says	Everyday phrases
-en_7238aedf	Pop the balloons from ay to Z!	Everyday phrases
+en_f05247a7	Pop the balloons from A to Z!	Everyday phrases
 en_5eac1411	Let's go again!	Everyday phrases
 en_d0be2dc4	Apple.	Everyday phrases
 en_758bd36c	Try again!	Everyday phrases
@@ -57,6 +57,7 @@ en_0ae9e4de	Elephant.	Everyday phrases
 en_54fd1711	G!	Everyday phrases
 en_64875fcc	Fish.	Everyday phrases
 en_27d5482e	H!	Everyday phrases
+en_35c4cdb5	Grapes.	Everyday phrases
 en_042dc451	I!	Everyday phrases
 en_5c2dd944	J!	Everyday phrases
 en_13fbd79c	K!	Everyday phrases
@@ -66,6 +67,7 @@ en_eaf14a01	Lion.	Everyday phrases
 en_d1854cae	N!	Everyday phrases
 en_ab87d24b	Monkey.	Everyday phrases
 en_7a81af3e	O!	Everyday phrases
+en_1a1f58c9	Nose.	Everyday phrases
 en_516b9783	P!	Everyday phrases
 en_ef0ebbb7	Orange.	Everyday phrases
 en_22ea1c64	Q!	Everyday phrases
@@ -81,7 +83,7 @@ en_11f6ad8e	X!	Everyday phrases
 en_95cb0bfd	Y!	Everyday phrases
 en_395df8f7	Z!	Everyday phrases
 en_19232bfb	Try again. Draw over the letter.	Everyday phrases
-en_7d79adc6	Hooray! You popped all the letters from ay to Z!	Everyday phrases
+en_f525bce0	Hooray! You popped all the letters from A to Z!	Everyday phrases
 en_483157aa	Make the word	Everyday phrases
 en_2cd4ba93	pig!	Everyday phrases
 en_8bbddb4a	cow!	Everyday phrases
@@ -105,7 +107,12 @@ en_337432e4	chicks!	Everyday phrases
 en_c0e1200c	Find the color	Everyday phrases
 en_ae44f4b1	Find the	Everyday phrases
 en_1ea4150a	Who says	Everyday phrases
+en_0b4c40ea	Show me the	Everyday phrases
 en_e7bcfab0	New sticker!	Everyday phrases
+en_cade3fac	What shall we learn about?	Everyday phrases
+en_de79da5b	Dress up your animal!	Everyday phrases
+en_3da20487	Buy things with your stars.	Everyday phrases
+en_a71f98f7	Win more stars to get this!	Everyday phrases
 en_59e188ef	Twinkle, twinkle, little star,	Rhymes
 en_1da4f3ff	How I wonder what you are!	Rhymes
 en_1a2d28e5	Up above the world so high,	Rhymes
@@ -133,144 +140,142 @@ en_0325d87b	Row, row, row your boat,	Rhymes
 en_7dd91d1d	Gently down the stream.	Rhymes
 en_8693bedf	Merrily, merrily, merrily, merrily,	Rhymes
 en_b865ec81	Life is but a dream.	Rhymes
-en_0a8e40f1	ay is for Apple.	English
-en_348e7dc8	ay says ah!	English
+en_9d8a73f9	A for Apple.	English
+en_d2ac8f44	A says ah!	English
 en_fd0aa934	ah?	English
 en_46a00bdc	Which letter does Apple start with?	English
-en_d05205a5	Apple starts with ay!	English
-en_17ce6c99	B is for Ball.	English
+en_99419d1e	Apple starts with A!	English
+en_1ecafb64	B for Ball.	English
 en_438a1bef	B says buh!	English
 en_a44b3377	buh?	English
 en_986c1d1b	Which letter does Ball start with?	English
 en_777aca7a	Ball starts with B!	English
-en_d9653b48	C is for Cat.	English
+en_e23bb3bb	C for Cat.	English
 en_22bc18e8	C says kuh!	English
 en_3f30cfaa	Which letter does Cat start with?	English
 en_2be8b999	Cat starts with C!	English
-en_5eb0fa69	D is for Dog.	English
+en_b3d489c1	D for Dog.	English
 en_f615dbe9	D says duh!	English
 en_1107c345	duh?	English
 en_96984528	Which letter does Dog start with?	English
 en_4cb8f970	Dog starts with D!	English
-en_e897cc5a	E is for Elephant.	English
+en_a44ca255	E for Elephant.	English
 en_48dcd7b8	E says eh!	English
 en_706a483d	eh?	English
 en_f2d9bf3e	Which letter does Elephant start with?	English
 en_87ac7395	Elephant starts with E!	English
-en_9eecb844	F is for Fish.	English
+en_4772fea6	F for Fish.	English
 en_758033bf	F says fuh!	English
 en_a25ca6c6	fuh?	English
 en_b9eca409	Which letter does Fish start with?	English
 en_38028cbc	Fish starts with F!	English
-en_1294bc54	G is for Grapes.	English
+en_72deb466	G for Grapes.	English
 en_9b3ff0b7	G says guh!	English
 en_ef7e6e51	guh?	English
-en_35c4cdb5	Grapes.	English
 en_d6c5d858	Which letter does Grapes start with?	English
 en_b906d743	Grapes starts with G!	English
-en_181a3f88	H is for House.	English
+en_731ec1fa	H for House.	English
 en_ff1b8a6d	H says huh!	English
 en_5a9213b1	huh?	English
 en_5be93480	House.	English
 en_c01f58ad	Which letter does House start with?	English
 en_69c6554c	House starts with H!	English
-en_934a4ea3	I is for Ice cream.	English
+en_66881bb8	I for Ice cream.	English
 en_9176146d	I says ih!	English
 en_f2fc9e17	ih?	English
 en_7c16c818	Ice cream.	English
 en_8c0a3dfe	Which letter does Ice cream start with?	English
 en_039f2836	Ice cream starts with I!	English
-en_540d45a0	J is for Juice.	English
+en_0642f18d	J for Juice.	English
 en_0584c949	J says juh!	English
 en_482acf60	juh?	English
 en_07ef8791	Juice.	English
 en_8b194ea6	Which letter does Juice start with?	English
 en_19df5cdf	Juice starts with J!	English
-en_94d2464a	K is for Kite.	English
+en_c08cfe19	K for Kite.	English
 en_968a2fbf	K says kuh!	English
 en_34e1c787	Kite.	English
 en_e24887bf	Which letter does Kite start with?	English
 en_0f2405ef	Kite starts with K!	English
-en_1f10d0f0	L is for Lion.	English
+en_583737dc	L for Lion.	English
 en_a51cc390	L says luh!	English
 en_14e8a03e	luh?	English
 en_f24b6b5f	Which letter does Lion start with?	English
 en_50c85e6e	Lion starts with L!	English
-en_63c272ac	M is for Monkey.	English
+en_f277382b	M for Monkey.	English
 en_8ba7097f	M says muh!	English
 en_c5e9b893	muh?	English
 en_0e0eefda	Which letter does Monkey start with?	English
 en_f1eb002d	Monkey starts with M!	English
-en_34904484	N is for Nose.	English
+en_d4213de9	N for Nose.	English
 en_e0fb9bd7	N says nuh!	English
 en_81a5051f	nuh?	English
-en_1a1f58c9	Nose.	English
 en_03b73733	Which letter does Nose start with?	English
 en_b61cc0f6	Nose starts with N!	English
-en_30f3f7ce	O is for Orange.	English
+en_eecdf640	O for Orange.	English
 en_7e7cea84	O says aw!	English
 en_a7ce5b0c	aw?	English
 en_7be361c7	Which letter does Orange start with?	English
 en_40823403	Orange starts with O!	English
-en_aac64702	P is for Penguin.	English
+en_f6b64dd8	P for Penguin.	English
 en_18f5fb67	P says puh!	English
 en_4acb05bf	puh?	English
 en_a32cdb89	Which letter does Penguin start with?	English
 en_2d83d7b0	Penguin starts with P!	English
-en_9ef715a8	Q is for Queen.	English
+en_4bf14063	Q for Queen.	English
 en_d5615f27	Q says kwuh!	English
 en_17d24f6c	kwuh?	English
 en_41011410	Queen.	English
 en_f7617213	Which letter does Queen start with?	English
 en_b9c0d6e4	Queen starts with Q!	English
-en_7cacb7e4	R is for Rabbit.	English
+en_f1ceca53	R for Rabbit.	English
 en_3fa9b437	R says ruh!	English
 en_d7b57068	ruh?	English
 en_6d0ebbbd	Rabbit.	English
 en_96dc6889	Which letter does Rabbit start with?	English
 en_34038461	Rabbit starts with R!	English
-en_3dbeefa9	S is for Sun.	English
+en_b0ddd7a3	S for Sun.	English
 en_d553e84e	S says suh!	English
 en_4f352a15	suh?	English
 en_1c4b7201	Which letter does Sun start with?	English
 en_a2791b55	Sun starts with S!	English
-en_dd950a94	T is for Tree.	English
+en_e05b6202	T for Tree.	English
 en_7e4d9501	T says tuh!	English
 en_f96349da	tuh?	English
 en_80655da8	Tree.	English
 en_d4c4e1dc	Which letter does Tree start with?	English
 en_a34f13a3	Tree starts with T!	English
-en_5f6713ce	U is for Umbrella.	English
+en_2781989a	U for Umbrella.	English
 en_43b3f3f8	U says uh!	English
 en_80c3d7b3	uh?	English
 en_3ff95ac9	Umbrella.	English
 en_2d59e81d	Which letter does Umbrella start with?	English
 en_9b45f474	Umbrella starts with U!	English
-en_3e56a432	V is for Violin.	English
+en_6ea69d8e	V for Violin.	English
 en_8aa7d427	V says vuh!	English
 en_cf992459	vuh?	English
 en_06384a70	Violin.	English
 en_fe752a60	Which letter does Violin start with?	English
 en_fe95aba6	Violin starts with V!	English
-en_87c51855	W is for Watch.	English
+en_e9affa4b	W for Watch.	English
 en_562de817	W says wuh!	English
 en_52b5f606	wuh?	English
 en_292b0901	Watch.	English
 en_d1bca7b0	Which letter does Watch start with?	English
 en_dd44ac88	Watch starts with W!	English
-en_0f79441c	X is for Xmas tree.	English
+en_9b0cf391	X for Xmas tree.	English
 en_862b53da	X says ex!	English
 en_e066133f	ex?	English
 en_efc3a6f2	Xmas tree.	English
 en_3a045996	Which letter does Xmas tree start with?	English
 en_f352038c	Xmas tree starts with X!	English
-en_4bdb1d6e	Y is for Yo-yo.	English
+en_611e1af2	Y for Yo-yo.	English
 en_eaa39b9f	Y says yuh!	English
 en_8f16126d	yuh?	English
 en_a5254623	Yo-yo.	English
 en_80d136fa	Which letter does Yo-yo start with?	English
 en_5012179f	Yo-yo starts with Y!	English
-en_574acaac	Z is for Zebra.	English
+en_c0a0ef92	Z for Zebra.	English
 en_420815f6	Z says zuh!	English
 en_bf5eb4ef	zuh?	English
 en_38aa53de	Zebra.	English
@@ -455,6 +460,40 @@ en_5373e5cc	squeak?	Animals
 en_a82dcb88	The pig says oink!	Animals
 en_3de4877e	oink?	Animals
 en_fac8f1a3	Giraffe!	Animals
+en_250e77f1	Banana!	Fruits & veggies
+en_934aae49	Mango!	Fruits & veggies
+en_ef1a762d	Watermelon!	Fruits & veggies
+en_ff9907a8	Pineapple!	Fruits & veggies
+en_3e2bf5fa	Pear!	Fruits & veggies
+en_211c1140	Coconut!	Fruits & veggies
+en_c0b51c46	Strawberry!	Fruits & veggies
+en_d8bfad4b	Carrot!	Fruits & veggies
+en_321f6b7e	Tomato!	Fruits & veggies
+en_3e2e95f5	Potato!	Fruits & veggies
+en_6ac8c09b	Onion!	Fruits & veggies
+en_498b4f3d	Brinjal!	Fruits & veggies
+en_7cacb75c	Corn!	Fruits & veggies
+en_868d0992	Cucumber!	Fruits & veggies
+en_aff8c5c7	Chilli!	Fruits & veggies
+en_79df4b17	Eye	My body
+en_ddbc6188	Ear!	My body
+en_87d17825	Mouth!	My body
+en_63b3ea55	Tooth!	My body
+en_647b3042	Tongue!	My body
+en_9621a244	Hand!	My body
+en_ec654d9c	Finger!	My body
+en_ed945d6b	Arm!	My body
+en_321d6cc5	Leg!	My body
+en_32cb9138	Foot!	My body
+en_8b9248a4	Brain!	My body
+en_5116e406	Mother	Family
+en_32c8bbff	Father!	Family
+en_ea39210a	Grandmother!	Family
+en_dd6708dd	Grandfather!	Family
+en_1dd09baa	Sister!	Family
+en_d67cca5a	Brother!	Family
+en_6cf34755	Baby!	Family
+en_4a82cb6d	Teacher!	Family
 en_26d33687	puppy	Stickers
 en_564a9a76	A puppy!	Stickers
 en_44060752	kitten	Stickers
@@ -504,3 +543,168 @@ en_ef89a3a8	rocket	Stickers
 en_25f3f302	A rocket!	Stickers
 en_5ddc2ae1	cake	Stickers
 en_f4b8becc	A cake!	Stickers
+en_11d62e31	You got the bow!	Shop
+en_c9c72dce	You got the balloon!	Shop
+en_55185fc9	You got the cap!	Shop
+en_9b9333e3	You got the glasses!	Shop
+en_14e4ee05	You got the scarf!	Shop
+en_9804c5f0	You got the sunglasses!	Shop
+en_38597495	You got the top hat!	Shop
+en_c611893b	You got the crown!	Shop
+en_91dca588	Let's play with numbers!	Maths
+en_9aea3fdd	Count them all!	Maths
+en_e20d89ad	Count the ones that are left!	Maths
+en_cc5273b7	Which side has more?	Maths
+en_796d4ab8	Which side has fewer?	Maths
+en_44748e98	Look again!	Maths
+en_335d405f	What comes next?	Maths
+en_e6a5eb5f	You found the pattern!	Maths
+en_44ff146d	How many apples in all?	Maths
+en_3d3654d3	How many apples are left?	Maths
+en_e0f9ba54	How many balls in all?	Maths
+en_e47ab0b7	How many balls are left?	Maths
+en_cd4ca9ac	How many fish in all?	Maths
+en_6ea21149	How many fish are left?	Maths
+en_f18a4797	How many stars in all?	Maths
+en_771e8e96	How many stars are left?	Maths
+en_7852064f	How many balloons in all?	Maths
+en_c201f64e	How many balloons are left?	Maths
+en_dc7308e9	How many flowers in all?	Maths
+en_ed2e7028	How many flowers are left?	Maths
+en_7311b727	How many cars in all?	Maths
+en_7321bedc	How many cars are left?	Maths
+en_41a44ac1	How many chicks in all?	Maths
+en_0dcfb2f4	How many chicks are left?	Maths
+en_28caa5dd	1 and 1 make 2!	Maths
+en_78667098	1 and 2 make 3!	Maths
+en_988d7e8b	1 and 3 make 4!	Maths
+en_28951344	1 and 4 make 5!	Maths
+en_02dc2e46	1 and 5 make 6!	Maths
+en_e27b1121	2 and 1 make 3!	Maths
+en_c1e6b37e	2 and 2 make 4!	Maths
+en_c59d9572	2 and 3 make 5!	Maths
+en_04856325	2 and 4 make 6!	Maths
+en_6f9d8975	2 and 5 make 7!	Maths
+en_5596c27d	3 and 1 make 4!	Maths
+en_b71f2a98	3 and 2 make 5!	Maths
+en_cdb2056f	3 and 3 make 6!	Maths
+en_51896001	3 and 4 make 7!	Maths
+en_7f65c551	3 and 5 make 8!	Maths
+en_9bfa1995	4 and 1 make 5!	Maths
+en_93e2126e	4 and 2 make 6!	Maths
+en_94f970d2	4 and 3 make 7!	Maths
+en_2bff54ea	4 and 4 make 8!	Maths
+en_0d5653f8	4 and 5 make 9!	Maths
+en_2866e104	5 and 1 make 6!	Maths
+en_9afb4919	5 and 2 make 7!	Maths
+en_3b36074a	5 and 3 make 8!	Maths
+en_37282ca6	5 and 4 make 9!	Maths
+en_8176b112	5 and 5 make 10!	Maths
+en_535f0db5	2 take away 1 is 1!	Maths
+en_21b338c0	3 take away 1 is 2!	Maths
+en_bf687c2f	3 take away 2 is 1!	Maths
+en_3c99e7d5	4 take away 1 is 3!	Maths
+en_a1fc2b7c	4 take away 2 is 2!	Maths
+en_9f4e2d81	4 take away 3 is 1!	Maths
+en_632b1f0f	5 take away 1 is 4!	Maths
+en_ed170b14	5 take away 2 is 3!	Maths
+en_304bed2f	5 take away 3 is 2!	Maths
+en_15dca3dd	5 take away 4 is 1!	Maths
+en_c2a13031	6 take away 1 is 5!	Maths
+en_fe91e1b2	6 take away 2 is 4!	Maths
+en_a6db87a2	6 take away 3 is 3!	Maths
+en_3e18959b	6 take away 4 is 2!	Maths
+en_7541779b	6 take away 5 is 1!	Maths
+en_f3b9d93b	7 take away 1 is 6!	Maths
+en_a31929b8	7 take away 2 is 5!	Maths
+en_c2e99dad	7 take away 3 is 4!	Maths
+en_5b45b9de	7 take away 4 is 3!	Maths
+en_98707053	7 take away 5 is 2!	Maths
+en_a1391270	7 take away 6 is 1!	Maths
+en_af115903	8 take away 1 is 7!	Maths
+en_5d4fa09e	8 take away 2 is 6!	Maths
+en_f305cdd1	8 take away 3 is 5!	Maths
+en_ddf2e045	8 take away 4 is 4!	Maths
+en_6c2ed663	8 take away 5 is 3!	Maths
+en_4f151a62	8 take away 6 is 2!	Maths
+en_397e3835	8 take away 7 is 1!	Maths
+en_5b6715c0	9 take away 1 is 8!	Maths
+en_8250df63	9 take away 2 is 7!	Maths
+en_cf1a2097	9 take away 3 is 6!	Maths
+en_ac9ad0a2	9 take away 4 is 5!	Maths
+en_c1d63ce9	9 take away 5 is 4!	Maths
+en_47825207	9 take away 6 is 3!	Maths
+en_9320e072	9 take away 7 is 2!	Maths
+en_99084c46	9 take away 8 is 1!	Maths
+en_0b5899a0	2 is more than 1!	Maths
+en_475e604c	1 is less than 2!	Maths
+en_b3a854aa	3 is more than 1!	Maths
+en_36534f88	1 is less than 3!	Maths
+en_0d030eb6	4 is more than 1!	Maths
+en_69b86502	1 is less than 4!	Maths
+en_f15038c1	5 is more than 1!	Maths
+en_482c1b9e	1 is less than 5!	Maths
+en_fae1fae0	6 is more than 1!	Maths
+en_e434474a	1 is less than 6!	Maths
+en_88c67e03	7 is more than 1!	Maths
+en_f89d92dd	1 is less than 7!	Maths
+en_29cef31c	8 is more than 1!	Maths
+en_93d2af01	1 is less than 8!	Maths
+en_189af53f	9 is more than 1!	Maths
+en_097db99f	1 is less than 9!	Maths
+en_47b629d7	3 is more than 2!	Maths
+en_8873a433	2 is less than 3!	Maths
+en_87c8e088	4 is more than 2!	Maths
+en_78f735db	2 is less than 4!	Maths
+en_7b4c69a6	5 is more than 2!	Maths
+en_b8d6ac0e	2 is less than 5!	Maths
+en_81876637	6 is more than 2!	Maths
+en_2e858772	2 is less than 6!	Maths
+en_f72efc78	7 is more than 2!	Maths
+en_4fcae581	2 is less than 7!	Maths
+en_9605a3d2	8 is more than 2!	Maths
+en_175b7189	2 is less than 8!	Maths
+en_f66d538f	9 is more than 2!	Maths
+en_231be8e1	2 is less than 9!	Maths
+en_cbf1cd05	4 is more than 3!	Maths
+en_893e9665	3 is less than 4!	Maths
+en_5ec3244b	5 is more than 3!	Maths
+en_a8a43f95	3 is less than 5!	Maths
+en_549e601c	6 is more than 3!	Maths
+en_a62e4b2f	3 is less than 6!	Maths
+en_efac7806	7 is more than 3!	Maths
+en_3239f970	3 is less than 7!	Maths
+en_130943d7	8 is more than 3!	Maths
+en_667cc669	3 is less than 8!	Maths
+en_0ccc3c53	9 is more than 3!	Maths
+en_d7678073	3 is less than 9!	Maths
+en_942cb91d	5 is more than 4!	Maths
+en_25f671b6	4 is less than 5!	Maths
+en_2453a7cf	6 is more than 4!	Maths
+en_060c3377	4 is less than 6!	Maths
+en_70434609	7 is more than 4!	Maths
+en_c1a8af8b	4 is less than 7!	Maths
+en_6d4ec31b	8 is more than 4!	Maths
+en_f195acc9	4 is less than 8!	Maths
+en_74f7628a	9 is more than 4!	Maths
+en_fe5a754c	4 is less than 9!	Maths
+en_47990bec	6 is more than 5!	Maths
+en_9fa097b3	5 is less than 6!	Maths
+en_e8329b81	7 is more than 5!	Maths
+en_3281a3f8	5 is less than 7!	Maths
+en_050d8a97	8 is more than 5!	Maths
+en_6861483a	5 is less than 8!	Maths
+en_6df89768	9 is more than 5!	Maths
+en_7eb66bfe	5 is less than 9!	Maths
+en_f71a0c4d	7 is more than 6!	Maths
+en_651dd105	6 is less than 7!	Maths
+en_9e25c8c2	8 is more than 6!	Maths
+en_1079dfc5	6 is less than 8!	Maths
+en_cf24028b	9 is more than 6!	Maths
+en_15992cb1	6 is less than 9!	Maths
+en_84676815	8 is more than 7!	Maths
+en_37002f36	7 is less than 8!	Maths
+en_92f3dd57	9 is more than 7!	Maths
+en_f1281dce	7 is less than 9!	Maths
+en_a6341c61	9 is more than 8!	Maths
+en_896aa2c4	8 is less than 9!	Maths

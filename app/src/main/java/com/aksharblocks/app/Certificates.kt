@@ -34,6 +34,9 @@ object Certificates {
         Track.COLORS -> "colors (रंग)"
         Track.SHAPES -> "shapes (आकार)"
         Track.ANIMALS -> "animals (जानवर)"
+        Track.FRUITS -> "fruits and vegetables (फल-सब्ज़ी)"
+        Track.BODY -> "parts of the body (शरीर)"
+        Track.FAMILY -> "family (परिवार)"
     }
 
     /** A medal per section, so each certificate looks a little different. */

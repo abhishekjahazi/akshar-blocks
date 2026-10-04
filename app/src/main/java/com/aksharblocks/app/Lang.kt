@@ -247,6 +247,9 @@ open class PictureLang(
 object ColorWords : PictureLang("Find the color", "Color")
 object ShapeWords : PictureLang("Find the", "Shape")
 object AnimalWords : PictureLang("Find the", "Animal")
+object FruitWords : PictureLang("Find the", "Picture")
+object BodyWords : PictureLang("Show me the", "Body part")
+object FamilyWords : PictureLang("Find", "Picture")
 
 /** मराठी: the same games as Hindi, in Marathi words, with its own voice. */
 object Marathi : HindiLang() {
@@ -329,4 +332,7 @@ object CommonWords {
     const val CERTIFICATE_EARNED = "Congratulations!|You earned a certificate!"
     const val NAME_START = "Let's write your name!"
     const val NAME_DONE = "Wonderful!|You wrote your name!"
+    const val WORLD = "World"
+    const val WORLD_ASK = "What shall we learn about?|@hi किसके बारे में सीखें?"
+    const val MATHS = "Maths"
 }

@@ -40,6 +40,11 @@ object Palette {
     const val EARTH = 0xFFB0602A.toInt()
     const val ROYAL = 0xFF364FC7.toInt()
     const val RUST = 0xFFD9480F.toInt()
+    const val LEAF = 0xFF2B8A3E.toInt()
+    const val ROSE = 0xFFD6336C.toInt()
+    const val PLUM = 0xFF862E9C.toInt()
+    const val JADE = 0xFF0C8599.toInt()
+    const val AMBER = 0xFFE67700.toInt()
 
     // Light screen backgrounds, one per game so each has its own feel.
     const val SKY = 0xFFCFE8FF.toInt()
@@ -412,6 +417,20 @@ abstract class GameView(
         }
     }
 
+    /** The child's animal at [size], centered on ([cx], [cy]), dressed in what it's [wearing]. */
+    protected fun drawAvatar(canvas: Canvas, avatar: String, wearing: List<Outfit>, cx: Float, cy: Float, size: Float) {
+        drawEmoji(canvas, avatar, cx, cy, size)
+        for (slot in Slot.entries) {
+            val outfit = wearing.firstOrNull { it.slot == slot } ?: continue
+            when (slot) {
+                Slot.NECK -> drawEmoji(canvas, outfit.emoji, cx, cy + size * 0.58f, size * 0.46f)
+                Slot.EYES -> drawEmoji(canvas, outfit.emoji, cx, cy - size * 0.1f, size * 0.62f)
+                Slot.HEAD -> drawEmoji(canvas, outfit.emoji, cx, cy - size * 0.5f, size * 0.52f)
+                Slot.HAND -> drawEmoji(canvas, outfit.emoji, cx + size * 0.5f, cy + size * 0.12f, size * 0.42f)
+            }
+        }
+    }
+
     /** Sets [out] to a square of half-size [half] centered on ([cx], [cy]). */
     protected fun squareAt(out: RectF, cx: Float, cy: Float, half: Float): RectF {
         out.set(cx - half, cy - half, cx + half, cy + half)
@@ -581,7 +600,8 @@ abstract class GameView(
             drawText(canvas, title, width / 2f, barY, dp(24f), Palette.INK, maxWidth)
         }
         if (showStars) {
-            val count = player.stars.toString()
+            // Stars left to spend in the shop (stickers go by all stars ever earned).
+            val count = player.spendableStars.toString()
             textPaint.textSize = dp(24f)
             val star = dp(26f)
             val pillWidth = star + dp(8f) + textPaint.measureText(count) + dp(28f)

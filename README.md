@@ -1,4 +1,9 @@
-<p align="center">
+
+| Fruits & veggies | 18 fruits and vegetables (Mango – आम, Carrot – गाजर) |
+| My body | 12 parts of the body (Nose – नाक, Hand – हाथ) |
+| Family | Mother – माँ, Grandfather – दादा, Baby – बच्चा… |
+
+The picture tracks (colors, shapes, animals, fruits, body, family) live together in one **World** corner on Home.<p align="center">
   <img src="store/feature-graphic-1024x500.png" alt="Akshar Blocks – English and Hindi letters, बारहखड़ी and numbers, learned by playing" width="720">
 </p>
 
@@ -13,7 +18,7 @@
   <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
   <img src="https://img.shields.io/badge/games-work%20offline-2E7BFF" alt="Games work offline">
   <a href="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml"><img src="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-  <img src="https://img.shields.io/badge/unit%20tests-101-22B35E" alt="101 unit tests">
+  <img src="https://img.shields.io/badge/unit%20tests-109-22B35E" alt="109 unit tests">
 </p>
 
 <p align="center">
@@ -36,7 +41,7 @@
 
 ## Features
 
-**Eleven learning tracks**
+**Fourteen learning tracks**
 
 | Track | What the child learns |
 |---|---|
@@ -54,15 +59,17 @@
 
 **Ten game modes**: Learn, Trace (follow the strokes with a finger), Find it, Balloon pop, Match the picture, Memory pairs, First words (build c-a-t, ज-ल, or with matras कि-ता-ब), Count, Build a syllable (बारहखड़ी), and Sounds ("Who says moo?" for animals, "Which letter says buh?" for English phonics).
 
+**Maths with pictures.** Add (🍎🍎 + 🍎 = ?), take away (things get crossed out), tap the side with more or fewer, and finish a pattern (🔴🔵🔴 → ?). Every question is spoken in English and then in Hindi ("3 and 2 make 5! तीन और दो, पाँच!").
+
 **Phonics.** Every English letter has its sound as well as its name: "B is for Ball. B says buh!"
 
-**Voice in English, Hindi and Marathi.** Every instruction and letter name is spoken. 1,400+ pre-recorded clips ship with the app, and text-to-speech covers anything else, so it works with no internet.
+**Voice in English, Hindi and Marathi.** Every instruction and letter name is spoken. 1,800+ pre-recorded clips ship with the app, and text-to-speech covers anything else, so it works with no internet.
 
 **Today's games.** One big button on Home starts a short daily path of four games picked from the child's progress: Learn while letters are new, then Trace, plus a practice game that changes every day. English, Hindi and numbers take turns, and the next section opens once the first is half learned.
 
 **Learns with the child.** Adaptive practice brings back letters a child gets wrong, and tracks which letters get mixed up (b ↔ d, ब ↔ व).
 
-**Rewards.** Stars, a sticker album (a new sticker every 5 stars) and a daily streak. Learning most of a section earns a **certificate** with the child's name, which parents can share.
+**Rewards.** Stars, a sticker album (a new sticker every 5 stars) and a daily streak. Stars also buy dress-up things in the **reward shop** (a bow, glasses, a top hat, a crown…) for the child's animal, which then wears them on Home. No real money, ever. Learning most of a section earns a **certificate** with the child's name, which parents can share.
 
 **Rhymes.** 12 rhymes: traditional English, Hindi and Marathi ones and two written for the app, read line by line with the current line lit up.
 
@@ -76,6 +83,7 @@
 - A **report card** for each child: level per track, a colour-coded letter map, a weekly play-time chart, letters that need practice, and a Share button.
 - Certificates to share, and switches for game sounds and music.
 - Save a backup file of the children and their progress, and restore it on a new phone.
+- **Printable worksheets**: tracing sheets for A–Z, a–z, स्वर, व्यंजन, 1–20 and १–२०, printed or saved as a PDF.
 
 **Private by design.** No accounts and no analytics; all progress stays on the device and backups are turned off. The only ad is a small banner on the home screen (Google AdMob), requested as child-directed with "G"-rated, non-personalized ads and no advertising ID: nothing appears inside the games. The app follows Google Play's Families policy.
 
@@ -92,7 +100,7 @@
 | Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
 | Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
 | Ads | Google Mobile Ads SDK (AdMob): one banner on Home, child-directed, max rating G, advertising ID and ad-services permissions removed; debug builds use Google's test ads |
-| Testing | JUnit: 101 unit tests (content, tracing, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
+| Testing | JUnit: 109 unit tests (content, tracing, maths, the reward shop, worksheets, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
 | Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
 
 ## Project structure
