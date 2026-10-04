@@ -2,8 +2,9 @@
 | Fruits & veggies | 18 fruits and vegetables (Mango – आम, Carrot – गाजर) |
 | My body | 12 parts of the body (Nose – नाक, Hand – हाथ) |
 | Family | Mother – माँ, Grandfather – दादा, Baby – बच्चा… |
+| Opposites | 10 pairs with pictures: Big – Small (बड़ा – छोटा), Hot – Cold, Day – Night… pick the opposite of the picture shown |
 
-The picture tracks (colors, shapes, animals, fruits, body, family) live together in one **World** corner on Home.<p align="center">
+The picture tracks (colors, shapes, animals, fruits, body, family) and Opposites live together in one **World** corner on Home.<p align="center">
   <img src="store/feature-graphic-1024x500.png" alt="Akshar Blocks – English and Hindi letters, बारहखड़ी and numbers, learned by playing" width="720">
 </p>
 
@@ -18,7 +19,7 @@ The picture tracks (colors, shapes, animals, fruits, body, family) live together
   <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
   <img src="https://img.shields.io/badge/games-work%20offline-2E7BFF" alt="Games work offline">
   <a href="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml"><img src="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-  <img src="https://img.shields.io/badge/unit%20tests-112-22B35E" alt="112 unit tests">
+  <img src="https://img.shields.io/badge/unit%20tests-116-22B35E" alt="116 unit tests">
 </p>
 
 <p align="center">
@@ -41,7 +42,7 @@ The picture tracks (colors, shapes, animals, fruits, body, family) live together
 
 ## Features
 
-**Fourteen learning tracks**
+**Fourteen learning tracks and an opposites game**
 
 | Track | What the child learns |
 |---|---|
@@ -102,7 +103,7 @@ The picture tracks (colors, shapes, animals, fruits, body, family) live together
 | Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
 | Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
 | Ads | Google Mobile Ads SDK (AdMob): one banner on Home, child-directed, max rating G, advertising ID and ad-services permissions removed; debug builds use Google's test ads |
-| Testing | JUnit: 112 unit tests (content, tracing, maths, light and dark colours, the reward shop, worksheets, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
+| Testing | JUnit: 116 unit tests (content, tracing, maths, opposites, light and dark colours, the reward shop, worksheets, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
 | Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
 
 ## Project structure

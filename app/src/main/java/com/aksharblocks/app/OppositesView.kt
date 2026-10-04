@@ -79,7 +79,7 @@ class OppositesView(context: Context, speaker: Speaker, player: Player) : GameVi
         // Three pictures to pick the opposite from.
         val gap = dp(12f)
         val cellW = (contentRight - choicesLeft - gap * (Opposites.CHOICES - 1)) / Opposites.CHOICES
-        val cellH = min(cellW * 1.3f, contentBottom - choicesTop - dp(8f))
+        val cellH = min(cellW * 1.5f, (contentBottom - choicesTop) * 0.85f)
         round.choices.forEachIndexed { i, side ->
             val left = choicesLeft + (cellW + gap) * i
             val card = choiceCards[i]
