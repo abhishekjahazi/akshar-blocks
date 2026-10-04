@@ -169,7 +169,8 @@ class ParentActivity : AppCompatActivity() {
             "Akshar Blocks ${versionName()}\nNo accounts. The games work without internet. " +
                 "Stars and progress are saved only on this phone and are deleted if the app is uninstalled " +
                 "(save a backup to keep them). One small ad shows on the home screen; there are no ads in the games.\n\n" +
-                "Pictures: Noto Emoji by Google, used under the Apache License 2.0.",
+                "Pictures: Noto Emoji by Google, used under the Apache License 2.0. " +
+                "Font: Baloo 2 by Ek Type, used under the SIL Open Font License 1.1.",
             15f, muted = true, top = 4,
         ))
     }

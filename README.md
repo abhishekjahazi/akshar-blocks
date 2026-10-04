@@ -18,7 +18,7 @@ The picture tracks (colors, shapes, animals, fruits, body, family) live together
   <img src="https://img.shields.io/badge/Android-24%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+">
   <img src="https://img.shields.io/badge/games-work%20offline-2E7BFF" alt="Games work offline">
   <a href="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml"><img src="https://github.com/abhishekjahazi/akshar-blocks/actions/workflows/tests.yml/badge.svg" alt="Tests"></a>
-  <img src="https://img.shields.io/badge/unit%20tests-109-22B35E" alt="109 unit tests">
+  <img src="https://img.shields.io/badge/unit%20tests-112-22B35E" alt="112 unit tests">
 </p>
 
 <p align="center">
@@ -87,6 +87,8 @@ The picture tracks (colors, shapes, animals, fruits, body, family) live together
 
 **Private by design.** No accounts and no analytics; all progress stays on the device and backups are turned off. The only ad is a small banner on the home screen (Google AdMob), requested as child-directed with "G"-rated, non-personalized ads and no advertising ID: nothing appears inside the games. The app follows Google Play's Families policy.
 
+**A colourful glass look, light and dark.** Soft colour blobs drift behind see-through cards; Home groups the sections into Letters, Numbers & Maths and Explore, with a progress bar on each. A sun / moon button switches between light and dark, or the app follows the phone (parent area → Look). Text uses the rounded Baloo 2 font, which covers Hindi and Marathi too.
+
 **Phones and tablets**, in portrait and landscape.
 
 ## Tech stack
@@ -100,7 +102,7 @@ The picture tracks (colors, shapes, animals, fruits, body, family) live together
 | Content | Plain TSV files for letters, tracing strokes and words, so new content needs no code changes |
 | Art | [Noto Emoji](https://github.com/googlefonts/noto-emoji) images (Apache 2.0), bundled for consistent look on every device |
 | Ads | Google Mobile Ads SDK (AdMob): one banner on Home, child-directed, max rating G, advertising ID and ad-services permissions removed; debug builds use Google's test ads |
-| Testing | JUnit: 109 unit tests (content, tracing, maths, the reward shop, worksheets, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
+| Testing | JUnit: 112 unit tests (content, tracing, maths, light and dark colours, the reward shop, worksheets, rewards, reports, the daily path, rhymes, names, phonics, certificates, backups, music, play-time limits, voice clips). CI also builds the release version and plays it on an emulator with 600 random taps |
 | Tools | Android Studio, Gradle, Claude Code (AI-assisted development) |
 
 ## Project structure
@@ -147,6 +149,7 @@ Version 1.0 is out: download the APK from [Releases](https://github.com/abhishek
 ## Credits
 
 - Emoji art: [Noto Emoji](https://github.com/googlefonts/noto-emoji) by Google, Apache License 2.0 (see `app/src/main/assets/art/LICENSE-noto-emoji.txt`).
+- Font: [Baloo 2](https://github.com/EkType/Baloo2) by Ek Type, SIL Open Font License 1.1 (see `app/src/main/assets/fonts/Baloo2-OFL.txt`).
 - Voices: generated with Google's on-device text-to-speech voices.
 
 ---
